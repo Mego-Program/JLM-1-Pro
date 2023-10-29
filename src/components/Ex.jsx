@@ -4,6 +4,6 @@ export default function Ex() {
   return (
     <div>
       <h1>Test</h1>
-      hello</div>
+      hello wolde</div>
   )
 }
