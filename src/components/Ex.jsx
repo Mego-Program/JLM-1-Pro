@@ -2,6 +2,8 @@ import React from 'react'
 
 export default function Ex() {
   return (
-    <div>hello</div>
+    <div>
+      <h1>Test</h1>
+      hello</div>
   )
 }
