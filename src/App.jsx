@@ -1,14 +1,8 @@
-import React from 'react';
-// import Board from './components/board.jsx'; 
-import List from './components/list.jsx';
-import './App.css';
+import "./App.css";
+import KanbanBoard from "./components/KanbanBoard";
 
 function App() {
-  return (
-    <> 
-    <List/>
-    </>
-  );
+  return <KanbanBoard />;
 }
 
 export default App;
