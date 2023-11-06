@@ -1,16 +1,11 @@
 import { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
-import { Id, Task } from "../types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-interface Props {
-  task: Task;
-  deleteTask: (id: Id) => void;
-  updateTask: (id: Id, content: string) => void;
-}
 
-function TaskCard({ task, deleteTask, updateTask }: Props) {
+
+function TaskCard({ task, deleteTask, updateTask }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(true);
 
