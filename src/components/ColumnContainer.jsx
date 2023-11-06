@@ -1,21 +1,9 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import TrashIcon from "../icons/TrashIcon";
-import { Column, Id, Task } from "../types";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import PlusIcon from "../icons/PlusIcon";
 import TaskCard from "./TaskCard";
-
-interface Props {
-  column: Column;
-  deleteColumn: (id: Id) => void;
-  updateColumn: (id: Id, title: string) => void;
-
-  createTask: (columnId: Id) => void;
-  updateTask: (id: Id, content: string) => void;
-  deleteTask: (id: Id) => void;
-  tasks: Task[];
-}
 
 function ColumnContainer({
   column,
@@ -25,7 +13,7 @@ function ColumnContainer({
   tasks,
   deleteTask,
   updateTask,
-}: Props) {
+}) {
   const [editMode, setEditMode] = useState(false);
 
   const tasksIds = useMemo(() => {
@@ -59,10 +47,10 @@ function ColumnContainer({
         ref={setNodeRef}
         style={style}
         className="
-      bg-columnBackgroundColor
+        bg-[url('https://cdn.naturettl.com/wp-content/uploads/2022/02/08203221/water-landscape-photos-11-534x800.jpg')]
       opacity-40
       border-2
-      border-pink-500
+      border-yellow-500
       w-[350px]
       h-[500px]
       max-h-[500px]
@@ -79,7 +67,7 @@ function ColumnContainer({
       ref={setNodeRef}
       style={style}
       className="
-  bg-columnBackgroundColor
+  bg-[url('https://d3n8a8pro7vhmx.cloudfront.net/backcountryhunters/pages/10800/attachments/original/1640022886/Arizona_Lake_Mead_National_Recreation_Area_00003.jpg?1640022886')]
   w-[350px]
   h-[500px]
   max-h-[500px]
@@ -96,7 +84,7 @@ function ColumnContainer({
           setEditMode(true);
         }}
         className="
-      bg-mainBackgroundColor
+      bg-[url('https://media.istockphoto.com/id/477384274/photo/beautiful-sea-landscape.jpg?s=612x612&w=0&k=20&c=ttXdlWuRKwyJme6Uv4dnbhF9I2M2b4Al8HWkFn76OYw=')]
       text-md
       h-[60px]
       cursor-grab
@@ -104,8 +92,8 @@ function ColumnContainer({
       rounded-b-none
       p-3
       font-bold
-      border-columnBackgroundColor
-      border-4
+      border-blue-500
+      border-40
       flex
       items-center
       justify-between
@@ -117,7 +105,7 @@ function ColumnContainer({
         flex
         justify-center
         items-center
-        bg-columnBackgroundColor
+        bg-yellow-500
         px-2
         py-1
         text-sm
@@ -150,7 +138,7 @@ function ColumnContainer({
           className="
         stroke-gray-100
         border border-yellow-700
-        hover:stroke-white
+        hover:stroke-black
         hover:bg-yellow-500
         rounded
         px-1
@@ -176,7 +164,7 @@ function ColumnContainer({
       </div>
       {/* Column footer */}
       <button
-        className="flex gap-2 items-center border-yellow-500 border-2 rounded-md p-4 border-x-columnBackgroundColor hover:bg-mainBackgroundColor hover:text-rose-500 active:bg-black"
+        className="flex gap-2 items-center border-yellow-500 border-2 rounded-md p-4 border-x-columnBackgroundColor hover:bg-[url('https://media2.giphy.com/media/ctGFLebG1AqK4/giphy.gif')] hover:text-rose-500 active:bg-black"
         onClick={() => {
           createTask(column.id);
         }}
