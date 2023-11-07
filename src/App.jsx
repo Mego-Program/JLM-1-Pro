@@ -1,8 +1,14 @@
+import React from "react";
 import "./App.css";
-import KanbanBoard from "./components/KanbanBoard";
+import DataFetcher from "./components/DataFetcher";
 
 function App() {
-  return <KanbanBoard />;
+  return (
+    <div>
+      <DataFetcher />
+    </div>
+  );
 }
 
 export default App;
+
