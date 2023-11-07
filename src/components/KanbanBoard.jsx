@@ -112,10 +112,13 @@ function KanbanBoard() {
         distance: 10,
       },
     })
+    
   );
 
   return (
+    
     <div
+      
       className="
         m-auto
         flex
