@@ -51,7 +51,7 @@ function ColumnContainer({
       opacity-40
       border-2
       border-yellow-500
-      w-[350px]
+      w-[50px]
       h-[500px]
       max-h-[500px]
       rounded-md

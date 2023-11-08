@@ -112,10 +112,13 @@ function KanbanBoard() {
         distance: 10,
       },
     })
+    
   );
 
   return (
+    
     <div
+      
       className="
         m-auto
         flex
@@ -208,11 +211,9 @@ function KanbanBoard() {
     const newTask = {
       id: generateId(),
       columnId,
-      content: (
-        <>
-          Task {tasks.length + 1}
-        </>
-      ),
+      header: '',
+      content: `Task ${tasks.length + 1}`,
+      date:'',
     };
 
     setTasks([...tasks, newTask]);
