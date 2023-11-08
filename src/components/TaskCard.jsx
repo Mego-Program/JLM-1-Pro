@@ -2,12 +2,12 @@ import { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-
-
+import NewDateTime from "./newDateTime"; 
 
 function TaskCard({ task, deleteTask, updateTask }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(true);
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   const {
     setNodeRef,
@@ -30,6 +30,12 @@ function TaskCard({ task, deleteTask, updateTask }) {
     transform: CSS.Transform.toString(transform),
   };
 
+  // Toggle the time picker
+  const toggleTimePicker = () => {
+    setShowTimePicker(!showTimePicker);
+  };
+
+  // Toggle the edit mode
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
     setMouseIsOver(false);
@@ -40,40 +46,8 @@ function TaskCard({ task, deleteTask, updateTask }) {
       <div
         ref={setNodeRef}
         style={style}
-        className="
-        opacity-30
-      bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl border-2 border-rose-500  cursor-grab relative
-      "
+        className="opacity-30 bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl border-2 border-rose-500 cursor-grab relative"
       />
-    );
-  }
-
-  if (editMode) {
-    return (
-      <div
-        ref={setNodeRef}
-        style={style}
-        {...attributes}
-        {...listeners}
-        className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative"
-      >
-        <textarea
-          className="
-        h-[90%]
-        w-full resize-none border-none rounded bg-transparent text-white focus:outline-none
-        "
-          value={task.content}
-          autoFocus
-          placeholder="Task content here"
-          onBlur={toggleEditMode}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && e.shiftKey) {
-              toggleEditMode();
-            }
-          }}
-          onChange={(e) => updateTask(task.id, e.target.value)}
-        />
-      </div>
     );
   }
 
@@ -106,6 +80,22 @@ function TaskCard({ task, deleteTask, updateTask }) {
           <TrashIcon />
         </button>
       )}
+
+      {editMode && (
+        <button onClick={toggleTimePicker} className="text-white">
+          <p style={{
+              position: "absolute",
+              top: "20px",
+              right: "15px",
+              transform: "translate(-50%, -50%)",
+              zIndex: 2, // Adjust the z-index to be higher than TrashIcon
+            }}>
+              📅
+              </p>
+        </button>
+      )}
+
+      {showTimePicker && <NewDateTime />}
     </div>
   );
 }

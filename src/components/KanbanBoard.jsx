@@ -208,7 +208,9 @@ function KanbanBoard() {
     const newTask = {
       id: generateId(),
       columnId,
+      header: '',
       content: `Task ${tasks.length + 1}`,
+      date:'',
     };
 
     setTasks([...tasks, newTask]);
