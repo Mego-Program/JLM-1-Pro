@@ -160,12 +160,12 @@ function KanbanBoard() {
       min-w-[350px]
       cursor-pointer
       rounded-lg
-      bg-mainBackgroundColor
+      bg-yellow-500
       border-2
-      border-columnBackgroundColor
+      border-yellow-200
       p-4
-      ring-rose-500
-      hover:ring-2
+      ring-yellow-500
+      hover:ring-4
       flex
       gap-2
       "
@@ -208,7 +208,11 @@ function KanbanBoard() {
     const newTask = {
       id: generateId(),
       columnId,
-      content: `Task ${tasks.length + 1}`,
+      content: (
+        <>
+          Task {tasks.length + 1}
+        </>
+      ),
     };
 
     setTasks([...tasks, newTask]);
@@ -222,7 +226,7 @@ function KanbanBoard() {
   function updateTask(id, content) {
     const newTasks = tasks.map((task) => {
       if (task.id !== id) return task;
-      return { ...task, content };
+      return { ...task, content};
     });
 
     setTasks(newTasks);
