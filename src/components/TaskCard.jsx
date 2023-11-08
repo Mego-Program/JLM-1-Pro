@@ -3,6 +3,10 @@ import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import NewDateTime from "./newDateTime"; 
+import ImageAvatars from "./avatar";
+
+const avatar = <ImageAvatars />;
+
 
 function TaskCard({ task, deleteTask, updateTask }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
@@ -65,7 +69,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
       onMouseLeave={() => {
         setMouseIsOver(false);
       }}
-    >
+    >{avatar}
       <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
         {task.content}
       </p>
@@ -80,7 +84,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
           <TrashIcon />
         </button>
       )}
-
+      
       {editMode && (
         <button onClick={toggleTimePicker} className="text-white">
           <p style={{

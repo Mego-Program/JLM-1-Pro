@@ -51,7 +51,7 @@ function ColumnContainer({
       opacity-40
       border-2
       border-yellow-500
-      w-[350px]
+      w-[50px]
       h-[500px]
       max-h-[500px]
       rounded-md
@@ -67,7 +67,7 @@ function ColumnContainer({
       ref={setNodeRef}
       style={style}
       className="
-  bg-[url('https://d3n8a8pro7vhmx.cloudfront.net/backcountryhunters/pages/10800/attachments/original/1640022886/Arizona_Lake_Mead_National_Recreation_Area_00003.jpg?1640022886')]
+  bg-blue-950
   w-[350px]
   h-[500px]
   max-h-[500px]
@@ -84,7 +84,7 @@ function ColumnContainer({
           setEditMode(true);
         }}
         className="
-      bg-[url('https://media.istockphoto.com/id/477384274/photo/beautiful-sea-landscape.jpg?s=612x612&w=0&k=20&c=ttXdlWuRKwyJme6Uv4dnbhF9I2M2b4Al8HWkFn76OYw=')]
+      bg-bg-[#21213E] 
       text-md
       h-[60px]
       cursor-grab
@@ -117,7 +117,7 @@ function ColumnContainer({
           {!editMode && column.title}
           {editMode && (
             <input
-              className="bg-black focus:border-yellow-600 border rounded outline-none px-2"
+              className="bg-blue-200 text-blue-900 focus:border-yellow-600 border rounded outline-none px-2"
               value={column.title}
               onChange={(e) => updateColumn(column.id, e.target.value)}
               autoFocus
@@ -164,7 +164,7 @@ function ColumnContainer({
       </div>
       {/* Column footer */}
       <button
-        className="flex gap-2 items-center border-yellow-500 border-2 rounded-md p-4 border-x-columnBackgroundColor hover:bg-[url('https://media2.giphy.com/media/ctGFLebG1AqK4/giphy.gif')] hover:text-rose-500 active:bg-black"
+        className="flex gap-2 items-center border-yellow-500 border-2 rounded-md p-4 border-x-yellow-500 hover:bg-[url('https://media2.giphy.com/media/ctGFLebG1AqK4/giphy.gif')] hover:text-rose-500 active:bg-black"
         onClick={() => {
           createTask(column.id);
         }}
