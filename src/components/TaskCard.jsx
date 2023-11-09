@@ -2,16 +2,13 @@ import { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import NewDateTime from "./newDateTime"; 
 import ImageAvatars from "./avatar";
 
 const avatar = <ImageAvatars />;
 
-
 function TaskCard({ task, deleteTask, updateTask }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
-  const [editMode, setEditMode] = useState(true);
-  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const {
     setNodeRef,
@@ -34,11 +31,6 @@ function TaskCard({ task, deleteTask, updateTask }) {
     transform: CSS.Transform.toString(transform),
   };
 
-  // Toggle the time picker
-  const toggleTimePicker = () => {
-    setShowTimePicker(!showTimePicker);
-  };
-
   // Toggle the edit mode
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
@@ -55,51 +47,56 @@ function TaskCard({ task, deleteTask, updateTask }) {
     );
   }
 
+  if (editMode) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className="bg-purple-900 p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative task"
+      >
+        <textarea
+          className="h-[90%] w-full resize-none border-none rounded bg-transparent text-white focus:outline-none"
+          value={task.content}
+          autoFocus
+          placeholder="Task content here"
+          onBlur={toggleEditMode}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              toggleEditMode();
+            }
+          }}
+          onChange={(e) => updateTask(task.id, e.target.value)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      onClick={toggleEditMode}
+      onClick={() => setEditMode(true)}
       className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative task"
-      onMouseEnter={() => {
-        setMouseIsOver(true);
-      }}
-      onMouseLeave={() => {
-        setMouseIsOver(false);
-      }}
-    >{avatar}
+      onMouseEnter={() => setMouseIsOver(true)}
+      onMouseLeave={() => setMouseIsOver(false)}
+    >
+      {avatar}
       <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
         {task.content}
       </p>
 
       {mouseIsOver && (
         <button
-          onClick={() => {
-            deleteTask(task.id);
-          }}
+          onClick={() => deleteTask(task.id)}
           className="stroke-white absolute right-4 top-1/2 -translate-y-1/2 bg-columnBackgroundColor p-2 rounded opacity-60 hover:opacity-100"
         >
           <TrashIcon />
         </button>
       )}
-      
-      {editMode && (
-        <button onClick={toggleTimePicker} className="text-white">
-          <p style={{
-              position: "absolute",
-              top: "20px",
-              right: "15px",
-              transform: "translate(-50%, -50%)",
-              zIndex: 2, // Adjust the z-index to be higher than TrashIcon
-            }}>
-              📅
-              </p>
-        </button>
-      )}
-
-      {showTimePicker && <NewDateTime />}
     </div>
   );
 }
