@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import PlusIcon from "../icons/PlusIcon";
 import TaskCard from "./TaskCard";
 
+
 function ColumnContainer({
   column,
   deleteColumn,
@@ -13,6 +14,7 @@ function ColumnContainer({
   tasks,
   deleteTask,
   updateTask,
+  taskCount,
 }) {
   const [editMode, setEditMode] = useState(false);
 

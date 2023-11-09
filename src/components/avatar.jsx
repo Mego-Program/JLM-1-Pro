@@ -6,7 +6,7 @@ export default function ImageAvatars() {
   return (
     <div style={{ margin: '16px',  border: '2px solid yellow-', borderRadius: '50%'}}>
     <Stack direction="row" spacing={2}>
-      <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+      <Avatar alt="Yemy Sharp" src="/static/images/avatar/1.jpg" />
       
     </Stack>
     </div>
