@@ -84,7 +84,8 @@ function TaskCard({ task, deleteTask, updateTask }) {
       onMouseEnter={() => setMouseIsOver(true)}
       onMouseLeave={() => setMouseIsOver(false)}
     >
-      {avatar}
+      <>
+      { avatar }
       <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
         {task.content}
       </p>
@@ -97,6 +98,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
           <TrashIcon />
         </button>
       )}
+      </>
     </div>
   );
 }
