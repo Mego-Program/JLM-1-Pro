@@ -1,10 +1,11 @@
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import TrashIcon from "../icons/TrashIcon";
-import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState } from "react";
-import PlusIcon from "../icons/PlusIcon";
-import TaskCard from "./TaskCard";
+// ColumnContainer.jsx
 
+import React, { useMemo, useState } from "react";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import TrashIcon from "../icons/TrashIcon";
+import ImageAvatars from "./avatar";
+import TaskCard from "./TaskCard";
 
 function ColumnContainer({
   column,
@@ -14,7 +15,6 @@ function ColumnContainer({
   tasks,
   deleteTask,
   updateTask,
-  taskCount,
 }) {
   const [editMode, setEditMode] = useState(false);
 
@@ -48,18 +48,7 @@ function ColumnContainer({
       <div
         ref={setNodeRef}
         style={style}
-        className="
-        bg-[url('https://cdn.naturettl.com/wp-content/uploads/2022/02/08203221/water-landscape-photos-11-534x800.jpg')]
-      opacity-40
-      border-2
-      border-yellow-500
-      w-[50px]
-      h-[500px]
-      max-h-[500px]
-      rounded-md
-      flex
-      flex-col
-      "
+        className="bg-[url('https://cdn.naturettl.com/wp-content/uploads/2022/02/08203221/water-landscape-photos-11-534x800.jpg')] opacity-40 border-2 border-yellow-500 w-[50px] h-[500px] max-h-[500px] rounded-md flex flex-col"
       ></div>
     );
   }
@@ -68,53 +57,19 @@ function ColumnContainer({
     <div
       ref={setNodeRef}
       style={style}
-      className="
-  bg-blue-950
-  w-[350px]
-  h-[500px]
-  max-h-[500px]
-  rounded-md
-  flex
-  flex-col
-  "
+      className="bg-blue-950 w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
     >
-      {/* Column title */}
       <div
         {...attributes}
         {...listeners}
         onClick={() => {
           setEditMode(true);
         }}
-        className="
-      bg-bg-[#21213E] 
-      text-md
-      h-[60px]
-      cursor-grab
-      rounded-md
-      rounded-b-none
-      p-3
-      font-bold
-      border-blue-500
-      border-40
-      flex
-      items-center
-      justify-between
-      "
+        className="bg-bg-[#21213E] text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-blue-500 border-40 flex items-center justify-between"
       >
         <div className="flex gap-2">
-          <div
-            className="
-        flex
-        justify-center
-        items-center
-        bg-yellow-500
-        px-2
-        py-1
-        text-sm
-        rounded-full
-        "
-          >
-            0
+          <div className="flex text-black justify-center items-center bg-yellow-500 px-2 py-1 text-sm rounded-full">
+            {tasks.length}
           </div>
           {!editMode && column.title}
           {editMode && (
@@ -137,42 +92,28 @@ function ColumnContainer({
           onClick={() => {
             deleteColumn(column.id);
           }}
-          className="
-        stroke-gray-100
-        border border-yellow-700
-        hover:stroke-black
-        hover:bg-yellow-500
-        rounded
-        px-1
-        py-2
-        "
+          className="stroke-gray-100 border border-yellow-700 hover:stroke-black hover:bg-yellow-500 rounded px-1 py-2"
         >
           <TrashIcon />
         </button>
       </div>
 
-      {/* Column task container */}
       <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
         <SortableContext items={tasksIds}>
           {tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              deleteTask={deleteTask}
-              updateTask={updateTask}
-            />
+            <TaskCard key={task.id} task={task} deleteTask={deleteTask} updateTask={updateTask} />
           ))}
         </SortableContext>
       </div>
-      {/* Column footer */}
+
       <button
-        className="flex gap-2 items-center border-yellow-500 border-2 rounded-md p-4 border-x-yellow-500 hover:bg-[url('https://media2.giphy.com/media/ctGFLebG1AqK4/giphy.gif')] hover:text-rose-500 active:bg-black"
+        className="gap-10 items-center  border-yellow-500 border-2 rounded-md p-4 border-x-yellow-500 hover:bg-[url('https://media2.giphy.com/media/ctGFLebG1AqK4/giphy.gif')] hover:text-yellow-500 active:bg-black"
         onClick={() => {
           createTask(column.id);
         }}
       >
-        <PlusIcon />
-        Add task
+        
+        Add task ➕
       </button>
     </div>
   );
