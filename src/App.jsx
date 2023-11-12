@@ -1,12 +1,12 @@
 import "./App.css";
+import DropDown from "./components/DropDown";
 import KanbanBoard from "./components/KanbanBoard";
-import NewDateTime from "./components/newDateTime";
 
-function App() {
-  return (<>
-     <KanbanBoard/>
+export default function App() {
+  return (
+  <>
+    <DropDown/>
+    <KanbanBoard/>
   </>
   );
 }
-
-export default App;
