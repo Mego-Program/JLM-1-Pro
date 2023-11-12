@@ -5,7 +5,7 @@
 html,
 body,
 #root {
-  @apply bg-black text-white box-border;
+  @apply bg-[#21213E] text-white box-border;
 }
 
 ::-webkit-scrollbar {
