@@ -5,8 +5,6 @@ import { CSS } from "@dnd-kit/utilities";
 import ImageAvatars from "./avatar";
 import NewDateTime from "./NewDateTime";
 
-const avatar = <ImageAvatars />;
-
 function TaskCard({ task, deleteTask, updateTask }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -89,7 +87,8 @@ function TaskCard({ task, deleteTask, updateTask }) {
       onMouseLeave={() => setMouseIsOver(false)}
     >
       <>
-      { avatar }
+      <ImageAvatars />
+
       <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
         {task.content}
       </p>
