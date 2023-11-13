@@ -11,6 +11,7 @@ function NewDateTime() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <DateTimePicker
             label=""
+            ampm= {false}
             sx={{
               '&& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root': {
                 color: 'white',
