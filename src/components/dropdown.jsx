@@ -1,102 +1,139 @@
-import * as React from "react";
-import { useTheme } from "@mui/material/styles";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { Grid } from "@mui/material";
+import React, { useState, useEffect } from 'react';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+const MainComponent = () => {
+  // Step 1: Define state variables for SearchBar and DropdownFilters.
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedOption1, setSelectedOption1] = useState('');
+  const [selectedOption2, setSelectedOption2] = useState('');
+  const [selectedOption3, setSelectedOption3] = useState('');
+  const [selectedOption4, setSelectedOption4] = useState('');
+
+  // Step 2: Define options for DropdownFilters.
+  const options1 = ['Option A', 'Option B', 'Option C'];
+  const options2 = ['Option X', 'Option Y', 'Option Z'];
+  const options3 = ['Choice 1', 'Choice 2', 'Choice 3'];
+  const options4 = ['Category 1', 'Category 2', 'Category 3'];
+
+  // Step 3: Fetch data from an API using useEffect.
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.example.com/data'); // Replace with your API endpoint.
+        const jsonData = await response.json();
+        setData(jsonData);
+        setFilteredData(jsonData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Step 4: Implement the filter function for the SearchBar.
+  const handleFilter = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    const filtered = data.filter((item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredData(filtered);
+  };
+
+  return (
+    <div className="main-container">
+      <div className="welcome-container">
+        <img src="avatar.png" alt="User Avatar" className="avatar" />
+        <h3 className="welcome-text">Welcome to our website!</h3>
+        <br />
+        <p className="small-text">This is a short description.</p>
+      </div>
+
+      <div className="search-bar-container">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleFilter}
+          className="search-input"
+        />
+        <ul className="search-results">
+          {filteredData.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="dropdown-filters-container">
+        {/* Filter 1 */}
+        <div className="filter">
+          <p className="filter-hint">Filter 1:</p>
+          <select
+            value={selectedOption1}
+            onChange={(e) => setSelectedOption1(e.target.value)}
+          >
+            <option value="">Select an option</option>
+            {options1.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Filter 2 */}
+        <div className="filter">
+          <p className="filter-hint">Filter 2:</p>
+          <select
+            value={selectedOption2}
+            onChange={(e) => setSelectedOption2(e.target.value)}
+          >
+            <option value="">Select an option</option>
+            {options2.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Filter 3 */}
+        <div className="filter">
+          <p className="filter-hint">Filter 3:</p>
+          <select
+            value={selectedOption3}
+            onChange={(e) => setSelectedOption3(e.target.value)}
+          >
+            <option value="">Select an option</option>
+            {options3.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Filter 4 */}
+        <div className="filter">
+          <p className="filter-hint">Filter 4:</p>
+          <select
+            value={selectedOption4}
+            onChange={(e) => setSelectedOption4(e.target.value)}
+          >
+            <option value="">Select an option</option>
+            {options4.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-
-
-export default function MultipleSelect() {
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
-  
-  const SelecterBox = (
-    <FormControl sx={{ m: 1, width: 300, backgroundColor:  '#0A0A1B;',
-    '& label': {
-        color: 'white', // Label color
-      },
-      '& fieldset': {
-        borderColor: 'white', // Border color
-      },
-       }}>
-      <InputLabel id="demo-multiple-name-label">Name</InputLabel>
-      <Select
-        labelId="demo-multiple-name-label"
-        id="demo-multiple-name"
-        multiple
-        value={personName}
-        onChange={handleChange}
-        input={<OutlinedInput label="Name" />}
-        MenuProps={MenuProps}
-      >
-        {names.map((name) => (
-          <MenuItem
-            key={name}
-            value={name}
-            style={getStyles(name, personName, theme)}
-          >
-            {name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-
-
-  return <div>
-    <Grid>
-   {SelecterBox} 
-   {SelecterBox} 
-   {SelecterBox} 
-   {SelecterBox} 
-
-    </Grid>
-  </div>;
-}
+export default MainComponent;

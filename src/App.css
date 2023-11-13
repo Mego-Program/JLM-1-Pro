@@ -24,3 +24,92 @@ background-color: #21213E;
   @apply bg-sky-500 rounded-xl;
 }
 
+ .main-container {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.welcome-text {
+  font-size: 18px;
+  margin: 0;
+}
+
+.search-bar-container {
+  margin: 20px 0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.search-results {
+  list-style: none;
+  padding: 0;
+}
+
+.search-results li {
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.dropdown-filters-container {
+  justify-content: space-evenly;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.filter {
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-hint {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* MainComponent.css */
+.main-container {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  color: rgb(204, 25, 25); /* Added to make the text white */
+}
+
+.welcome-text {
+  font-size: 18px;
+  margin: 0;
+  color: white; /* Added to make the text white */
+}
+
+/* Rest of the CSS remains the same */
+
+.select {
+  background: #0A0A1B; /* Added to change the background color of dropdown fields */
+  color: #0A0A1B; /* Added to make the text white */
+  border: 1px solid #0A0A1B;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
