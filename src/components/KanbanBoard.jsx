@@ -129,7 +129,7 @@ function KanbanBoard() {
         overflow-y-hidden
         px-[40px]
     "
-    >
+    >  
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -153,6 +153,7 @@ function KanbanBoard() {
               ))}
             </SortableContext>
           </div>
+
           <button
             onClick={() => {
               createNewColumn();
@@ -177,7 +178,6 @@ function KanbanBoard() {
             Add Column
           </button>
         </div>
-
         {createPortal(
           <DragOverlay>
             {activeColumn && (

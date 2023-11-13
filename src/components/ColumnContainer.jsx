@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TrashIcon from "../icons/TrashIcon";
-import ImageAvatars from "./avatar";
 import TaskCard from "./TaskCard";
 
 function ColumnContainer({
@@ -108,6 +107,7 @@ function ColumnContainer({
         className="gap-10 items-center  border-yellow-500 border-2 rounded-md p-4 border-x-yellow-500 hover:bg-[url('https://media2.giphy.com/media/ctGFLebG1AqK4/giphy.gif')] hover:text-yellow-500 active:bg-black"
         onClick={() => {
           createTask(column.id);
+          
         }}
       >
         
