@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
-import DataFetcher from "./components/DataFetcher";
+import KanbanBoard from "./components/KanbanBoard";
+
 
 function App() {
   return (

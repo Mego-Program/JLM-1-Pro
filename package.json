@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -15,7 +15,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
-    "@mui/material": "^5.14.16",
+    "@mui/lab": "^5.0.0-alpha.152",
+    "@mui/material": "^5.14.17",
     "@mui/x-date-pickers": "^6.18.0",
     "axios": "^1.6.0",
     "dayjs": "^1.11.10",
@@ -28,7 +29,7 @@
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
-    "@vitejs/plugin-react-swc": "^3.3.2",
+    "@vitejs/plugin-react-swc": "^3.4.1",
     "autoprefix": "^1.0.1",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.44.0",

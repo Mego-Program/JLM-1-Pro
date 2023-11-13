@@ -112,10 +112,13 @@ function KanbanBoard() {
         distance: 10,
       },
     })
+    
   );
 
   return (
+    
     <div
+      
       className="
         m-auto
         flex
@@ -126,7 +129,7 @@ function KanbanBoard() {
         overflow-y-hidden
         px-[40px]
     "
-    >
+    >  
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -150,6 +153,7 @@ function KanbanBoard() {
               ))}
             </SortableContext>
           </div>
+
           <button
             onClick={() => {
               createNewColumn();
@@ -160,12 +164,12 @@ function KanbanBoard() {
       min-w-[350px]
       cursor-pointer
       rounded-lg
-      bg-mainBackgroundColor
+      bg-yellow-500
       border-2
-      border-columnBackgroundColor
+      border-yellow-200
       p-4
-      ring-rose-500
-      hover:ring-2
+      ring-yellow-500
+      hover:ring-4
       flex
       gap-2
       "
@@ -174,7 +178,6 @@ function KanbanBoard() {
             Add Column
           </button>
         </div>
-
         {createPortal(
           <DragOverlay>
             {activeColumn && (
@@ -208,7 +211,9 @@ function KanbanBoard() {
     const newTask = {
       id: generateId(),
       columnId,
+      header: '',
       content: `Task ${tasks.length + 1}`,
+      date:'',
     };
 
     setTasks([...tasks, newTask]);
@@ -222,7 +227,7 @@ function KanbanBoard() {
   function updateTask(id, content) {
     const newTasks = tasks.map((task) => {
       if (task.id !== id) return task;
-      return { ...task, content };
+      return { ...task, content};
     });
 
     setTasks(newTasks);
@@ -336,6 +341,9 @@ function KanbanBoard() {
     }
   }
 }
+
+
+
 
 function generateId() {
   /* Generate a random number between 0 and 10000 */

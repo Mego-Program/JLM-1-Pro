@@ -2,12 +2,12 @@ import { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-
-
+import ImageAvatars from "./avatar";
+import NewDateTime from "./NewDateTime";
 
 function TaskCard({ task, deleteTask, updateTask }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
 
   const {
     setNodeRef,
@@ -30,6 +30,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
     transform: CSS.Transform.toString(transform),
   };
 
+  // Toggle the edit mode
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
     setMouseIsOver(false);
@@ -40,10 +41,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
       <div
         ref={setNodeRef}
         style={style}
-        className="
-        opacity-30
-      bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl border-2 border-rose-500  cursor-grab relative
-      "
+        className="opacity-30 bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl border-2 border-rose-500 cursor-grab relative"
       />
     );
   }
@@ -55,24 +53,24 @@ function TaskCard({ task, deleteTask, updateTask }) {
         style={style}
         {...attributes}
         {...listeners}
-        className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative"
+        className="bg-purple-900 p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative task"
       >
         <textarea
-          className="
-        h-[90%]
-        w-full resize-none border-none rounded bg-transparent text-white focus:outline-none
-        "
+          className="h-[90%] w-full resize-none border-none rounded bg-transparent text-white focus:outline-none"
           value={task.content}
           autoFocus
           placeholder="Task content here"
           onBlur={toggleEditMode}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && e.shiftKey) {
+            if (e.key === "Enter" && !e.shiftKey) {
               toggleEditMode();
             }
           }}
           onChange={(e) => updateTask(task.id, e.target.value)}
         />
+         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+        <NewDateTime />
+      </div>
       </div>
     );
   }
@@ -83,30 +81,31 @@ function TaskCard({ task, deleteTask, updateTask }) {
       style={style}
       {...attributes}
       {...listeners}
-      onClick={toggleEditMode}
+      onClick={() => setEditMode(true)}
       className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative task"
-      onMouseEnter={() => {
-        setMouseIsOver(true);
-      }}
-      onMouseLeave={() => {
-        setMouseIsOver(false);
-      }}
+      onMouseEnter={() => setMouseIsOver(true)}
+      onMouseLeave={() => setMouseIsOver(false)}
     >
+      <>
+      <ImageAvatars />
+
       <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
         {task.content}
       </p>
 
       {mouseIsOver && (
         <button
-          onClick={() => {
-            deleteTask(task.id);
-          }}
+          onClick={() => deleteTask(task.id)}
           className="stroke-white absolute right-4 top-1/2 -translate-y-1/2 bg-columnBackgroundColor p-2 rounded opacity-60 hover:opacity-100"
         >
           
           <TrashIcon />
         </button>
       )}
+      </>
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+        <NewDateTime />
+      </div>
     </div>
   );
 }
