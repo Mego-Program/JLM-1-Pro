@@ -12,6 +12,7 @@ function NewDateTime() {
           <DateTimePicker
             label=""
             ampm= {false}
+            format= 'DD\MM\YYYY HH:mm'
             sx={{
               '&& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root': {
                 color: 'white',
