@@ -1,13 +1,27 @@
+import React, { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
-export default function ImageAvatars() {
+
+
+
+export default function AvatarComponent(props) {
+  const [showContent, setShowContent] = useState(false);
+  function handleButton() {
+    setShowContent(!showContent);
+  }
   return (
-   <div style={{ width: '56.019px', height: '55px', flexShrink: 0 }}>
-    <Stack direction="row" spacing={2}>
-      <Avatar alt="Yemy Sharp" src="/static/images/avatar/1.jpg" style={{border: '3px solid #fbc02d', borderRadius: '50%'}}/>
-      
-    </Stack>
+    <div>
+
+      <Button onClick={handleButton}>
+        <Avatar alt='ava' src={props.src} sx={{ width: 56, height: 55, border: 2, borderColor: 'black' }} />
+      </Button>
+      {showContent && (
+        <div>
+          <h1>{props.title}</h1>
+          <h2>{props.id}</h2>
+        </div>
+      )}
     </div>
   );
 }
