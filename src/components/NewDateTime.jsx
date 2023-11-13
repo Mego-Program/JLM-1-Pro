@@ -13,14 +13,13 @@ function NewDateTime() {
             label=""
             ampm= {false}
             format= 'DD\MM\YYYY HH:mm'
-            // minDate={Today}
             disablePast
             sx={{
               '&& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root': {
                 color: 'white',
               },
               '&& .MuiInputBase-input': {
-                fontSize: 'x-small', // Adjust the font size as needed
+                fontSize: 'x-small',
               },
               '&& .MuiIconButton-root': {
                 color: 'white',
