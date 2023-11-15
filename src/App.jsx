@@ -1,15 +1,15 @@
 import React from "react";
 import "./App.css";
-import KanbanBoard from "./components/KanbanBoard";
+import MainComponent from "./components/dropDown";
+import KanbanBoard from './components/KanbanBoard'
 
-
-function App() {
+export default function App() {
   return (
-    <div>
-      <KanbanBoard />
-    </div>
+  <>
+  <MainComponent />
+  <KanbanBoard />
+  </>
   );
 }
 
-export default App;
 
