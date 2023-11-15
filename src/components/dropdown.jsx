@@ -1,34 +1,68 @@
-import React from 'react';
-import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import React, { useState } from "react";
+import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
+import Box from "@mui/material/Box";
 
 const BarDropdown = () => {
-  const bars = ['Bar 1', 'Bar 2', 'Bar 3', 'Bar 4'];
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedEmoji, setSelectedEmoji] = useState("🔘");
 
-  const handleChange = (event) => {
-    // Handle dropdown selection here
-    console.log(event.target.value);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEmojiClick = (emoji) => {
+    setSelectedEmoji(emoji);
+    handleClose();
+  };
+
+  const emojiList = ["🔴", "🟠", "🟢","🔵"]; // Add more emojis as needed
+
   return (
-    <FormControl>
-      <InputLabel id="bar-dropdown-label">Select a Bar</InputLabel>
-      <Select
-        labelId="bar-dropdown-label"
-        id="bar-dropdown"
-        value={''} // You can set the default selected value here
-        onChange={handleChange}
-        label="Select a Bar"
+    <div>
+      <Button onClick={handleClick}>
+        <span role="img" aria-label="circle" style={{ fontSize: "14px" }}>
+          {selectedEmoji}
+        </span>
+      </Button>
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
       >
-        {bars.map((bar, index) => (
-          <MenuItem key={index} value={bar}>
-            {/* You can customize the appearance of each MenuItem */}
-            <div style={{ width: '50px', height: '10px', backgroundColor: 'blue' }}></div>
-            {bar}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+        <Box p={2} display="flex" flexDirection="column">
+          <p style={{ marginBottom: "8px", fontWeight: "bold" }}>
+            Choose an urgent:
+          </p>
+          {emojiList.map((emoji) => (
+            <span
+              key={emoji}
+              role="img"
+              aria-label="circle"
+              style={{ fontSize: "14px", cursor: "pointer", marginBottom: "4px" }}
+              onClick={() => handleEmojiClick(emoji)}
+            >
+              {emoji}
+            </span>
+          ))}
+        </Box>
+      </Popover>
+    </div>
   );
 };
+
+
 
 export default BarDropdown;

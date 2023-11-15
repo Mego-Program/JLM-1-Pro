@@ -1,6 +1,7 @@
 import PlusIcon from "../icons/PlusIcon";
 import { useMemo, useState } from "react";
 import ColumnContainer from "./ColumnContainer";
+
 import {
   DndContext,
   DragOverlay,
@@ -11,6 +12,7 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+
 
 const defaultCols = [
   {
@@ -120,10 +122,11 @@ function KanbanBoard() {
     <div
       
       className="
-        m-auto
+        mt-0
         flex
-        min-h-screen
+        /* min-h-screen */
         w-full
+        h-full
         items-center
         overflow-x-auto
         overflow-y-hidden
@@ -207,6 +210,8 @@ function KanbanBoard() {
     </div>
   );
 
+ 
+
   function createTask(columnId) {
     const newTask = {
       id: generateId(),
@@ -215,8 +220,8 @@ function KanbanBoard() {
       content: `Task ${tasks.length + 1}`,
       date:'',
     };
-
     setTasks([...tasks, newTask]);
+
   }
 
   function deleteTask(id) {
