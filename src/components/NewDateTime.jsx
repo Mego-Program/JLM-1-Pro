@@ -13,11 +13,13 @@ function NewDateTime() {
       <DemoContainer components={["DateTimePicker"]}>
         <div
           style={{
-            display: "flex",
-            flexDirection: 'column',
-            alignItems: "center",
-            justifyContent: "flex-end",
-            hight: '100%',
+            // display: "flex",
+            // flexDirection: 'column',
+            // alignItems: "center",
+            // justifyContent: "flex-end",
+            // hight: '100%',
+            // bottom: '8px'
+            zIndex: '-1',
           }}
           onClick={handleContainerClick}
         >
@@ -30,7 +32,9 @@ function NewDateTime() {
               "&& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root": {
                 color: "white",
               },
-              
+              '&& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                border: 'none',
+              },
               "&& .MuiInputBase-input": {
                 fontSize: "x-small",
                 border: 'none',
