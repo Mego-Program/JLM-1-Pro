@@ -6,7 +6,7 @@ import KanbanBoard from "./components/KanbanBoard";
 function App() {
   return (
     <div>
-      <DataFetcher />
+      <KanbanBoard />
     </div>
   );
 }

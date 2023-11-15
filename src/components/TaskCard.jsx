@@ -46,6 +46,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
     );
   }
 
+
   if (editMode) {
     return (
       <div
@@ -68,9 +69,9 @@ function TaskCard({ task, deleteTask, updateTask }) {
           }}
           onChange={(e) => updateTask(task.id, e.target.value)}
         />
-         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-        <NewDateTime />
-      </div>
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+          <NewDateTime />
+        </div>
       </div>
     );
   }
@@ -87,21 +88,20 @@ function TaskCard({ task, deleteTask, updateTask }) {
       onMouseLeave={() => setMouseIsOver(false)}
     >
       <>
-      <ImageAvatars />
+      <ImageAvatars/>
 
-      <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
-        {task.content}
-      </p>
+        <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+          {task.content}
+        </p>
+        {mouseIsOver && (
+          <button
+            onClick={() => deleteTask(task.id)}
+            className="stroke-white absolute right-4 top-1/2 -translate-y-1/2 bg-columnBackgroundColor p-2 rounded opacity-60 hover:opacity-100"
+          >
 
-      {mouseIsOver && (
-        <button
-          onClick={() => deleteTask(task.id)}
-          className="stroke-white absolute right-4 top-1/2 -translate-y-1/2 bg-columnBackgroundColor p-2 rounded opacity-60 hover:opacity-100"
-        >
-          
-          <TrashIcon />
-        </button>
-      )}
+            <TrashIcon />
+          </button>
+        )}
       </>
       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
         <NewDateTime />
