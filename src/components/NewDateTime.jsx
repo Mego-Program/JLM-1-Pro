@@ -5,10 +5,15 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { Today } from '@mui/icons-material';
 
 function NewDateTime() {
+    const handleContainerClick = (e) => {
+      e.stopPropagation();
+    };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateTimePicker']}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        onClick={handleContainerClick}
+        >
           <DateTimePicker
             label=""
             ampm= {false}
@@ -22,7 +27,7 @@ function NewDateTime() {
                 fontSize: 'x-small',
               },
               '&& .MuiIconButton-root': {
-                color: 'white',
+                color: '#ffc300',
                 marginLeft: '8px',
               },
             }}

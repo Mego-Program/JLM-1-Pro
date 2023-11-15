@@ -68,9 +68,6 @@ function TaskCard({ task, deleteTask, updateTask }) {
           }}
           onChange={(e) => updateTask(task.id, e.target.value)}
         />
-         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-        <NewDateTime />
-      </div>
       </div>
     );
   }
@@ -102,7 +99,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
         </button>
       )}
       </>
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+      <div className="mt-2">
         <NewDateTime />
       </div>
     </div>
