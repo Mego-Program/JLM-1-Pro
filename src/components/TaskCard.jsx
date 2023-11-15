@@ -99,9 +99,11 @@ function TaskCard({ task, deleteTask, updateTask }) {
         </button>
       )}
       </>
-      <div className="mt-2">
-        <NewDateTime />
-      </div>
+      <footer>
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+          <NewDateTime />
+        </div>
+      </footer>
     </div>
   );
 }
