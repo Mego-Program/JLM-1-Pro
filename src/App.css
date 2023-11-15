@@ -101,7 +101,9 @@ background-color: #21213E;
   color: white; /* Added to make the text white */
 }
 
-/* Rest of the CSS remains the same */
+select{
+  width: 200%;
+}
 
 .select {
   background: #0A0A1B; /* Added to change the background color of dropdown fields */

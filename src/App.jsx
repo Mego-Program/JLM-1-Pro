@@ -1,5 +1,4 @@
 import "./App.css";
-import MainComponent from "./components/dropDown";
 import KanbanBoard from './components/KanbanBoard'
 import MainComponentMui from "./components/muiTopContainer";
 
