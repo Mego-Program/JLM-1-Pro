@@ -1,12 +1,12 @@
 import "./App.css";
-import KanbanBoard from "./components/KanbanBoard";
+import KanbanBoard from './components/KanbanBoard'
+import MainComponentMui from "./components/MuiTopContainer";
 
-function App() {
+export default function App() {
   return (
   <>
-     <KanbanBoard/>
+  <MainComponentMui />
+  <KanbanBoard />
   </>
   );
 }
-
-export default App;

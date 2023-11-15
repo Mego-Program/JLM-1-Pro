@@ -2,7 +2,7 @@ import { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import ImageAvatars from "./avatar";
+import ImageAvatars from "./Avatar";
 import NewDateTime from "./NewDateTime";
 
 function TaskCard({ task, deleteTask, updateTask }) {
