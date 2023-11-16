@@ -2,7 +2,7 @@ import { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import ImageAvatars from "./avatar";
+import ImageAvatars from "./Avatar";
 import NewDateTime from "./NewDateTime";
 
 function TaskCard({ task, deleteTask, updateTask }) {
@@ -69,9 +69,6 @@ function TaskCard({ task, deleteTask, updateTask }) {
           }}
           onChange={(e) => updateTask(task.id, e.target.value)}
         />
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-          <NewDateTime />
-        </div>
       </div>
     );
   }
@@ -103,9 +100,11 @@ function TaskCard({ task, deleteTask, updateTask }) {
           </button>
         )}
       </>
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-        <NewDateTime />
-      </div>
+      <footer>
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+          <NewDateTime />
+        </div>
+      </footer>
     </div>
   );
 }

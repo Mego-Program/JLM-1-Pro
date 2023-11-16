@@ -1,12 +1,12 @@
 import React from "react";
 import "./App.css";
-import MainComponent from "./components/dropDown";
 import KanbanBoard from './components/KanbanBoard'
+import MainComponentMui from "./components/MuiTopContainer";
 
 export default function App() {
   return (
   <>
-  <MainComponent />
+  <MainComponentMui />
   <KanbanBoard />
   </>
   );
