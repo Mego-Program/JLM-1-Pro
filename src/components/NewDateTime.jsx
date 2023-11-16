@@ -18,7 +18,6 @@ function NewDateTime() {
             // justifyContent: "flex-end",
             // hight: '100%',
             // bottom: '8px'
-            zIndex: '-1',
           }}
           onClick={handleContainerClick}
         >
