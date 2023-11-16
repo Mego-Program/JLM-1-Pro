@@ -48,7 +48,6 @@ function TaskCard({ task, deleteTask, updateTask }) {
     );
   }
 
-
   if (editMode) {
     return (
       <div
