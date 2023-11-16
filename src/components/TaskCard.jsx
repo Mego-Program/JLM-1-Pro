@@ -2,7 +2,7 @@ import { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import ImageAvatars from "./avatar";
+import ImageAvatars from "./Avatar";
 import NewDateTime from "./NewDateTime";
 import Delete from "./deletion";
 
@@ -57,6 +57,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
         {...listeners}
         className="bg-purple-900 p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-yellow-500 cursor-grab relative task"
       >
+        
         <textarea
           className="h-[90%] w-full resize-none border-none rounded bg-transparent text-white focus:outline-none"
           value={task.content}
@@ -70,7 +71,6 @@ function TaskCard({ task, deleteTask, updateTask }) {
           }}
           onChange={(e) => updateTask(task.id, e.target.value)}
         />
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2"></div>
       </div>
     );
   }
@@ -111,9 +111,11 @@ function TaskCard({ task, deleteTask, updateTask }) {
           </button>
         )}
       </>
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-        <NewDateTime />
-      </div>
+      <footer>
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+          <NewDateTime />
+        </div>
+      </footer>
     </div>
   );
 }
