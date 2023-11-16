@@ -4,7 +4,7 @@ import { CSS } from "@dnd-kit/utilities";
 import TrashIcon from "../icons/TrashIcon";
 import TaskCard from "./TaskCard";
 import Delete from "./deletion";
-import BarDropdown from "./dropdown";
+import BarDropdown from "./Dropdown";
 
 
 function ColumnContainer({

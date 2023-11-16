@@ -220,7 +220,7 @@ function KanbanBoard() {
       content: `Task ${tasks.length + 1}`,
       date:'',
     };
-    setTasks([...tasks, newTask]);
+    setTasks([newTask, ...tasks]);
 
   }
 
