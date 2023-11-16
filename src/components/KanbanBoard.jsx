@@ -124,7 +124,6 @@ function KanbanBoard() {
       className="
         mt-0
         flex
-        /* min-h-screen */
         w-full
         h-full
         items-center
@@ -139,7 +138,7 @@ function KanbanBoard() {
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <div className="m-auto flex gap-4">
+        <div className="flex gap-4">
           <div className="flex gap-4">
             <SortableContext items={columnsId}>
               {columns.map((col) => (
