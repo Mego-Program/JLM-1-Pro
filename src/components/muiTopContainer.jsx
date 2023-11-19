@@ -16,19 +16,7 @@ const MainComponentMui = () => {
   const options3 = ['Choice 1', 'Choice 2', 'Choice 3'];
   const options4 = ['Category 1', 'Category 2', 'Category 3'];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://api.example.com/data');
-        const jsonData = await response.json();
-        setData(jsonData);
-        setFilteredData(jsonData);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
+  
 
 
   return (
