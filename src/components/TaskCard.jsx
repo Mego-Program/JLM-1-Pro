@@ -95,7 +95,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
       <>
         <ImageAvatars />
 
-        <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+        <p className="my-auto h-[90%] max-h-[50px] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
           {task.content}
         </p>
 
@@ -111,8 +111,8 @@ function TaskCard({ task, deleteTask, updateTask }) {
           </button>
         )}
       </>
-      <footer>
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+      <footer >
+        <div className="absolute  left-1/2 transform -translate-x-1/2">
           <NewDateTime />
         </div>
       </footer>
