@@ -13,7 +13,6 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 
-
 const defaultCols = [
   {
     id: "todo",
@@ -99,6 +98,7 @@ const defaultTasks = [
 ];
 
 function KanbanBoard() {
+  const [editById, setEditById] = useState(null);
   const [columns, setColumns] = useState(defaultCols);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
@@ -114,13 +114,10 @@ function KanbanBoard() {
         distance: 10,
       },
     })
-    
   );
 
   return (
-    
     <div
-      
       className="
         mt-0
         flex
@@ -132,7 +129,7 @@ function KanbanBoard() {
         overflow-y-hidden
         px-[40px]
     "
-    >  
+    >
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -144,6 +141,8 @@ function KanbanBoard() {
             <SortableContext items={columnsId}>
               {columns.map((col) => (
                 <ColumnContainer
+                  editById={editById}
+                  setEditById={setEditById}
                   key={col.id}
                   column={col}
                   deleteColumn={deleteColumn}
@@ -210,18 +209,16 @@ function KanbanBoard() {
     </div>
   );
 
- 
-
   function createTask(columnId) {
     const newTask = {
       id: generateId(),
       columnId,
-      header: '',
+      header: "",
       content: `Task ${tasks.length + 1}`,
-      date:'',
     };
     setTasks([newTask, ...tasks]);
-
+    setEditById(newTask.id);
+    console.log(newTask.id);
   }
 
   function deleteTask(id) {
@@ -232,7 +229,7 @@ function KanbanBoard() {
   function updateTask(id, content) {
     const newTasks = tasks.map((task) => {
       if (task.id !== id) return task;
-      return { ...task, content};
+      return { ...task, content };
     });
 
     setTasks(newTasks);
@@ -346,9 +343,6 @@ function KanbanBoard() {
     }
   }
 }
-
-
-
 
 function generateId() {
   /* Generate a random number between 0 and 10000 */
