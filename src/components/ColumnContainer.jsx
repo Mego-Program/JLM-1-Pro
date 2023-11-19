@@ -9,6 +9,8 @@ import BarDropdown from "./Dropdown";
 
 function ColumnContainer({
     column,
+    editById,
+    setEditById,
     deleteColumn,
     updateColumn,
     createTask,
@@ -58,7 +60,7 @@ function ColumnContainer({
         <div
             ref={setNodeRef}
             style={style}
-            className="bg-blue-950 w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+            className="bg-blue-950 w-[350px] text-white h-[500px] max-h-[500px] rounded-md flex flex-col"
         >
             {del ? (
                 <Delete
@@ -69,12 +71,12 @@ function ColumnContainer({
             <div
                 {...attributes}
                 {...listeners}
-                className="bg-bg-[#21213E] text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-blue-500 border-40 flex items-center justify-between"
+                className="bg-bg-[#21213E] text-white h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-blue-500 border-40 flex items-center justify-between"
             >
                 <div className="flex gap-2" onClick={() => {
           setEditMode(true)
         }}>  
-                    <div className="flex text-black justify-center items-center bg-yellow-500 px-3 py-2 text-sm rounded-full">
+                    <div className="flex text-blue-900 justify-center items-center bg-yellow-500 px-3 py-2 text-sm rounded-full">
                         {tasks.length}
                     </div>
                     <BarDropdown />
@@ -115,6 +117,7 @@ function ColumnContainer({
                         <TaskCard
                             key={task.id}
                             task={task}
+                            editById={editById}
                             deleteTask={deleteTask}
                             updateTask={updateTask}
                         />
@@ -123,8 +126,9 @@ function ColumnContainer({
             </div>
 
             <button
-                className="gap-10 items-center  border-yellow-500 border-2 rounded-md p-4 border-x-yellow-500 hover:bg-[url('https://media2.giphy.com/media/ctGFLebG1AqK4/giphy.gif')] hover:text-yellow-500 active:bg-black"
+                className="gap-10 items-center text-white border-yellow-500 border-2 rounded-md p-4 border-x-yellow-500 hover:bg-[url('https://media2.giphy.com/media/ctGFLebG1AqK4/giphy.gif')] hover:text-yellow-500 active:bg-black"
                 onClick={() => {createTask(column.id)
+                
                 }}
             >
                 Add task ➕
