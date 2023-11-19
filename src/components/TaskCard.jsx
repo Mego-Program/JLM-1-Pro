@@ -2,7 +2,7 @@ import { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import ImageAvatars from "./Avatar";
+import AvatarButton from "./AvatarButton";
 import NewDateTime from "./NewDateTime";
 import Delete from "./deletion";
 
@@ -18,6 +18,8 @@ function TaskCard({ task, deleteTask, updateTask }) {
     transform,
     transition,
     isDragging,
+    editById,
+    setEditById,
   } = useSortable({
     id: task.id,
     data: {
@@ -36,7 +38,12 @@ function TaskCard({ task, deleteTask, updateTask }) {
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
     setMouseIsOver(false);
+    setEditById(editMode ? null : task.id);
   };
+
+  // if (editById === task.id) {
+  //   console.log(`task number ${editById} should be in edit mode`)
+  // }
 
   if (isDragging) {
     return (
@@ -93,7 +100,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
         />
       ) : undefined}
       <>
-        <ImageAvatars />
+        <AvatarButton />
 
         <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
           {task.content}

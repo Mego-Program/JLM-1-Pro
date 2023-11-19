@@ -35,7 +35,7 @@ const DeleteConfirmationModal = ({ onDelete, onCancel }) => {
             transform: 'translate(-50%, -50%)',
             width: 300,
             bgcolor: '#3236a8',
-            border: '2px solid blue',
+            border: '2px solid yellow',
             boxShadow: 24,
             p: 2,
           }}
