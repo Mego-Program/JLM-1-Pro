@@ -1,4 +1,6 @@
- [{
+import React from 'react';
+
+const data = [{
     "userName": "fsonghurst0",
     "issue": "Indonesia",
     "category": "Terrace",
@@ -699,3 +701,5 @@
     "project": "Opela",
     "sprint": "2.7"
   }]
+
+  export default data;
