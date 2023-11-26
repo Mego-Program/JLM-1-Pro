@@ -28,28 +28,35 @@ const DeleteConfirmationModal = ({ onDelete, onCancel }) => {
     <div>
       <Modal open={open} onClose={handleCancel} closeAfterTransition onExited={handleExited}>
         <Box
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'center'}
+        flexDirection={'column'}
+        width={'600px'}
+        height={'200px'}
           sx={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 300,
-            bgcolor: '#3236a8',
-            border: '2px solid yellow',
+            bgcolor: '#222240',
+            border: '2px solid #ffc300',
+            borderRadius: '5%',
             boxShadow: 24,
             p: 2,
           }}
         >
-          <h1 style={{ color: 'yellow', margin: '5px'}} id="modal-modal-title">
+          <h1 style={{ color: '#ffc300', margin: '20px',fontSize: '30px'}} id="modal-modal-title">
             Are you sure you want to delete?
           </h1>
-          <Button style={{ color: 'red' }} onClick={handleDelete} sx={{ mr: 2 }}>
+          <div style={{display:'flex', flexDirection: 'row' }}>
+          <Button style={{ color: 'red' ,fontSize: '24px'}} onClick={handleDelete} sx={{ mr: 2 }}>
             <DeleteIcon />
             Delete
           </Button>
-          <Button style={{ color: 'white' }} onClick={handleCancel}>
+          <Button style={{ color: 'white' ,fontSize: '24px'}} onClick={handleCancel}>
             Cancel
-          </Button>
+          </Button></div>
         </Box>
       </Modal>
     </div>

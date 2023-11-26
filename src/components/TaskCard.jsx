@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import AvatarButton from "./AvatarButton";
 import NewDateTime from "./NewDateTime";
-import Delete from "./deletion";
+import Delete from "./Deletion";
+import BasicModal from "./TaskModule";
 
-function TaskCard({ task, deleteTask, updateTask }) {
+function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [del, setDel] = useState(false);
+  const [modal, setModal] = useState(false);
+  
 
   const {
     setNodeRef,
@@ -18,8 +21,6 @@ function TaskCard({ task, deleteTask, updateTask }) {
     transform,
     transition,
     isDragging,
-    editById,
-    setEditById,
   } = useSortable({
     id: task.id,
     data: {
@@ -34,53 +35,17 @@ function TaskCard({ task, deleteTask, updateTask }) {
     transform: CSS.Transform.toString(transform),
   };
 
-  // Toggle the edit mode
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
     setMouseIsOver(false);
-    setEditById(editMode ? null : task.id);
   };
 
-  // if (editById === task.id) {
-  //   console.log(`task number ${editById} should be in edit mode`)
-  // }
-
-  if (isDragging) {
-    return (
-      <div
-        ref={setNodeRef}
-        style={style}
-        className="opacity-30 bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl border-2 border-yellow-500 cursor-grab relative"
-      />
-    );
-  }
-
-  if (editMode) {
-    return (
-      <div
-        ref={setNodeRef}
-        style={style}
-        {...attributes}
-        {...listeners}
-        className="bg-purple-900 p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-yellow-500 cursor-grab relative task"
-      >
-        
-        <textarea
-          className="h-[90%] w-full resize-none border-none rounded bg-transparent text-white focus:outline-none"
-          value={task.content}
-          autoFocus
-          placeholder="Task content here"
-          onBlur={toggleEditMode}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              toggleEditMode();
-            }
-          }}
-          onChange={(e) => updateTask(task.id, e.target.value)}
-        />
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (editById === task.id) {
+      setEditMode(true);
+      setEditById(null);
+    }
+  }, [editById, setEditById, task.id]);
 
   return (
     <div
@@ -88,22 +53,29 @@ function TaskCard({ task, deleteTask, updateTask }) {
       style={style}
       {...attributes}
       {...listeners}
-      onClick={() => setEditMode(true)}
-      className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-yellow-500 cursor-grab relative task"
+      onClick={() => !editMode && setModal(true) }
+      className={`${
+        editMode
+          ? "bg-purple-900"
+          : "bg-mainBackgroundColor hover:ring-2 hover:ring-inset hover:ring-yellow-500"
+      } p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl cursor-grab relative task`}
       onMouseEnter={() => setMouseIsOver(true)}
       onMouseLeave={() => setMouseIsOver(false)}
     >
-      {del ? (
+      {del && (
         <Delete
           onDelete={() => deleteTask(task.id)}
           onCancel={() => setDel(false)}
         />
-      ) : undefined}
+      )}
       <>
+      
         <AvatarButton />
-
         <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+          {task.header}
           {task.content}
+          {task.date}
+          
         </p>
 
         {mouseIsOver && (
@@ -123,6 +95,21 @@ function TaskCard({ task, deleteTask, updateTask }) {
           <NewDateTime />
         </div>
       </footer>
+
+      {modal && (
+  <BasicModal
+    onClose={() => setModal(false)}
+    onSave={(taskDetails) => {
+      updateTask(task.id, taskDetails);
+      setModal(false);
+    }}
+  />
+)}
+
+      
+
+
+      
     </div>
   );
 }

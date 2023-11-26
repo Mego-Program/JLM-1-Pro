@@ -1,7 +1,6 @@
 import PlusIcon from "../icons/PlusIcon";
 import { useMemo, useState } from "react";
 import ColumnContainer from "./ColumnContainer";
-
 import {
   DndContext,
   DragOverlay,
@@ -209,16 +208,17 @@ function KanbanBoard() {
     </div>
   );
 
-  function createTask(columnId) {
+  function createTask(columnId, taskDetails) {
     const newTask = {
       id: generateId(),
       columnId,
-      header: "",
-      content: `Task ${tasks.length + 1}`,
+      header: taskDetails.header,
+      content: taskDetails.content,
+      date: taskDetails.date
     };
+    
     setTasks([newTask, ...tasks]);
-    setEditById(newTask.id);
-    console.log(newTask.id);
+    // setEditById(newTask.id);
   }
 
   function deleteTask(id) {
@@ -226,10 +226,10 @@ function KanbanBoard() {
     setTasks(newTasks);
   }
 
-  function updateTask(id, content) {
+  function updateTask(id, header, taskDetails) {
     const newTasks = tasks.map((task) => {
       if (task.id !== id) return task;
-      return { ...task, content };
+      return { ...task, taskDetails };
     });
 
     setTasks(newTasks);
