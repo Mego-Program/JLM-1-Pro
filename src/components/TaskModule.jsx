@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from 'react';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -9,6 +9,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
+
 
 const style = {
   position: "absolute",
@@ -26,7 +27,7 @@ export default function BasicModal(props) {
   const [open, setOpen] = React.useState(true);
   const [header, setHeader] = useState("");
   const [content, setContent] = useState("");
-  const [date, setDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const handleClose = () => {
     if (props.onClose) {
@@ -35,6 +36,26 @@ export default function BasicModal(props) {
     setOpen(false);
   };
 
+const [fieldsFilled, setFieldsFilled] = useState(false);
+
+const handleClosing = () => {
+  if (props.onClose) {
+    props.onClose();
+  }
+  setOpen(false);
+};
+
+// Function to check if all required fields are filled
+const checkFieldsFilled = () => {
+  setFieldsFilled(header !== "" && content !== "" && selectedDate !== null);
+};
+
+useEffect(() => {
+  checkFieldsFilled();
+}, [header, content, selectedDate]);
+
+
+  
   return (
     <div>
       <Modal
@@ -66,7 +87,7 @@ export default function BasicModal(props) {
               InputLabelProps={{ style: { color: "#ffc300" } }}
               InputProps={{ style: { color: "#ffc300" } }}
               style={{ marginBottom: "20px", border: "solid #ffc300" }}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={(e) => setHeader(e.target.value)}
             />
 
             <TextField
@@ -87,7 +108,6 @@ export default function BasicModal(props) {
               InputLabelProps={{ style: { color: "#ffc300" } }}
               InputProps={{ style: { color: "#ffc300" } }}
               style={{ marginBottom: "20px", border: "solid #ffc300" }}
-              onChange={(e) => setContent(e.target.value)}
 
             />
 
@@ -98,27 +118,32 @@ export default function BasicModal(props) {
               InputLabelProps={{ style: { color: "#ffc300" } }}
               InputProps={{ style: { color: "#ffc300" } }}
               style={{ marginBottom: "20px", border: "solid #ffc300" }}
-              onChange={(e) => setContent(e.target.value)}
 
             />
             
-            <LocalizationProvider
-              dateAdapter={AdapterDayjs}
-              onChange={(e) => setContent(e.target)}
-            >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
-                <DatePicker label="Choose Task deadline" />
+                <DatePicker
+                  label="Choose Task deadline"
+                  value={selectedDate}
+                  onChange={(newDate) => setSelectedDate(newDate)}
+                />
               </DemoContainer>
             </LocalizationProvider>
            
             <button
-              style={{ color: "#ffc300" ,margin: '10px'}}
-              onClick={() => {
-                props.onSave({ header, content, date });
-              }}
-            >
-              save
-            </button>
+          style={{ color: "#ffc300", margin: '10px' }}
+          onClick={() => {
+            // Check if all required fields are filled before calling onSave
+            if (fieldsFilled) {
+              props.onSave({ header, content, date: selectedDate });
+            }
+          }}
+          // Disable the button if not all required fields are filled
+          disabled={!fieldsFilled}
+        >
+          save
+        </button>
           </Container>
         </Box>
       </Modal>

@@ -71,12 +71,15 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
       <>
       
         <AvatarButton />
-        <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
-          {task.header}
-          {task.content}
-          {task.date}
-          
-        </p>
+        <p style={{display: 'flex',flexDirection: 'column',justifyContent: 'center' ,alignItems: 'center',margin: '15px' ,margin: '3px'}} className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+  {task.header && <strong style={{ color: '#ffc300' }}> {task.header}</strong>}
+  {task.content && <div style={{margin: '10px'}}>{task.content}</div>}
+  {task.date && (
+    <em style={{ fontSize: '12px', fontFamily: 'Pacifico, cursive', color: '#F4F739' }}>{new Date(task.date).toISOString().split('T')[0]}</em>
+  )}
+</p>
+
+
 
         {mouseIsOver && (
           <button
@@ -90,11 +93,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
           </button>
         )}
       </>
-      <footer>
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-          <NewDateTime />
-        </div>
-      </footer>
+      
 
       {modal && (
   <BasicModal

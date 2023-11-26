@@ -213,7 +213,7 @@ function KanbanBoard() {
       columnId,
       header: taskDetails.header,
       content: taskDetails.content,
-      date: taskDetails.date
+      date: taskDetails.date,
     };
     
     setTasks([newTask, ...tasks]);
