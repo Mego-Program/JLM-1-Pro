@@ -12,7 +12,6 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   const [editMode, setEditMode] = useState(false);
   const [del, setDel] = useState(false);
   const [modal, setModal] = useState(false);
-  
 
   const {
     setNodeRef,
@@ -53,7 +52,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
       style={style}
       {...attributes}
       {...listeners}
-      onClick={() => !editMode && setModal(true) }
+      onClick={() => setModal(true)}
       className={`${
         editMode
           ? "bg-purple-900"
@@ -69,17 +68,34 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
         />
       )}
       <>
-      
         <AvatarButton />
-        <p style={{display: 'flex',flexDirection: 'column',justifyContent: 'center' ,alignItems: 'center',margin: '15px' ,margin: '3px'}} className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
-  {task.header && <strong style={{ color: '#ffc300' }}> {task.header}</strong>}
-  {task.content && <div style={{margin: '10px'}}>{task.content}</div>}
-  {task.date && (
-    <em style={{ fontSize: '12px', fontFamily: 'Pacifico, cursive', color: '#F4F739' }}>{new Date(task.date).toISOString().split('T')[0]}</em>
-  )}
-</p>
-
-
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "15px",
+            margin: "3px",
+          }}
+          className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap"
+        >
+          {task.header && (
+            <strong style={{ color: "#ffc300" }}> {task.header}</strong>
+          )}
+          {task.content && <div style={{ margin: "10px" }}>{task.content}</div>}
+          {task.date && (
+            <em
+              style={{
+                fontSize: "12px",
+                fontFamily: "Pacifico, cursive",
+                color: "#F4F739",
+              }}
+            >
+              {new Date(task.date).toISOString().split("T")[0]}
+            </em>
+          )}
+        </div>
 
         {mouseIsOver && (
           <button
@@ -87,28 +103,24 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
               e.stopPropagation();
               setDel(true);
             }}
-            className="stroke-white absolute right-4 top-1/2 -translate-y-1/2 bg-columnBackgroundColor p-2 rounded opacity-60 hover:opacity-100"
+            className="absolute p-2 -translate-y-1/2 rounded stroke-white right-4 top-1/2 bg-columnBackgroundColor opacity-60 hover:opacity-100"
           >
             <TrashIcon />
           </button>
         )}
       </>
-      
-
-      {modal && (
-  <BasicModal
-    onClose={() => setModal(false)}
-    onSave={(taskDetails) => {
-      updateTask(task.id, taskDetails);
-      setModal(false);
-    }}
-  />
-)}
-
-      
-
-
-      
+      {modal ? (
+        <BasicModal
+          onClose={async () => {
+            await console.log("modal is closed");
+            setModal(false);
+          }}
+          onSave={async (taskDetails) => {
+            await updateTask(task.id, taskDetails);
+            setModal(false);
+          }}
+        />
+      ) : null}
     </div>
   );
 }
