@@ -133,17 +133,17 @@ useEffect(() => {
            
             <button
           style={{ color: "#ffc300", margin: '10px' }}
-          onClick={() => {
+  onClick={() => {
             // Check if all required fields are filled before calling onSave
-            if (fieldsFilled) {
-              props.onSave({ header, content, date: selectedDate });
-            }
-          }}
+    if (fieldsFilled) {
+      props.onSave({ header, content, date: selectedDate });
+    }
+  }}
           // Disable the button if not all required fields are filled
-          disabled={!fieldsFilled}
-        >
+  disabled={!fieldsFilled}
+>
           save
-        </button>
+</button>
           </Container>
         </Box>
       </Modal>
