@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -9,7 +9,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
-
 
 const style = {
   position: "absolute",
@@ -24,43 +23,17 @@ const style = {
 };
 
 export default function BasicModal(props) {
-  const [open, setOpen] = React.useState(true);
   const [header, setHeader] = useState("");
   const [content, setContent] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const handleClose = () => {
-    if (props.onClose) {
-      props.onClose();
-    }
-    setOpen(false);
-  };
-
-const [fieldsFilled, setFieldsFilled] = useState(false);
-
-const handleClosing = () => {
-  if (props.onClose) {
-    props.onClose();
-  }
-  setOpen(false);
-};
-
-// Function to check if all required fields are filled
-const checkFieldsFilled = () => {
-  setFieldsFilled(header !== "" && content !== "" && selectedDate !== null);
-};
-
-useEffect(() => {
-  checkFieldsFilled();
-}, [header, content, selectedDate]);
-
-
-  
   return (
     <div>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={true}
+        onClose={async () => {
+          await props.onClose();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -88,6 +61,7 @@ useEffect(() => {
               InputProps={{ style: { color: "#ffc300" } }}
               style={{ marginBottom: "20px", border: "solid #ffc300" }}
               onChange={(e) => setHeader(e.target.value)}
+              required
             />
 
             <TextField
@@ -98,7 +72,7 @@ useEffect(() => {
               InputProps={{ style: { color: "#ffc300" } }}
               style={{ marginBottom: "20px", border: "solid #ffc300" }}
               onChange={(e) => setContent(e.target.value)}
-
+              required
             />
 
             <TextField
@@ -108,7 +82,7 @@ useEffect(() => {
               InputLabelProps={{ style: { color: "#ffc300" } }}
               InputProps={{ style: { color: "#ffc300" } }}
               style={{ marginBottom: "20px", border: "solid #ffc300" }}
-
+              required
             />
 
             <TextField
@@ -118,32 +92,52 @@ useEffect(() => {
               InputLabelProps={{ style: { color: "#ffc300" } }}
               InputProps={{ style: { color: "#ffc300" } }}
               style={{ marginBottom: "20px", border: "solid #ffc300" }}
-
+              required
             />
-            
+
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
                   label="Choose Task deadline"
                   value={selectedDate}
                   onChange={(newDate) => setSelectedDate(newDate)}
+                  sx={{
+                    input: { color: "#fff" },
+                    label: { color: "#fff" },
+                    svg: { color: "#fff" },
+                  }}
                 />
               </DemoContainer>
             </LocalizationProvider>
-           
+
             <button
-          style={{ color: "#ffc300", margin: '10px' }}
-          onClick={() => {
-            // Check if all required fields are filled before calling onSave
-            if (fieldsFilled) {
-              props.onSave({ header, content, date: selectedDate });
-            }
-          }}
-          // Disable the button if not all required fields are filled
-          disabled={!fieldsFilled}
-        >
-          save
-        </button>
+              style={{
+                color: "#ffc300",
+                margin: "10px",
+                padding: "5px 15px",
+                borderRadius: "0.5rem",
+                border: "1px solid #ffc300",
+              }}
+              onClick={() => {
+                props.onSave({ header, content, date: selectedDate });
+              }}
+              disabled={false}
+            >
+              save
+            </button>
+            <button
+              style={{
+                color: "#ffc300",
+                margin: "10px",
+                padding: "5px 15px",
+                borderRadius: "0.5rem",
+                border: "1px solid #ffc300",
+              }}
+              onClick={props.onClose}
+              disabled={false}
+            >
+              close
+            </button>
           </Container>
         </Box>
       </Modal>
