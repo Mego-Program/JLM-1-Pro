@@ -1,5 +1,5 @@
 import PlusIcon from "../icons/PlusIcon";
-import { useMemo, useState ,useEffect } from "react";
+import { useMemo, useState   ,useEffect } from "react";
 import ColumnContainer from "./ColumnContainer";
 import axios from "axios";
 import {
@@ -12,6 +12,8 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+
+const defaultCols = [{
 
     id: "todo",
     title: "Todo",
@@ -102,6 +104,20 @@ function KanbanBoard() {
 
   const [tasks, setTasks] = useState(defaultTasks);
 
+  const fetchTasks = async (req, res) => {
+    console.log("fun");
+    try {
+      const response = await axios.post('http://localhost:8137/tasks/get_tasks_by_projectId',{
+        projectId:"655f598999a30dda03d17e74"
+      });
+      console.log(response.data);
+      // setTasks(response.data)
+      
+    } catch (error) {
+      console.error('Error fetching tasks:', error.message);
+    }
+  };
+
   const [activeColumn, setActiveColumn] = useState(null);
 
   const [activeTask, setActiveTask] = useState(null);
@@ -113,6 +129,10 @@ function KanbanBoard() {
       },
     })
   );
+  useEffect(() => {
+    // קריאה לפונקציה ברגע שהרכיב נטען
+    fetchTasks();
+  }, []); // מסתיים useEffect
 
   return (
     <div
