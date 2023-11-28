@@ -23,17 +23,21 @@ const MainComponentMui = () => {
   // Extract unique values for each property
   const uniqueAssignee = Array.from(new Set(data.map((item) => item.userName)));
   const uniqueIssues = Array.from(new Set(data.map((item) => item.issue)));
-  const uniqueCategories = Array.from(new Set(data.map((item) => item.category)));
-  const uniqueMileStones = Array.from(new Set(data.map((item) => item.mileStone)));
+  const uniqueCategories = Array.from(
+    new Set(data.map((item) => item.category))
+  );
+  const uniqueMileStones = Array.from(
+    new Set(data.map((item) => item.mileStone))
+  );
   const uniqueProjects = Array.from(new Set(data.map((item) => item.project)));
   const uniqueSprints = Array.from(new Set(data.map((item) => item.sprint)));
 
-  console.log("Unique Assignee:", uniqueAssignee);
-  console.log("Unique Issues:", uniqueIssues);
-  console.log("Unique Categories:", uniqueCategories);
-  console.log("Unique MileStones:", uniqueMileStones);
-  console.log("Unique Projects:", uniqueProjects);
-  console.log("Unique Sprints:", uniqueSprints);
+  // console.log("Unique Assignee:", uniqueAssignee);
+  // console.log("Unique Issues:", uniqueIssues);
+  // console.log("Unique Categories:", uniqueCategories);
+  // console.log("Unique MileStones:", uniqueMileStones);
+  // console.log("Unique Projects:", uniqueProjects);
+  // console.log("Unique Sprints:", uniqueSprints);
 
   const [selectedIssue, setSelectedIssue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
