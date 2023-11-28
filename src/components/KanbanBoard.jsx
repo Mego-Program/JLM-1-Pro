@@ -1,7 +1,7 @@
 import PlusIcon from "../icons/PlusIcon";
-import { useMemo, useState } from "react";
+import { useMemo, useState ,useEffect } from "react";
 import ColumnContainer from "./ColumnContainer";
-
+import axios from "axios";
 import {
   DndContext,
   DragOverlay,
@@ -13,8 +13,6 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 
-const defaultCols = [
-  {
     id: "todo",
     title: "Todo",
   },
