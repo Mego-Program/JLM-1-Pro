@@ -15,8 +15,8 @@ const Filter = ({ label, options, selectedOption, onChange }) => {
         onChange={(e) => onChange(e.target.value)}
         sx={{ width: '100%', padding: '5px', height: '42px', backgroundColor: '#0A0A1B', color: 'white' }}
       >
-          <MenuItem value="" disabled>
-          Select {label}
+        <MenuItem value="NoFilter">
+        Select {label}
         </MenuItem>
         {options.map((option) => (
           <MenuItem key={option} value={option}>
