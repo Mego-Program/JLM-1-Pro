@@ -6,6 +6,20 @@ import { FilterSprint } from "./SprintFilter";
 import data from "./mockData/data";
 
 const MainComponentMui = () => {
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      const message = 'Are you sure you want to leave?';
+      event.returnValue = message; // Standard for most browsers
+      return message; // For some older browsers
+    };
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+  
   // Extract unique values for each property
   const uniqueAssignee = Array.from(new Set(data.map((item) => item.userName)));
   const uniqueIssues = Array.from(new Set(data.map((item) => item.issue)));
@@ -41,37 +55,51 @@ const MainComponentMui = () => {
         margin: "20px",
         display: "flex",
         flexDirection: "column",
-        color: "#ffffff",
+        color: "#ffffff"
       }}
     >
       <WelcomeTextComponent />
       <FilterSprint />
 
       <Box sx={{ display: "flex", flexWrap: "wrap", marginBottom: "20px" }}>
-        <Filter
-          label="Issue Type"
-          options={issue}
-          selectedOption={selectedIssue}
-          onChange={setSelectedIssue}
-        />
-        <Filter
-          label="Category"
-          options={Category}
-          selectedOption={selectedCategory}
-          onChange={setSelectedCategory}
-        />
-        <Filter
-          label="Milestone"
-          options={MileStones}
-          selectedOption={selectedMileStones}
-          onChange={setSelectedMileStones}
-        />
-        <Filter
-          label="Assignee"
-          options={Assignee}
-          selectedOption={selectedAssignee}
-          onChange={setSelectedAssignee}
-        />
+        {[
+          {
+            key: "0",
+            label: "Issue Type",
+            options: issue,
+            selectedOption: selectedIssue,
+            onChange: setSelectedIssue,
+          },
+          {
+            key: "1",
+            label: "Category",
+            options: Category,
+            selectedOption: selectedCategory,
+            onChange: setSelectedCategory,
+          },
+          {
+            key: "2",
+            label: "Milestone",
+            options: MileStones,
+            selectedOption: selectedMileStones,
+            onChange: setSelectedMileStones,
+          },
+          {
+            key: "3",
+            label: "Assignee",
+            options: Assignee,
+            selectedOption: selectedAssignee,
+            onChange: setSelectedAssignee,
+          },
+        ].map((filter, index) => (
+          <Filter
+            key={index} 
+            label={filter.label}
+            options={filter.options}
+            selectedOption={filter.selectedOption}
+            onChange={filter.onChange}
+          />
+        ))}
       </Box>
     </Box>
   );
