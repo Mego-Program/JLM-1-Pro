@@ -75,26 +75,35 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            margin: "15px",
-            margin: "3px",
+            margin: "15px 3px", 
+
           }}
           className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap"
-        >
+        ><div className="overflow-auto max-h-full">
           {task.header && (
-            <strong style={{ color: "#ffc300" }}> {task.header}</strong>
+            <strong style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+             color: "#ffc300" }}> {task.header}</strong>
           )}
           {task.content && <div style={{ margin: "10px" }}>{task.content}</div>}
           {task.date && (
             <em
               style={{
+                display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
                 fontSize: "12px",
                 fontFamily: "Pacifico, cursive",
-                color: "#F4F739",
+                color: "#ffc300",
               }}
             >
               {new Date(task.date).toISOString().split("T")[0]}
             </em>
           )}
+          </div>
         </div>
 
         {mouseIsOver && (
