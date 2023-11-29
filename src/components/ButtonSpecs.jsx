@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
@@ -8,11 +6,11 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import axios from 'axios';
-import { Margin } from '@mui/icons-material';
+
 
 const API_ENDPOINT = 'https://jsonplaceholder.typicode.com/todos';
 
-const YourComponent = () => {
+const SpecButton = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -45,7 +43,7 @@ const YourComponent = () => {
     // Create links based on the selected titles
 
     const selectedLinks = data
-      .filter((item, index) => selectedItems[index])
+      .filter((index) => selectedItems[index])
       .map((item) => ({
         title: item.title,
         link: `https://jsonplaceholder.typicode.com/todos/${item.id}` 
@@ -130,5 +128,5 @@ const YourComponent = () => {
   );
 };
 
-export default YourComponent;
+export default SpecButton;
 
