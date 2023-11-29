@@ -6,7 +6,7 @@ import TrashIcon from "../icons/TrashIcon";
 import TaskCard from "./TaskCard";
 import Delete from "./Deletion";
 import BarDropdown from "./Dropdown";
-import BasicModal from "./TaskModule";
+import BasicModal from "./TaskModal";
 
 function ColumnContainer({
   column,
