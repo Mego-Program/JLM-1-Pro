@@ -1,11 +1,37 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import Box from "@mui/material/Box";
+import axios from "axios";
 
-const BarDropdown = () => {
+
+
+const BarDropdown = (props) => {
+  console.log(props.ccurrentProject);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedEmoji, setSelectedEmoji] = useState("🔘");
+  const [selectedEmoji, setSelectedEmoji] = useState(props.column.ColumnUrgency);
+
+  useEffect(() => {
+    setSelectedEmoji(props.column.ColumnUrgency);
+  }, [props.column.ColumnUrgency]);
+
+  console.log(selectedEmoji);
+
+  async function update_project_column_urgency(projectID, columnID, newColumnUrgency){
+    console.log('beffun');
+    try {
+      const response = await axios.post('http://localhost:8137/projects/update_project_column_urgency',{
+        projectId: projectID,
+        columnID:columnID,
+        newColumnUrgency: newColumnUrgency
+        
+      });  
+      console.log('fun');
+    } catch (error) {
+      console.error('Error fetching tasks:', error.message);
+      return null
+    }
+  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -15,8 +41,12 @@ const BarDropdown = () => {
     setAnchorEl(null);
   };
 
-  const handleEmojiClick = (emoji) => {
-    setSelectedEmoji(emoji);
+  const handleEmojiClick = (projectID,columnID,newColumnUrgency) => {
+    console.log(projectID);
+    console.log(columnID);
+    console.log(newColumnUrgency);
+    update_project_column_urgency(projectID,columnID,newColumnUrgency)
+    setSelectedEmoji(newColumnUrgency);
     handleClose();
   };
 
@@ -52,7 +82,7 @@ const BarDropdown = () => {
               role="img"
               aria-label="circle"
               style={{ fontSize: "14px", cursor: "pointer", marginBottom: "4px" }}
-              onClick={() => handleEmojiClick(emoji)}
+              onClick={() => handleEmojiClick(props.ccurrentProject._id, props.column.id, emoji)}
             >
               {emoji}
             </span>

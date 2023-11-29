@@ -9,6 +9,7 @@ import BarDropdown from "./Dropdown";
 import BasicModal from "./TaskModule";
 
 function ColumnContainer({
+  ccurrentProject,
   column,
   editById,
   setEditById,
@@ -79,12 +80,15 @@ function ColumnContainer({
           <div className="flex text-blue-900 justify-center items-center bg-yellow-500 px-3 py-2 text-sm rounded-full">
             {tasks.length}
           </div>
-          <BarDropdown />
-          {!editMode && column.title}
+          <BarDropdown
+            ccurrentProject = {ccurrentProject}
+            column={column}
+          />
+          {!editMode && column.column}
           {editMode && (
             <input
               className="bg-blue-200 text-blue-900 focus:border-yellow-600 border rounded outline-none px-2"
-              value={column.title.slice(0, 30)} // Display only the first 10 characters
+              value={column.column.slice(0, 30)} // Display only the first 10 characters
               onChange={(e) => {
                 const newValue = e.target.value.slice(0, 30); // Limit to 10 characters
                 updateColumn(column.id, newValue);
@@ -101,14 +105,14 @@ function ColumnContainer({
           )}
         </div>
         {modal && (
-  <BasicModal
-    onClose={() => setModal(false)}
-    onSave={(taskDetails) => {
-      createTask(column.id, taskDetails);
-      setModal(false);
-    }}
-  />
-)}
+          <BasicModal
+            onClose={() => setModal(false)}
+            onSave={(taskDetails) => {
+              createTask(column.id, taskDetails);
+              setModal(false);
+            }}
+          />
+        )}
 
         <button
           onClick={() => {

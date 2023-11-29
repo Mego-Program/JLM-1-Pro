@@ -1,10 +1,7 @@
 import PlusIcon from "../icons/PlusIcon";
-import { useMemo, useState   ,useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import ColumnContainer from "./ColumnContainer";
-<<<<<<< HEAD
 import axios from "axios";
-=======
->>>>>>> 2f03195d64e1d7e9201c8efe5adaa8e645f152f4
 import {
   DndContext,
   DragOverlay,
@@ -15,19 +12,49 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+  
+async function getProjectById(projectid){
+  // try {
+  //   const response = await axios.post('http://localhost:8137/projects/add_project',{
+  //     manager:"shalom",
+  //     name:'test'
+  //   });
+  //   console.log(response.data.columns);
+  //   // setTasks(response.data)
+  //   return response.data
+    
+  // } catch (error) {
+  //   console.error('Error fetching tasks:', error.message);
+  //   return null
+  // }
+  try {
+    const response = await axios.post('http://localhost:8137/projects/get_project_by_id',{
+      projectId: projectid
+    });
+    console.log(response.data.columns);
+    // setTasks(response.data)
+    return response.data
+    
+  } catch (error) {
+    console.error('Error fetching tasks:', error.message);
+    return null
+  }
+};
 
-const defaultCols = [{
 
+
+const defaultCols = [
+  {
     id: "todo",
-    title: "Todo",
+    title: "T",
   },
   {
     id: "doing",
-    title: "Work in progress",
+    title: "W",
   },
   {
     id: "done",
-    title: "Done",
+    title: "D",
   },
 ];
 
@@ -104,26 +131,28 @@ function KanbanBoard() {
   const [editById, setEditById] = useState(null);
   const [columns, setColumns] = useState(defaultCols);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
-
+  
   const [tasks, setTasks] = useState(defaultTasks);
-
-  const fetchTasks = async (req, res) => {
-    console.log("fun");
-    try {
-      const response = await axios.post('http://localhost:8137/tasks/get_tasks_by_projectId',{
-        projectId:"655f598999a30dda03d17e74"
-      });
-      console.log(response.data);
-      // setTasks(response.data)
-      
-    } catch (error) {
-      console.error('Error fetching tasks:', error.message);
-    }
-  };
-
   const [activeColumn, setActiveColumn] = useState(null);
-
   const [activeTask, setActiveTask] = useState(null);
+  const [ccurrentProject,setCcurrentProject] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+      
+        const project = await getProjectById("65672ab778c514a0489d386f");
+
+        setColumns(project.columns);
+        setCcurrentProject(project)
+
+      } catch (error) {
+        console.error('Error fetching project:', error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -132,10 +161,6 @@ function KanbanBoard() {
       },
     })
   );
-  useEffect(() => {
-    // קריאה לפונקציה ברגע שהרכיב נטען
-    fetchTasks();
-  }, []); // מסתיים useEffect
 
   return (
     <div
@@ -161,6 +186,7 @@ function KanbanBoard() {
             <SortableContext items={columnsId}>
               {columns.map((col) => (
                 <ColumnContainer
+                  ccurrentProject = {ccurrentProject} 
                   editById={editById}
                   setEditById={setEditById}
                   key={col.id}
@@ -229,17 +255,16 @@ function KanbanBoard() {
     </div>
   );
 
-  function createTask(columnId, taskDetails) {
+  function createTask(columnId) {
     const newTask = {
       id: generateId(),
       columnId,
-      header: taskDetails.header,
-      content: taskDetails.content,
-      date: taskDetails.date,
+      header: "",
+      content: `Task ${tasks.length + 1}`,
     };
-    
     setTasks([newTask, ...tasks]);
-    // setEditById(newTask.id);
+    setEditById(newTask.id);
+    console.log(newTask.id);
   }
 
   function deleteTask(id) {
@@ -247,10 +272,10 @@ function KanbanBoard() {
     setTasks(newTasks);
   }
 
-  function updateTask(id, header, taskDetails) {
+  function updateTask(id, content) {
     const newTasks = tasks.map((task) => {
       if (task.id !== id) return task;
-      return { ...task, taskDetails };
+      return { ...task, content };
     });
 
     setTasks(newTasks);
@@ -273,10 +298,12 @@ function KanbanBoard() {
     setTasks(newTasks);
   }
 
-  function updateColumn(id, title) {
+  function updateColumn(id, column) {
     const newColumns = columns.map((col) => {
+      console.log(col);
       if (col.id !== id) return col;
-      return { ...col, title };
+      
+      return { ...col, column };
     });
 
     setColumns(newColumns);
