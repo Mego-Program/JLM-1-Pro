@@ -31,6 +31,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
+    color: isDragging ? 'white' : 'white', // Change the text color while dragging
   };
 
   const toggleEditMode = () => {

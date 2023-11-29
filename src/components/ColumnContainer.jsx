@@ -46,6 +46,7 @@ function ColumnContainer({
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
+    
   };
 
   if (isDragging) {
