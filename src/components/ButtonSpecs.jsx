@@ -43,7 +43,7 @@ const SpecButton = () => {
     // Create links based on the selected titles
 
     const selectedLinks = data
-      .filter((index) => selectedItems[index])
+      .filter((item,index) => selectedItems[index])
       .map((item) => ({
         title: item.title,
         link: `https://jsonplaceholder.typicode.com/todos/${item.id}` 
