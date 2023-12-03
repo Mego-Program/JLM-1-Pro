@@ -52,7 +52,11 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
       style={style}
       {...attributes}
       {...listeners}
-      onClick={() => setModal(true)}
+      onClick={() => {
+        if (del !== true){
+          setModal(true)
+        }
+      }}
       className={`${
         false
           ? "bg-purple-900"
@@ -124,8 +128,9 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
             await console.log("modal is closed");
             setModal(false);
           }}
+
           onSave={async (taskDetails) => {
-            await updateTask(task.id, taskDetails);
+            await updateTask(task._id, taskDetails);
             setModal(false);
           }}
           header={task.header}

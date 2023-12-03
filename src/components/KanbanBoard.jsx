@@ -13,7 +13,6 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import { data } from "browserslist";
-import { error } from "console";
 
 
   
@@ -155,9 +154,11 @@ function KanbanBoard() {
     
       const project = await getProjectById("65672ab778c514a0489d386f");
       const task = await getTasksByProjectId("65672ab778c514a0489d386f")
+      
       setTasks(task)
       setColumns(project.columns);
       setCcurrentProject(project)
+      
       
 
     } catch (error) {
@@ -170,6 +171,7 @@ function KanbanBoard() {
     
     fetchData();
   }, []);
+  console.log(tasks);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -273,8 +275,11 @@ function KanbanBoard() {
   );
 
   async function createTask(columnId, taskDetails) {
+   
     try{
       const response = await axios.post('http://localhost:8137/tasks/add_tasks',{
+        // id: generateId(),
+        projectID:ccurrentProject._id,
         columnId,
         header: taskDetails.header,
         content: taskDetails.content,
@@ -282,7 +287,9 @@ function KanbanBoard() {
         asignee: taskDetails.asignee,
         date: taskDetails.date
     })
+    
       setTasks([response.data, ...tasks]);
+     console.log(tasks);
       // setEditById(response.data.task_id);
       // setEditById(newTask.id);
     }catch(error){
@@ -297,7 +304,7 @@ function KanbanBoard() {
       });
       fetchData()
 
-       // const newTasks = tasks.filter((task) => task.id !== taskeId);
+      //  const newTasks = tasks.filter((task) => task.id !== taskeId);
       // setTasks(newTasks);
     }catch{
       console.error('Error fetching tasks:', error.message);
@@ -325,6 +332,7 @@ function KanbanBoard() {
 
     });
   }
+
   
 
   

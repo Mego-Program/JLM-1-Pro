@@ -7,7 +7,7 @@ import TaskCard from "./TaskCard";
 import Delete from "./Deletion";
 import BarDropdown from "./Dropdown";
 
-import BasicModal from "./TaskModule";
+import BasicModal from "./TaskModal";
 import { update_project_column_text } from "./FunctionToServer";
 import axios from "axios";
 
@@ -24,6 +24,7 @@ function ColumnContainer({
   deleteTask,
   updateTask,
 }) {
+  
   const [editMode, setEditMode] = useState(false);
   const [del, setDel] = useState(false);
   const [modal, setModal] = useState(false);
@@ -117,7 +118,7 @@ function ColumnContainer({
           <BasicModal
             onClose={() => setModal(false)}
             onSave={(taskDetails) => {
-              createTask(column.id);
+              createTask(column.id,taskDetails);
               setModal(false);
             }}
           />
