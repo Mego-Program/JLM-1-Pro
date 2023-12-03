@@ -6,9 +6,11 @@ import TrashIcon from "../icons/TrashIcon";
 import TaskCard from "./TaskCard";
 import Delete from "./Deletion";
 import BarDropdown from "./Dropdown";
+
 import BasicModal from "./TaskModule";
 import { update_project_column_text } from "./FunctionToServer";
 import axios from "axios";
+
 
 function ColumnContainer({
   ccurrentProject,
@@ -48,6 +50,7 @@ function ColumnContainer({
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
+    
   };
 
   if (isDragging) {

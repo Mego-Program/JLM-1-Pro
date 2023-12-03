@@ -3,9 +3,8 @@ import TrashIcon from "../icons/TrashIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import AvatarButton from "./AvatarButton";
-import NewDateTime from "./NewDateTime";
 import Delete from "./Deletion";
-import BasicModal from "./TaskModule";
+import BasicModal from "./TaskModal";
 
 function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
@@ -32,6 +31,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
+    color: isDragging ? 'white' : 'white', // Change the text color while dragging
   };
 
   const toggleEditMode = () => {
@@ -128,6 +128,11 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
             await updateTask(task.id, taskDetails);
             setModal(false);
           }}
+          header={task.header}
+          content={task.content}
+          asignee={task.asignee}
+          issue={task.issue}
+          selectedDate={task.date} 
         />
       ) : null}
     </div>

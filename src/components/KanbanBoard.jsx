@@ -12,6 +12,8 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+import { data } from "browserslist";
+import { error } from "console";
 
 
   
@@ -270,23 +272,23 @@ function KanbanBoard() {
     </div>
   );
 
-  async function createTask(columnId) {
-    try {
+  async function createTask(columnId, taskDetails) {
+    try{
       const response = await axios.post('http://localhost:8137/tasks/add_tasks',{
-        IDproject: ccurrentProject._id,
         columnId,
-        userName: "aaa",
-        content: `Task ${tasks.length + 1}`,
-      });
-      
+        header: taskDetails.header,
+        content: taskDetails.content,
+        issue: taskDetails.issue,
+        asignee: taskDetails.asignee,
+        date: taskDetails.date
+    })
       setTasks([response.data, ...tasks]);
-      setEditById(response.data.task_id);
-    } catch (error) {
-      console.error('Error fetching tasks:', error.message);
-      return null
-    }
-
-  }
+      // setEditById(response.data.task_id);
+      // setEditById(newTask.id);
+    }catch(error){
+      console.log(error);
+    };}
+  
 
   async function deleteTask(taskeId) {
     try{
@@ -295,22 +297,35 @@ function KanbanBoard() {
       });
       fetchData()
 
-    // const newTasks = tasks.filter((task) => task.id !== taskeId);
-    // setTasks(newTasks);
-  }catch{
-    console.error('Error fetching tasks:', error.message);
-      return null
+       // const newTasks = tasks.filter((task) => task.id !== taskeId);
+      // setTasks(newTasks);
+    }catch{
+      console.error('Error fetching tasks:', error.message);
+        return null
+    }
   }
-}
 
-  function updateTask(id, content) {
-    const newTasks = tasks.map((task) => {
-      if (task.id !== id) return task;
-      return { ...task, content };
+  function updateTask(id, taskDetails) {
+    setTasks((tasks) => {
+      return tasks.map((task) => {
+        if (task.id === id) {
+          // Update the task with the new details
+          return {
+            ...task,
+            header: taskDetails.header !== undefined ? taskDetails.header : task.header,
+            content: taskDetails.content !== undefined ? taskDetails.content : task.content,
+            asignee: taskDetails.asignee !== undefined ? taskDetails.asignee : task.asignee,
+            issue: taskDetails.issue !== undefined ? taskDetails.issue : task.issue,
+            date: taskDetails.date !== undefined ? taskDetails.date : task.date,
+            // Add other properties as needed
+          };
+        }
+        return task;
+      });
+
     });
-
-    setTasks(newTasks);
   }
+  
 
   
   async function createNewColumn(projectID) {
