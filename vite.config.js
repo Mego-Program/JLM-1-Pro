@@ -10,7 +10,7 @@ export default defineConfig({
       name: "proProject",
       filename: "remoteEntry.js",
       exposes: {
-        "./proProject": "./src/App",
+        "./ProProject": "./src/App",
       },
       shared: ["react", "react-dom"],
     }),
