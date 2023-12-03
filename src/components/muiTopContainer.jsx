@@ -6,19 +6,6 @@ import { FilterSprint } from "./SprintFilter";
 import data from "./mockData/data";
 
 const MainComponentMui = () => {
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      const message = 'Are you sure you want to leave?';
-      event.returnValue = message; // Standard for most browsers
-      return message; // For some older browsers
-    };
-  
-    window.addEventListener('beforeunload', handleBeforeUnload);
-  
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
   
   // Extract unique values for each property
   const uniqueAssignee = Array.from(new Set(data.map((item) => item.userName)));
