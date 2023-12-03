@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input } from '@mui/material';
+import { Select } from '@mui/material';
 
 export const FilterSprint = () => {
     
@@ -18,11 +18,8 @@ const handleFilter = (e) => {
   };
 
     return (<>
-<Input
+<Select
 type="text"
-placeholder="Search..."
-value={searchTerm}
-onChange={handleFilter}
 sx={{
   background: '#0A0A1B',
   color: 'white',
