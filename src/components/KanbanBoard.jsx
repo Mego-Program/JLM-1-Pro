@@ -213,6 +213,8 @@ function KanbanBoard() {
       columnId,
       header: taskDetails.header,
       content: taskDetails.content,
+      issue: taskDetails.issue,
+      asignee: taskDetails.asignee,
       date: taskDetails.date,
     };
     
@@ -225,14 +227,26 @@ function KanbanBoard() {
     setTasks(newTasks);
   }
 
-  function updateTask(id, header, taskDetails) {
-    const newTasks = tasks.map((task) => {
-      if (task.id !== id) return task;
-      return { ...task, taskDetails };
+  function updateTask(id, taskDetails) {
+    setTasks((tasks) => {
+      return tasks.map((task) => {
+        if (task.id === id) {
+          // Update the task with the new details
+          return {
+            ...task,
+            header: taskDetails.header !== undefined ? taskDetails.header : task.header,
+            content: taskDetails.content !== undefined ? taskDetails.content : task.content,
+            asignee: taskDetails.asignee !== undefined ? taskDetails.asignee : task.asignee,
+            issue: taskDetails.issue !== undefined ? taskDetails.issue : task.issue,
+            date: taskDetails.date !== undefined ? taskDetails.date : task.date,
+            // Add other properties as needed
+          };
+        }
+        return task;
+      });
     });
-
-    setTasks(newTasks);
   }
+  
 
   function createNewColumn() {
     const columnToAdd = {

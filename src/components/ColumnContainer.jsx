@@ -6,7 +6,7 @@ import TrashIcon from "../icons/TrashIcon";
 import TaskCard from "./TaskCard";
 import Delete from "./Deletion";
 import BarDropdown from "./Dropdown";
-import BasicModal from "./TaskModule";
+import BasicModal from "./TaskModal";
 
 function ColumnContainer({
   column,
@@ -46,6 +46,7 @@ function ColumnContainer({
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
+    
   };
 
   if (isDragging) {
