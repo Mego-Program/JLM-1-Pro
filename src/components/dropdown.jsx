@@ -7,7 +7,6 @@ import axios from "axios";
 
 
 const BarDropdown = (props) => {
-  console.log(props.ccurrentProject);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedEmoji, setSelectedEmoji] = useState(props.column.ColumnUrgency);
 
@@ -15,7 +14,6 @@ const BarDropdown = (props) => {
     setSelectedEmoji(props.column.ColumnUrgency);
   }, [props.column.ColumnUrgency]);
 
-  console.log(selectedEmoji);
 
   async function update_project_column_urgency(projectID, columnID, newColumnUrgency){
     console.log('beffun');
@@ -42,9 +40,6 @@ const BarDropdown = (props) => {
   };
 
   const handleEmojiClick = (projectID,columnID,newColumnUrgency) => {
-    console.log(projectID);
-    console.log(columnID);
-    console.log(newColumnUrgency);
     update_project_column_urgency(projectID,columnID,newColumnUrgency)
     setSelectedEmoji(newColumnUrgency);
     handleClose();

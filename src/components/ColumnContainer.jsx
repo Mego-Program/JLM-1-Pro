@@ -7,6 +7,8 @@ import TaskCard from "./TaskCard";
 import Delete from "./Deletion";
 import BarDropdown from "./Dropdown";
 import BasicModal from "./TaskModule";
+import { update_project_column_text } from "./FunctionToServer";
+import axios from "axios";
 
 function ColumnContainer({
   ccurrentProject,
@@ -23,7 +25,6 @@ function ColumnContainer({
   const [editMode, setEditMode] = useState(false);
   const [del, setDel] = useState(false);
   const [modal, setModal] = useState(false);
-
   const tasksIds = useMemo(() => {
     return tasks.map((task) => task.id);
   }, [tasks]);
@@ -88,18 +89,23 @@ function ColumnContainer({
           {editMode && (
             <input
               className="bg-blue-200 text-blue-900 focus:border-yellow-600 border rounded outline-none px-2"
-              value={column.column.slice(0, 30)} // Display only the first 10 characters
-              onChange={(e) => {
+              value={column.column} // Display only the first 10 characters
+              
+              onChange={async(e) => {
                 const newValue = e.target.value.slice(0, 30); // Limit to 10 characters
-                updateColumn(column.id, newValue);
+                updateColumn(column.id,newValue )
               }}
+              
               autoFocus
               onBlur={() => {
+                update_project_column_text(ccurrentProject._id,column.id,column.column)
                 setEditMode(false);
+                
               }}
               onKeyDown={(e) => {
                 if (e.key !== "Enter") return;
                 setEditMode(false);
+                update_project_column_text(ccurrentProject._id,column.id,column.column)
               }}
             />
           )}
@@ -108,7 +114,7 @@ function ColumnContainer({
           <BasicModal
             onClose={() => setModal(false)}
             onSave={(taskDetails) => {
-              createTask(column.id, taskDetails);
+              createTask(column.id);
               setModal(false);
             }}
           />

@@ -12,14 +12,13 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+
+
   
 async function getProjectById(projectid){
   // try {
-  //   const response = await axios.post('http://localhost:8137/projects/add_project',{
-  //     manager:"shalom",
-  //     name:'test'
-  //   });
-  //   console.log(response.data.columns);
+  //   const response = await axios.post('http://localhost:8137/projects/get_all_data')
+  //   console.log(response.data);
   //   // setTasks(response.data)
   //   return response.data
     
@@ -31,8 +30,7 @@ async function getProjectById(projectid){
     const response = await axios.post('http://localhost:8137/projects/get_project_by_id',{
       projectId: projectid
     });
-    console.log(response.data.columns);
-    // setTasks(response.data)
+    
     return response.data
     
   } catch (error) {
@@ -41,7 +39,20 @@ async function getProjectById(projectid){
   }
 };
 
-
+async function getTasksByProjectId(projectId){
+  
+  try {
+    const response = await axios.post('http://localhost:8137/tasks/get_tasks_by_projectId',{
+      projectId: projectId
+    });
+    
+    return response.data
+    
+  } catch (error) {
+    console.error('Error fetching tasks:', error.message);
+    return null
+  }
+};
 
 const defaultCols = [
   {
@@ -137,20 +148,24 @@ function KanbanBoard() {
   const [activeTask, setActiveTask] = useState(null);
   const [ccurrentProject,setCcurrentProject] = useState(null)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
+  const fetchData = async () => {
+    try {
+    
+      const project = await getProjectById("65672ab778c514a0489d386f");
+      const task = await getTasksByProjectId("65672ab778c514a0489d386f")
+      setTasks(task)
+      setColumns(project.columns);
+      setCcurrentProject(project)
       
-        const project = await getProjectById("65672ab778c514a0489d386f");
 
-        setColumns(project.columns);
-        setCcurrentProject(project)
+    } catch (error) {
+      console.error('Error fetching project:', error.message);
+    }
+  };
 
-      } catch (error) {
-        console.error('Error fetching project:', error.message);
-      }
-    };
 
+  useEffect(() => {
+    
     fetchData();
   }, []);
 
@@ -204,7 +219,7 @@ function KanbanBoard() {
 
           <button
             onClick={() => {
-              createNewColumn();
+              createNewColumn(ccurrentProject._id);
             }}
             className="
       h-[60px]
@@ -255,22 +270,38 @@ function KanbanBoard() {
     </div>
   );
 
-  function createTask(columnId) {
-    const newTask = {
-      id: generateId(),
-      columnId,
-      header: "",
-      content: `Task ${tasks.length + 1}`,
-    };
-    setTasks([newTask, ...tasks]);
-    setEditById(newTask.id);
-    console.log(newTask.id);
+  async function createTask(columnId) {
+    try {
+      const response = await axios.post('http://localhost:8137/tasks/add_tasks',{
+        IDproject: ccurrentProject._id,
+        columnId,
+        userName: "aaa",
+        content: `Task ${tasks.length + 1}`,
+      });
+      
+      setTasks([response.data, ...tasks]);
+      setEditById(response.data.task_id);
+    } catch (error) {
+      console.error('Error fetching tasks:', error.message);
+      return null
+    }
+
   }
 
-  function deleteTask(id) {
-    const newTasks = tasks.filter((task) => task.id !== id);
-    setTasks(newTasks);
+  async function deleteTask(taskeId) {
+    try{
+    const response = await axios.post('http://localhost:8137/tasks/delete_tasks',{      
+      taskeId:taskeId
+      });
+      fetchData()
+
+    // const newTasks = tasks.filter((task) => task.id !== taskeId);
+    // setTasks(newTasks);
+  }catch{
+    console.error('Error fetching tasks:', error.message);
+      return null
   }
+}
 
   function updateTask(id, content) {
     const newTasks = tasks.map((task) => {
@@ -281,31 +312,50 @@ function KanbanBoard() {
     setTasks(newTasks);
   }
 
-  function createNewColumn() {
-    const columnToAdd = {
-      id: generateId(),
-      title: `Column ${columns.length + 1}`,
-    };
-
-    setColumns([...columns, columnToAdd]);
+  
+  async function createNewColumn(projectID) {
+    try {
+      const response = await axios.post('http://localhost:8137/projects/add_new_column',{
+        projectId: projectID,
+        columnID: `${generateId()}`,
+        nameColumn:"newColumn"
+      });
+      
+      setColumns(response.data);
+    } catch (error) {
+      console.error('Error fetching tasks:', error.message);
+      return null
+    }
   }
 
-  function deleteColumn(id) {
-    const filteredColumns = columns.filter((col) => col.id !== id);
-    setColumns(filteredColumns);
+  async function deleteColumn(columnId) {
+    try {
+      const response = await axios.post('http://localhost:8137/projects/delete_column',{
+            projectId:ccurrentProject._id,
+            columnId:columnId
+      })
+      
+      setColumns(response.data);
+    
+      const filteredColumns = columns.filter((col) => col.id !== columnId);
+      setColumns(filteredColumns);
+      
+      const newTasks = tasks.filter((t) => t.columnId !== columnId);
+      setTasks(newTasks);
 
-    const newTasks = tasks.filter((t) => t.columnId !== id);
-    setTasks(newTasks);
-  }
+    }catch (error) {
+      console.error('Error fetching tasks:', error.message);
+        return null
+    }
+}
+
+  
 
   function updateColumn(id, column) {
     const newColumns = columns.map((col) => {
-      console.log(col);
-      if (col.id !== id) return col;
-      
+      if (col.id !== id) return col;      
       return { ...col, column };
     });
-
     setColumns(newColumns);
   }
 

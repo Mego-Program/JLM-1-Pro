@@ -54,7 +54,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
       {...listeners}
       onClick={() => setModal(true)}
       className={`${
-        editMode
+        false
           ? "bg-purple-900"
           : "bg-mainBackgroundColor hover:ring-2 hover:ring-inset hover:ring-yellow-500"
       } p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl cursor-grab relative task`}
@@ -63,7 +63,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
     >
       {del && (
         <Delete
-          onDelete={() => deleteTask(task.id)}
+          onDelete={() => deleteTask(task._id)}
           onCancel={() => setDel(false)}
         />
       )}
