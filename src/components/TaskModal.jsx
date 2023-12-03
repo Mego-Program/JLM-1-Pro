@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
@@ -23,11 +22,11 @@ const style = {
 };
 
 export default function BasicModal(props) {
-  const [header, setHeader] = useState('');
-  const [content, setContent] = useState('');
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [asignee, setAsignee] = useState('');
-  const [issue, setIssue] = useState('');
+  const [header, setHeader] = useState(props.header || '');
+  const [content, setContent] = useState(props.content || '');
+  const [selectedDate, setSelectedDate] = useState(props.selectedDate || null);
+  const [asignee, setAsignee] = useState(props.asignee || '');
+  const [issue, setIssue] = useState(props.issue || '');
 
   return (
     <div>
@@ -62,6 +61,7 @@ export default function BasicModal(props) {
               InputLabelProps={{ style: { color: '#ffc300' } }}
               InputProps={{ style: { color: '#ffc300' } }}
               style={{ marginBottom: '20px', border: 'solid #ffc300' }}
+              value={header}
               onChange={(e) => setHeader(e.target.value)}
               required
             />
@@ -73,6 +73,7 @@ export default function BasicModal(props) {
               InputLabelProps={{ style: { color: '#ffc300' } }}
               InputProps={{ style: { color: '#ffc300' } }}
               style={{ marginBottom: '20px', border: 'solid #ffc300' }}
+              value={content}
               onChange={(e) => setContent(e.target.value)}
               required
             />
@@ -84,6 +85,7 @@ export default function BasicModal(props) {
               InputLabelProps={{ style: { color: '#ffc300' } }}
               InputProps={{ style: { color: '#ffc300' } }}
               style={{ marginBottom: '20px', border: 'solid #ffc300' }}
+              value={asignee}
               onChange={(e) => setAsignee(e.target.value)}
               required
             />
@@ -95,6 +97,7 @@ export default function BasicModal(props) {
               InputLabelProps={{ style: { color: '#ffc300' } }}
               InputProps={{ style: { color: '#ffc300' } }}
               style={{ marginBottom: '20px', border: 'solid #ffc300' }}
+              value={issue}
               onChange={(e) => setIssue(e.target.value)}
               required
             />
@@ -113,6 +116,7 @@ export default function BasicModal(props) {
                       color: '#ffc300', // Set the text color of the label to white
                       '&.Mui-focused': {
                         color: '#ffc300', // Set the text color of the label when focused to yellow
+                      
                       },
                     },
                     svg: { color: '#ffc300' },
@@ -134,10 +138,11 @@ export default function BasicModal(props) {
                 padding: '5px 15px',
                 borderRadius: '0.5rem',
                 border: '1px solid #ffc300',
+                marginTop: '30px',
               }}
               onClick={() => { 
                 if (header != '' && content != '' && selectedDate != null && issue != '' && asignee != '')
-                {props.onSave({ header, content, date: selectedDate });
+                {props.onSave({ header, content, date: selectedDate , issue , asignee});
               }
               else{
                 alert("All fields required!")
