@@ -2,11 +2,12 @@ import React from "react";
 import "./App.css";
 import KanbanBoard from "./components/KanbanBoard";
 import MainComponentMui from "./components/MuiTopContainer";
-import SprintFeature from "./components/SprintFeature";
+import SpecButton from "./components/ButtonSpecs";
 
 export const RouterPro = (
   <>
     <MainComponentMui />
+    <SpecButton />
     <KanbanBoard />
   </>
 );
