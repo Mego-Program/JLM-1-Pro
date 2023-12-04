@@ -11,6 +11,6 @@ export const RouterPro = (
   </>
 );
 
-export default function App() {
+export default function AppProjects() {
   return RouterPro;
 }

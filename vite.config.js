@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 import federation from "@originjs/vite-plugin-federation";
 
 // https://vitejs.dev/config/
@@ -7,10 +7,10 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: "proProject",
+      name: "AppProjects",
       filename: "remoteEntry.js",
       exposes: {
-        "./ProProject": "./src/App",
+        "./AppProjects": "./src/AppProjects",
       },
       shared: ["react", "react-dom"],
     }),
