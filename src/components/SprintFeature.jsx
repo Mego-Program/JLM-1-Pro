@@ -12,17 +12,33 @@ export default function SprintFeatrue() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [data, setData] = useState()
-  let sprintHeader = ""
   
-   fetch('http://localhost:8137/todos')
-  .then(response => response.json())
-  .then(json => setData(json))
+  let [sprintHeader, setSprintHeader] = useState("");
 
+  const handleInputChange = (event) => {
+    setSprintHeader(event.target.value);
+  };
+  
+  //  fetch('http://localhost:8137/todos')
+  // .then(response => response.json())
+  // .then(json => setData(json))
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch('http://localhost:8137/tasks');
+      const tasks = await response.json();
+      return tasks;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return [];
+    }
+  };
+
+  
   return (
     <div>
       <p>{data ? JSON.stringify(data) : ""}</p>
       <TriggerButton type="button" onClick={handleOpen}>
-        Sprint
+        Create New Sprint
       </TriggerButton>
       <Modal
         // aria-labelledby="unstyled-modal-title"
@@ -31,16 +47,13 @@ export default function SprintFeatrue() {
         onClose={handleClose}
         slots={{ backdrop: StyledBackdrop }}
       >
-        <ModalContent sx={{ width: 400, backgroundColor: "blue" }}>
+        <ModalContent sx={{ width: 400, backgroundColor: "rgb(234, 179, 8)" }}>
           <h2 id="unstyled-modal-title" className="modal-title">
             <p>Sprint discreption</p>
-            {sprintHeader} = <input></input>
+            <input type='text' value={sprintHeader} onChange={handleInputChange} />
             <DateRange />
           </h2>
           <SprintDropDown />
-          <p id="unstyled-modal-description" className="modal-description">
-            Go sprint go!
-          </p>
         </ModalContent>
       </Modal>
     </div>

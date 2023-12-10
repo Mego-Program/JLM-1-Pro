@@ -14,7 +14,7 @@ export default function SprintDropDown() {
 
   return (
     <Dropdown>
-      <MenuButton>My account</MenuButton>
+      <MenuButton>Choose From Tasks</MenuButton>
       <Menu slots={{ listbox: Listbox }}>
         <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
         <MenuItem onClick={createHandleMenuClick('Language settings')}>
