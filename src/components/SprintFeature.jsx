@@ -6,6 +6,7 @@ import { styled, css } from '@mui/system';
 import { Modal as BaseModal } from '@mui/base/Modal';
 import  DateRange  from './DateRange';
 import SprintDropDown from './SprintDropDown';
+import DropdownSelect from './DropdownSelect';
 
 export default function SprintFeatrue() {
   const [open, setOpen] = React.useState(false);
@@ -18,25 +19,11 @@ export default function SprintFeatrue() {
   const handleInputChange = (event) => {
     setSprintHeader(event.target.value);
   };
-  
-  //  fetch('http://localhost:8137/todos')
-  // .then(response => response.json())
-  // .then(json => setData(json))
-  const fetchTasks = async () => {
-    try {
-      const response = await fetch('http://localhost:8137/tasks');
-      const tasks = await response.json();
-      return tasks;
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-      return [];
-    }
-  };
 
   
   return (
     <div>
-      <p>{data ? JSON.stringify(data) : ""}</p>
+      <SprintDropDown />
       <TriggerButton type="button" onClick={handleOpen}>
         Create New Sprint
       </TriggerButton>
@@ -49,11 +36,14 @@ export default function SprintFeatrue() {
       >
         <ModalContent sx={{ width: 400, backgroundColor: "rgb(234, 179, 8)" }}>
           <h2 id="unstyled-modal-title" className="modal-title">
+            <p>Sprint title</p>
+            <input type='text' value={sprintHeader} onChange={handleInputChange} />
             <p>Sprint discreption</p>
             <input type='text' value={sprintHeader} onChange={handleInputChange} />
             <DateRange />
           </h2>
           <SprintDropDown />
+          <DropdownSelect />
         </ModalContent>
       </Modal>
     </div>
@@ -106,7 +96,7 @@ const Modal = styled(BaseModal)`
   align-items: center;
   justify-content: center;
 `;
-
+// const StyledSprintDropDown = styled(SprintDropDown)` z-index: -1`;
 const StyledBackdrop = styled(Backdrop)`
   z-index: -1;
   position: fixed;

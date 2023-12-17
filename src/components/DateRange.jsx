@@ -17,23 +17,3 @@ export default function BasicDateRangePicker() {
     </LocalizationProvider>
   );
 }
-
-// import * as React from 'react';
-// import { LocalizationProvider } from '@mui/x-date-pickers-pro';
-// import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-// import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
-
-// export default function BasicDateRangePicker() {
-//   const [selectedDate, handleDateChange] = React.useState([null, null]);
-
-//   return (
-//     <LocalizationProvider dateAdapter={AdapterDayjs}>
-//       <DateRangePicker
-//         startText="Check-in"
-//         endText="Check-out"
-//         value={selectedDate}
-//         onChange={(newDates) => handleDateChange(newDates)}
-//       />
-//     </LocalizationProvider>
-//   );
-// }

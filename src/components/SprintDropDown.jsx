@@ -1,4 +1,49 @@
+// import * as React from 'react';
+// import { Dropdown } from '@mui/base/Dropdown';
+// import { Menu } from '@mui/base/Menu';
+// import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
+// import { MenuItem as BaseMenuItem, menuItemClasses } from '@mui/base/MenuItem';
+// import { styled } from '@mui/system';
+
+// export default function SprintDropDown() {
+//   const [users, setUsers] = React.useState([]);
+
+//   React.useEffect(() => {
+//     const fetchUsers = async () => {
+//       try {
+//         const response = await fetch('http://localhost:8137/todos');
+//         const data = await response.json();
+//         setUsers(data);
+//       } catch (error) {
+//         console.error('Error fetching users:', error);
+//       }
+//     };
+
+//     fetchUsers();
+//   }, []);
+
+//   const createHandleMenuClick = (user) => () => {
+//     console.log(`Clicked on user: ${user.username}`);
+//     // Add your logic for handling the selected user
+//   };
+
+//   return (
+//     <Dropdown>
+//       <MenuButton>Choose a User</MenuButton>
+//       <Menu slots={{ listbox: Listbox }}>
+//         {users.map((user) => (
+//           <MenuItem key={user._id} onClick={createHandleMenuClick(user)}>
+//             <img src={user.image} alt={`Avatar of ${user.username}`} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />
+//             {user.username}
+//           </MenuItem>
+//         ))}
+//       </Menu>
+//     </Dropdown>
+//   );
+// }
+
 import * as React from 'react';
+import { Popper } from '@mui/base/Popper';
 import { Dropdown } from '@mui/base/Dropdown';
 import { Menu } from '@mui/base/Menu';
 import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
@@ -6,24 +51,74 @@ import { MenuItem as BaseMenuItem, menuItemClasses } from '@mui/base/MenuItem';
 import { styled } from '@mui/system';
 
 export default function SprintDropDown() {
-  const createHandleMenuClick = (menuItem) => {
-    return () => {
-      console.log(`Clicked on ${menuItem}`);
-    };
-  };
+  const [users, setUsers] = React.useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  return (
-    <Dropdown>
-      <MenuButton>Choose From Tasks</MenuButton>
-      <Menu slots={{ listbox: Listbox }}>
-        <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
-        <MenuItem onClick={createHandleMenuClick('Language settings')}>
-          Language settings
-        </MenuItem>
-        <MenuItem onClick={createHandleMenuClick('Log out')}>Log out</MenuItem>
+  React.useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:8137/todos');
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+//   const createHandleMenuClick = (event, user) => {
+//     console.log(`Clicked on user: ${user.username}`);
+//     // Add your logic for handling the selected user
+//     setAnchorEl(null); // Close the menu after selecting a user
+//   };
+
+//   return (
+//     <Dropdown>
+//       <MenuButton onClick={(event) => setAnchorEl(event.currentTarget)}>Choose a User</MenuButton>
+//       <Menu slots={{ listbox: Listbox }} onClose={() => setAnchorEl(null)} anchorEl={anchorEl}>
+//         {users.map((user) => (
+//           <MenuItem key={user._id} onClick={(event) => createHandleMenuClick(event, user)}>
+//             <img
+//               src={user.image}
+//               alt={`Avatar of ${user.username}`}
+//               style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }}
+//             />
+//             {user.username}
+//           </MenuItem>
+//         ))}
+//       </Menu>
+//     </Dropdown>
+//   );
+// }
+const createHandleMenuClick = (user) => {
+  console.log(`Clicked on user: ${user.username}`);
+  // Add your logic for handling the selected user
+  setAnchorEl(null); // Close the menu after selecting a user
+};
+
+return (
+  <Dropdown>
+    <MenuButton onClick={(event) => setAnchorEl(anchorEl ? null : event.currentTarget)}>
+      Choose a User
+    </MenuButton>
+    <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="bottom-start">
+      <Menu slots={{ listbox: Listbox }} onClose={() => setAnchorEl(null)}>
+        {users.map((user) => (
+          <MenuItem key={user._id} onClick={() => createHandleMenuClick(user)}>
+            <img
+              src={user.image}
+              alt={`Avatar of ${user.username}`}
+              style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }}
+            />
+            {user.username}
+          </MenuItem>
+        ))}
       </Menu>
-    </Dropdown>
-  );
+    </Popper>
+  </Dropdown>
+);
 }
 
 const blue = {
@@ -67,12 +162,13 @@ const Listbox = styled('ul')(
   border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
   color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   box-shadow: 0px 4px 30px ${theme.palette.mode === 'dark' ? grey[900] : grey[200]};
-  z-index: 1;
+  z-index: 1300;
   `,
 );
 
 const MenuItem = styled(BaseMenuItem)(
   ({ theme }) => `
+  z-index: -1000;
   list-style: none;
   padding: 8px;
   border-radius: 8px;
