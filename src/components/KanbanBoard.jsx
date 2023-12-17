@@ -11,6 +11,7 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+import ProjectDropdown from './ProjectDropdown';  
 
 const defaultCols = [
   {
@@ -97,6 +98,7 @@ const defaultTasks = [
 ];
 
 function KanbanBoard() {
+  const [selectedProject, setSelectedProject] = useState('');
   const [editById, setEditById] = useState(null);
   const [columns, setColumns] = useState(defaultCols);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
@@ -107,6 +109,15 @@ function KanbanBoard() {
 
   const [activeTask, setActiveTask] = useState(null);
 
+  // useEffect(() => {
+  //   // Fetch tasks and columns based on the selected project
+  //   // Example API call:
+  //   // fetchProjectData(selectedProject).then((data) => {
+  //   //   setColumns(data.columns);
+  //   //   setTasks(data.tasks);
+  //   // });
+  // }, [selectedProject]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -116,18 +127,13 @@ function KanbanBoard() {
   );
 
   return (
-    <div
-      className="
-        mt-0
-        flex
-        w-full
-        h-full
-        items-center
-        overflow-x-auto
-        overflow-y-hidden
-        px-[40px]
-    "
-    >
+    <div className="mt-0 flex flex-col items-center w-full h-full overflow-x-auto overflow-y-hidden">
+    {/* ProjectDropdown component */}
+    <ProjectDropdown
+      onSelectProject={setSelectedProject}
+      selectedProject={selectedProject}
+    />
+
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
