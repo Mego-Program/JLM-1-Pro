@@ -21,7 +21,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
     transition,
     isDragging,
   } = useSortable({
-    id: task.id,
+    id: task._id,
     data: {
       type: "Task",
       task,
@@ -41,12 +41,14 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   };
 
   useEffect(() => {
-    if (editById === task.id) {
+    if (editById === task._id) {
       setEditMode(true);
       setEditById(null);
     }
     
-  }, [editById, setEditById, task.id]);
+
+  }, [editById, setEditById, task._id]);
+
   
 
   return (
@@ -70,7 +72,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
     >
       {del && (
         <Delete
-          onDelete={() => deleteTask(task.id)}
+          onDelete={() => deleteTask(task._id)}
           onCancel={() => setDel(false)}
         />
       )}
@@ -142,7 +144,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
             setModal(false);
           }}
           onSave={async (taskDetails) => {
-            await updateTask(task.id, taskDetails);
+            await updateTask(task._id, taskDetails);
             setModal(false);
           }}
           header={task.header}
