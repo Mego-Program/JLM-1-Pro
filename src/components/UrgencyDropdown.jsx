@@ -68,7 +68,7 @@ const BarDropdown = (props) => {
       >
         <Box p={2} display="flex" flexDirection="column">
           <p style={{ marginBottom: "8px", fontWeight: "bold" ,color: '#FFC300 '}}>
-            Project <br />Urgency:
+            Column <br />Urgency:
           </p>
           {emojiList.map((emoji) => (
             <span

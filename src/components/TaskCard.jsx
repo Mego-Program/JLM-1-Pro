@@ -46,7 +46,9 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
       setEditById(null);
     }
     
+
   }, [editById, setEditById, task._id]);
+
   
 
   return (
