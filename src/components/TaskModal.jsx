@@ -1,15 +1,15 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import Container from '@mui/material/Container';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useState } from 'react';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import Container from "@mui/material/Container";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useState } from "react";
+import UserValidation from "./validation";
 import dayjs from 'dayjs';
-// import UserValidation from './validation';
 
 const style = {
   position: "absolute",
@@ -24,34 +24,45 @@ const style = {
 };
 
 export default function BasicModal(props) {
-  const [header, setHeader] = useState(props.header || '');
-  const [content, setContent] = useState(props.content || '');
+  const [header, setHeader] = useState(props.header || "");
+  const [content, setContent] = useState(props.content || "");
   const [selectedDate, setSelectedDate] = useState(dayjs(props.selectedDate) || null);
-  const [asignee, setAsignee] = useState(props.asignee || '');
-  const [issue, setIssue] = useState(props.issue || '');
-  const [errors, setErrors] = useState({}); // Add this line
-  
+  const [asignee, setAsignee] = useState(props.asignee || "");
+  const [issue, setIssue] = useState(props.issue || "");
+  const [errors, setErrors] = useState({}); 
 
   const createUser = async (event) => {
-  //  event.preventDefault();
+    event.preventDefault();
 
+    let formData = {
+      header: header,
+      content: content,
+      issue: issue,
+      asignee: asignee,
+      selectedDate:selectedDate
 
-   if (header != '' && content != ''  && issue != '' && asignee != '')
-   {props.onSave({ header, content, date: selectedDate , issue , asignee}); }
-   else{
-   alert("All fields required!")
- }
+    };
 
-   let formData = {
-    header: header,
-    content: content,
-    issue: issue,
-    asignee: asignee,
-  }
-  // const isValid = await UserValidation.isValid(formData);
-  // console.log(isValid)
-  
-  }
+    try {
+      await UserValidation.validate(formData, { abortEarly: false });
+      // Validation passed, handle form submission logic here
+      console.log("Form is valid");
+      setErrors({});
+      props.onSave({ header, content, date: selectedDate, issue, asignee });
+      
+    } catch (error) {
+      // Validation failed, update errors state
+      const newErrors = {};
+      error.inner.forEach((e) => {
+        newErrors[e.path] = e.message;
+      });
+      setErrors(newErrors);
+
+      // Log error messages
+      console.log("Validation errors:", newErrors);
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -148,9 +159,9 @@ export default function BasicModal(props) {
                     sx={{
                       input: { color: "#ffc300" },
                       label: {
-                        color: "#ffc300", // Set the text color of the label to white
+                        color: "#ffc300", 
                         "&.Mui-focused": {
-                          color: "#ffc300", // Set the text color of the label when focused to yellow
+                          color: "#ffc300", 
                         },
                       },
                       svg: { color: "#ffc300" },
@@ -203,3 +214,4 @@ export default function BasicModal(props) {
     </div>
   );
 }
+
