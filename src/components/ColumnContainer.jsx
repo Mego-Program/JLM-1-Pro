@@ -29,7 +29,7 @@ function ColumnContainer({
   const [del, setDel] = useState(false);
   const [modal, setModal] = useState(false);
   const tasksIds = useMemo(() => {
-    return tasks.map((task) => task.id);
+    return tasks.map((task) => task._id);
   }, [tasks]);
 
   const {
@@ -138,7 +138,7 @@ function ColumnContainer({
         <SortableContext items={tasksIds}>
           {tasks.map((task) => (
             <TaskCard
-              key={task.id}
+              key={task._id}
               task={task}
               editById={editById}
               setEditById={setEditById}

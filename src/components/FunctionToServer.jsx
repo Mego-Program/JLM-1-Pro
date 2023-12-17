@@ -28,3 +28,16 @@ export const update_project_column_text = async(projectID,columnID,columnText) =
       }
 } 
 
+export const update_tasks_status = async(taskId,newColumn) => {
+  try {
+    const response = await axios.post('http://localhost:8137/tasks/update_tasks_status',{
+        taskId:taskId,
+        newColumn:newColumn
+      })
+      console.log(taskId);
+      console.log(newColumn);
+  } catch (error) {
+    console.log(error);
+  }
+
+}

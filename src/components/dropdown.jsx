@@ -24,7 +24,6 @@ const BarDropdown = (props) => {
         newColumnUrgency: newColumnUrgency
         
       });  
-      console.log('fun');
     } catch (error) {
       console.error('Error fetching tasks:', error.message);
       return null

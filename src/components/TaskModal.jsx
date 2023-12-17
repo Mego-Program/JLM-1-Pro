@@ -8,6 +8,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState } from 'react';
+import dayjs from 'dayjs';
+// import UserValidation from './validation';
 
 const style = {
   position: 'absolute',
@@ -24,10 +26,31 @@ const style = {
 export default function BasicModal(props) {
   const [header, setHeader] = useState(props.header || '');
   const [content, setContent] = useState(props.content || '');
-  const [selectedDate, setSelectedDate] = useState(props.selectedDate || null);
+  const [selectedDate, setSelectedDate] = useState(dayjs(props.selectedDate) || null);
   const [asignee, setAsignee] = useState(props.asignee || '');
   const [issue, setIssue] = useState(props.issue || '');
+  
 
+  const createUser = async (event) => {
+  //  event.preventDefault();
+
+
+   if (header != '' && content != ''  && issue != '' && asignee != '')
+   {props.onSave({ header, content, date: selectedDate , issue , asignee}); }
+   else{
+   alert("All fields required!")
+ }
+
+   let formData = {
+    header: header,
+    content: content,
+    issue: issue,
+    asignee: asignee,
+  }
+  // const isValid = await UserValidation.isValid(formData);
+  // console.log(isValid)
+  
+  }
   return (
     <div>
       <Modal
@@ -54,6 +77,7 @@ export default function BasicModal(props) {
           }}
         >
           <Container maxWidth="xl">
+            <form onSubmit={createUser}>
             <TextField
               fullWidth
               variant="outlined"
@@ -65,7 +89,7 @@ export default function BasicModal(props) {
               onChange={(e) => setHeader(e.target.value)}
               required
             />
-
+          
             <TextField
               fullWidth
               variant="outlined"
@@ -77,6 +101,7 @@ export default function BasicModal(props) {
               onChange={(e) => setContent(e.target.value)}
               required
             />
+            
 
             <TextField
               fullWidth
@@ -101,7 +126,6 @@ export default function BasicModal(props) {
               onChange={(e) => setIssue(e.target.value)}
               required
             />
-
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DatePicker']}>
                 <DatePicker
@@ -109,6 +133,8 @@ export default function BasicModal(props) {
                   label="Choose Task deadline"
                   value={selectedDate}
                   onChange={(newDate) => setSelectedDate(newDate)}
+                  format="DD/MM/YYYY"
+                  disablePast
                   sx={{
                     textRendering:'white',
                     input: { color: '#ffc300' },
@@ -132,6 +158,7 @@ export default function BasicModal(props) {
             </LocalizationProvider>
 
             <button
+            type= 'submit'
               style={{
                 color: '#ffc300',
                 margin: '10px',
@@ -140,20 +167,14 @@ export default function BasicModal(props) {
                 border: '1px solid #ffc300',
                 marginTop: '30px',
               }}
-              onClick={() => { 
-                if (header != '' && content != '' && selectedDate != null && issue != '' && asignee != '')
-                {props.onSave({ header, content, date: selectedDate , issue , asignee});
-              }
-              else{
-                alert("All fields required!")
-              }
-            }}
+              
               
               // disabled={!header || !content || !selectedDate}
             >
               Save
             </button>
             <button
+              type="button"
               style={{
                 color: '#ffc300',
                 margin: '10px',
@@ -166,6 +187,7 @@ export default function BasicModal(props) {
             >
               Close
             </button>
+            </form>
           </Container>
         </Box>
       </Modal>

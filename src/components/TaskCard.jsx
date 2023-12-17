@@ -5,6 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 import AvatarButton from "./AvatarButton";
 import Delete from "./Deletion";
 import BasicModal from "./TaskModal";
+// import DeleteConfirmationModal from "./Deletion";
 
 function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
@@ -20,7 +21,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
     transition,
     isDragging,
   } = useSortable({
-    id: task.id,
+    id: task._id,
     data: {
       type: "Task",
       task,
@@ -31,7 +32,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
-    color: isDragging ? 'white' : 'white', // Change the text color while dragging
+    color: isDragging ? "white" : "white", // Change the text color while dragging
   };
 
   const toggleEditMode = () => {
@@ -40,11 +41,13 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
   };
 
   useEffect(() => {
-    if (editById === task.id) {
+    if (editById === task._id) {
       setEditMode(true);
       setEditById(null);
     }
-  }, [editById, setEditById, task.id]);
+    
+  }, [editById, setEditById, task._id]);
+  
 
   return (
     <div
@@ -53,12 +56,12 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
       {...attributes}
       {...listeners}
       onClick={() => {
-        if (del !== true){
-          setModal(true)
+        if (del !== true) {
+          setModal(true);
         }
       }}
-      className={`${
-        false
+            className={`${
+        editMode
           ? "bg-purple-900"
           : "bg-mainBackgroundColor hover:ring-2 hover:ring-inset hover:ring-yellow-500"
       } p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl cursor-grab relative task`}
@@ -79,34 +82,44 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            margin: "15px 3px", 
-
+            margin: "15px 3px",
           }}
           className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap"
-        ><div className="overflow-auto max-h-full">
-          {task.header && (
-            <strong style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-             color: "#ffc300" }}> {task.header}</strong>
-          )}
-          {task.content && <div style={{ margin: "10px" }}>{task.content}</div>}
-          {task.date && (
-            <em
+        >
+          <div className="overflow-auto max-h-full">
+            {task.header && (
+              <strong
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  color: "#ffc300",
+                }}
+              >
+                {" "}
+                {task.header}
+              </strong>
+            )}
+            {task.content && (
+              <div style={{ margin: "10px" }}>{task.content}</div>
+            )}
+            {task.date && (
+              <em
               style={{
                 display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+                justifyContent: "center",
+                alignItems: "center",
                 fontSize: "12px",
                 fontFamily: "Pacifico, cursive",
                 color: "#ffc300",
               }}
             >
-              {new Date(task.date).toISOString().split("T")[0]}
+              {new Date(task.date).toLocaleDateString("en-GB")
+                .replace(/\//g, '.')} 
             </em>
-          )}
+            
+            )}
           </div>
         </div>
 
@@ -128,7 +141,6 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
             await console.log("modal is closed");
             setModal(false);
           }}
-
           onSave={async (taskDetails) => {
             await updateTask(task._id, taskDetails);
             setModal(false);
@@ -137,7 +149,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
           content={task.content}
           asignee={task.asignee}
           issue={task.issue}
-          selectedDate={task.date} 
+          selectedDate={task.date}
         />
       ) : null}
     </div>

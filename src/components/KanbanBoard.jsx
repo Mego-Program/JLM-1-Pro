@@ -13,6 +13,8 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import { data } from "browserslist";
+import { update_tasks_status } from "./FunctionToServer";
+
 
 
   
@@ -312,25 +314,38 @@ function KanbanBoard() {
     }
   }
 
-  function updateTask(id, taskDetails) {
-    setTasks((tasks) => {
-      return tasks.map((task) => {
-        if (task.id === id) {
-          // Update the task with the new details
-          return {
-            ...task,
-            header: taskDetails.header !== undefined ? taskDetails.header : task.header,
-            content: taskDetails.content !== undefined ? taskDetails.content : task.content,
-            asignee: taskDetails.asignee !== undefined ? taskDetails.asignee : task.asignee,
-            issue: taskDetails.issue !== undefined ? taskDetails.issue : task.issue,
-            date: taskDetails.date !== undefined ? taskDetails.date : task.date,
-            // Add other properties as needed
-          };
-        }
-        return task;
-      });
+  async function updateTask(taskId, taskDetails) {
+    try{
+      const response = await axios.post('http://localhost:8137/tasks/update_task_content',{
+        taskId:taskId,
+        header: taskDetails.header,
+        content: taskDetails.content,
+        issue: taskDetails.issue,
+        asignee: taskDetails.asignee,
+        date: taskDetails.date
+    })
+      console.log("fun");
+      setTasks((tasks) => {
+        return tasks.map((task) => {
+          if (task._id === taskId) {
+            // Update the task with the new details
+            return {
+              ...task,
+              header: taskDetails.header !== undefined ? taskDetails.header : task.header,
+              content: taskDetails.content !== undefined ? taskDetails.content : task.content,
+              asignee: taskDetails.asignee !== undefined ? taskDetails.asignee : task.asignee,
+              issue: taskDetails.issue !== undefined ? taskDetails.issue : task.issue,
+              date: taskDetails.date !== undefined ? taskDetails.date : task.date,
+              // Add other properties as needed
+            };
+          }
+          return task;
+        });
 
-    });
+      });
+  }catch(error){
+    console.error(error);
+  }
   }
 
   
@@ -436,9 +451,12 @@ function KanbanBoard() {
 
     // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
+
+        const activeIndex = tasks.findIndex((t) => t._id === activeId);
+        const overIndex = tasks.findIndex((t) => t._id === overId)
+        
+      update_tasks_status(activeId,tasks[overIndex].columnId)
       setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-        const overIndex = tasks.findIndex((t) => t.id === overId);
 
         if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
           // Fix introduced after video recording
@@ -454,10 +472,11 @@ function KanbanBoard() {
 
     // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
+      const activeIndex = tasks.findIndex((t) =>  t._id === activeId)
+      tasks[activeIndex].columnId = overId;
+      update_tasks_status(activeId,overId)
       setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-
-        tasks[activeIndex].columnId = overId;
+        ;
         console.log("DROPPING TASK OVER COLUMN", { activeIndex });
         return arrayMove(tasks, activeIndex, activeIndex);
       });
