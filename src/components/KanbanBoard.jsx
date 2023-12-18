@@ -13,178 +13,60 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import ProjectDropdown from './ProjectDropdown';  
-import { data } from "browserslist";
 import { update_tasks_status } from "./FunctionToServer";
 
 
-
-  
-async function getProjectById(projectid){
-  // try {
-  //   const response = await axios.post('http://localhost:8137/projects/get_all_data')
-  //   console.log(response.data);
-  //   // setTasks(response.data)
-  //   return response.data
-    
-  // } catch (error) {
-  //   console.error('Error fetching tasks:', error.message);
-  //   return null
-  // }
-  try {
-    const response = await axios.post('http://localhost:8137/projects/get_project_by_id',{
-      projectId: projectid
-    });
-    
-    return response.data
-    
-  } catch (error) {
-    console.error('Error fetching tasks:', error.message);
-    return null
-  }
-};
-
 async function getTasksByProjectId(projectId){
-  
   try {
     const response = await axios.post('http://localhost:8137/tasks/get_tasks_by_projectId',{
       projectId: projectId
     });
-    
     return response.data
-    
   } catch (error) {
     console.error('Error fetching tasks:', error.message);
     return null
   }
 };
 
-const defaultCols = [
-  {
-    id: "todo",
-    title: "",
-  },
-  {
-    id: "doing",
-    title: "",
-  },
-  {
-    id: "done",
-    title: "",
-  },
-];
+const defaultCols = [];
 
-const defaultTasks = [
-  // {
-  //   id: "1",
-  //   columnId: "todo",
-  //   content: "List admin APIs for dashboard",
-  // },
-  // {
-  //   id: "2",
-  //   columnId: "todo",
-  //   content:
-  //     "Develop user registration functionality with OTP delivered on SMS after email confirmation and phone number confirmation",
-  // },
-  // {
-  //   id: "3",
-  //   columnId: "doing",
-  //   content: "Conduct security testing",
-  // },
-  // {
-  //   id: "4",
-  //   columnId: "doing",
-  //   content: "Analyze competitors",
-  // },
-  // {
-  //   id: "5",
-  //   columnId: "done",
-  //   content: "Create UI kit documentation",
-  // },
-  // {
-  //   id: "6",
-  //   columnId: "done",
-  //   content: "Dev meeting",
-  // },
-  // {
-  //   id: "7",
-  //   columnId: "done",
-  //   content: "Deliver dashboard prototype",
-  // },
-  // {
-  //   id: "8",
-  //   columnId: "todo",
-  //   content: "Optimize application performance",
-  // },
-  // {
-  //   id: "9",
-  //   columnId: "todo",
-  //   content: "Implement data validation",
-  // },
-  // {
-  //   id: "10",
-  //   columnId: "todo",
-  //   content: "Design database schema",
-  // },
-  // {
-  //   id: "11",
-  //   columnId: "todo",
-  //   content: "Integrate SSL web certificates into workflow",
-  // },
-  // {
-  //   id: "12",
-  //   columnId: "doing",
-  //   content: "Implement error logging and monitoring",
-  // },
-  // {
-  //   id: "13",
-  //   columnId: "doing",
-  //   content: "Design and implement responsive UI",
-  // },
-];
+const defaultTasks = [];
 
 function KanbanBoard() {
+  const [columns, setColumns] = useState(defaultCols);
+  const [tasks, setTasks] = useState(defaultTasks);
+
   const [selectedProject, setSelectedProject] = useState('');
   const [editById, setEditById] = useState(null);
-  const [columns, setColumns] = useState(defaultCols);
-  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
-  
-  const [tasks, setTasks] = useState(defaultTasks);
+ 
+  const columnsId = useMemo(() => columns.map((col) => col.id), [columns])
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
 
-  // useEffect(() => {
+  useEffect(() => {
   //   // Fetch tasks and columns based on the selected project
+  fetchData()
   //   // Example API call:
   //   // fetchProjectData(selectedProject).then((data) => {
   //   //   setColumns(data.columns);
   //   //   setTasks(data.tasks);
   //   // });
-  // }, [selectedProject]);
-  const [ccurrentProject,setCcurrentProject] = useState(null)
+  }, [selectedProject]);
 
   const fetchData = async () => {
     try {
     
-      const project = await getProjectById("65672ab778c514a0489d386f");
-      const task = await getTasksByProjectId("65672ab778c514a0489d386f")
+      const project = selectedProject_id;
+      const task = await getTasksByProjectId(project)
       
       setTasks(task)
       setColumns(project.columns);
-      setCcurrentProject(project)
-      
-      
+      setselectedProject(project)
 
     } catch (error) {
       console.error('Error fetching project:', error.message);
     }
   };
-
-
-  useEffect(() => {
-    
-    fetchData();
-  }, []);
-  console.log(tasks);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -213,7 +95,7 @@ function KanbanBoard() {
             <SortableContext items={columnsId}>
               {columns.map((col) => (
                 <ColumnContainer
-                  ccurrentProject = {ccurrentProject} 
+                  currentProject = {selectedProject} 
                   editById={editById}
                   setEditById={setEditById}
                   key={col.id}
@@ -231,7 +113,7 @@ function KanbanBoard() {
 
           <button
             onClick={() => {
-              createNewColumn(ccurrentProject._id);
+              createNewColumn(selectedProject._id);
             }}
             className="
       h-[60px]
@@ -287,7 +169,7 @@ function KanbanBoard() {
     try{
       const response = await axios.post('http://localhost:8137/tasks/add_tasks',{
         // id: generateId(),
-        projectID:ccurrentProject._id,
+        projectID:selectedProject._id,
         columnId,
         header: taskDetails.header,
         content: taskDetails.content,
@@ -375,7 +257,7 @@ function KanbanBoard() {
   async function deleteColumn(columnId) {
     try {
       const response = await axios.post('http://localhost:8137/projects/delete_column',{
-            projectId:ccurrentProject._id,
+            projectId:selectedProject._id,
             columnId:columnId
       })
       
