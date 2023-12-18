@@ -14,6 +14,12 @@ export default defineConfig({
       },
       shared: ["react", "react-dom"],
     }),
+    federation({
+      name:"dbUsers",
+      remotes:{
+        remotAllUsers: "https://infra-jerusalem-1-client.vercel.app/assets/remoteEntry.js"
+      }
+    })
   ],
   build: {
     modulePreload: false,
