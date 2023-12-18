@@ -1,36 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 const DropdownSelect = () => {
   const [selectedTasks, setSelectedTasks] = useState([]);
+  const [currentSprint, setCurrentSprint] = useState([]);
+
+  useEffect(() => {
+    const fetchCurrentSprint = async () => {
+      try {
+        const response = await fetch('http://localhost:8137/todos');
+        const data = await response.json();
+        // Assuming your server response is an array of users for the current sprint
+        setCurrentSprint(data.map((user) => user.username));
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchCurrentSprint();
+  }, []);
 
   const handleChange = (event) => {
     setSelectedTasks(event.target.value);
   };
 
-  const taskOptions = [
-    'Task 1',
-    'Task 2',
-    'Task 3',
-    // Add more task options as needed
-  ];
-
   return (
     <FormControl>
-      <Select
-        multiple
-        value={selectedTasks}
-        onChange={handleChange}
-        displayEmpty
-      >
+      <Select multiple value={selectedTasks} onChange={handleChange} displayEmpty>
         <MenuItem disabled value="">
-          Select Tasks
+          Select Users for Current Sprint
         </MenuItem>
-        {taskOptions.map((task) => (
-          <MenuItem key={task} value={task}>
-            {task}
+        {currentSprint.map((username) => (
+          <MenuItem key={username} value={username}>
+            {username}
           </MenuItem>
         ))}
       </Select>
@@ -39,6 +43,9 @@ const DropdownSelect = () => {
 };
 
 export default DropdownSelect;
+
+
+
 
 // import React, { useState, useEffect } from 'react';
 // import MenuItem from '@mui/material/MenuItem';
