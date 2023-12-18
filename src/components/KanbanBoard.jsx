@@ -217,7 +217,7 @@ function KanbanBoard() {
       asignee: taskDetails.asignee,
       date: taskDetails.date,
     };
-    
+
     setTasks([newTask, ...tasks]);
     // setEditById(newTask.id);
   }
@@ -234,10 +234,20 @@ function KanbanBoard() {
           // Update the task with the new details
           return {
             ...task,
-            header: taskDetails.header !== undefined ? taskDetails.header : task.header,
-            content: taskDetails.content !== undefined ? taskDetails.content : task.content,
-            asignee: taskDetails.asignee !== undefined ? taskDetails.asignee : task.asignee,
-            issue: taskDetails.issue !== undefined ? taskDetails.issue : task.issue,
+            header:
+              taskDetails.header !== undefined
+                ? taskDetails.header
+                : task.header,
+            content:
+              taskDetails.content !== undefined
+                ? taskDetails.content
+                : task.content,
+            asignee:
+              taskDetails.asignee !== undefined
+                ? taskDetails.asignee
+                : task.asignee,
+            issue:
+              taskDetails.issue !== undefined ? taskDetails.issue : task.issue,
             date: taskDetails.date !== undefined ? taskDetails.date : task.date,
             // Add other properties as needed
           };
@@ -246,7 +256,6 @@ function KanbanBoard() {
       });
     });
   }
-  
 
   function createNewColumn() {
     const columnToAdd = {
@@ -297,7 +306,6 @@ function KanbanBoard() {
     const overId = over.id;
 
     if (activeId === overId) return;
-
     const isActiveAColumn = active.data.current?.type === "Column";
     if (!isActiveAColumn) return;
 
