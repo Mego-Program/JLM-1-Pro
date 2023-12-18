@@ -9,6 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
 import UserValidation from "./validation";
+import dayjs from 'dayjs';
 
 const style = {
   position: "absolute",
@@ -25,10 +26,10 @@ const style = {
 export default function BasicModal(props) {
   const [header, setHeader] = useState(props.header || "");
   const [content, setContent] = useState(props.content || "");
-  const [selectedDate, setSelectedDate] = useState(props.selectedDate || null);
+  const [selectedDate, setSelectedDate] = useState(dayjs(props.selectedDate) || null);
   const [asignee, setAsignee] = useState(props.asignee || "");
   const [issue, setIssue] = useState(props.issue || "");
-  const [errors, setErrors] = useState({}); // Add this line
+  const [errors, setErrors] = useState({}); 
 
   const createUser = async (event) => {
     event.preventDefault();
@@ -38,6 +39,8 @@ export default function BasicModal(props) {
       content: content,
       issue: issue,
       asignee: asignee,
+      selectedDate:selectedDate
+
     };
 
     try {
@@ -46,6 +49,7 @@ export default function BasicModal(props) {
       console.log("Form is valid");
       setErrors({});
       props.onSave({ header, content, date: selectedDate, issue, asignee });
+      
     } catch (error) {
       // Validation failed, update errors state
       const newErrors = {};
@@ -155,9 +159,9 @@ export default function BasicModal(props) {
                     sx={{
                       input: { color: "#ffc300" },
                       label: {
-                        color: "#ffc300", // Set the text color of the label to white
+                        color: "#ffc300", 
                         "&.Mui-focused": {
-                          color: "#ffc300", // Set the text color of the label when focused to yellow
+                          color: "#ffc300", 
                         },
                       },
                       svg: { color: "#ffc300" },
@@ -210,3 +214,4 @@ export default function BasicModal(props) {
     </div>
   );
 }
+

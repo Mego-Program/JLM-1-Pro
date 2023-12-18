@@ -7,8 +7,12 @@ import TaskCard from "./TaskCard";
 import Delete from "./Deletion";
 import BarDropdown from "./UrgencyDropdown";
 import BasicModal from "./TaskModal";
+import { update_project_column_text } from "./FunctionToServer";
+import axios from "axios";
+
 
 function ColumnContainer({
+  ccurrentProject,
   column,
   editById,
   setEditById,
@@ -19,12 +23,12 @@ function ColumnContainer({
   deleteTask,
   updateTask,
 }) {
+  
   const [editMode, setEditMode] = useState(false);
   const [del, setDel] = useState(false);
   const [modal, setModal] = useState(false);
-
   const tasksIds = useMemo(() => {
-    return tasks.map((task) => task.id);
+    return tasks.map((task) => task._id);
   }, [tasks]);
 
   const {
@@ -80,36 +84,44 @@ function ColumnContainer({
           <div className="flex text-blue-900 justify-center items-center bg-yellow-500 px-3 py-2 text-sm rounded-full">
             {tasks.length}
           </div>
-          <BarDropdown />
-          {!editMode && column.title}
+          <BarDropdown
+            ccurrentProject = {ccurrentProject}
+            column={column}
+          />
+          {!editMode && column.column}
           {editMode && (
             <input
               className="bg-blue-200 text-blue-900 focus:border-yellow-600 border rounded outline-none px-2"
-              value={column.title.slice(0, 30)} // Display only the first 10 characters
-              onChange={(e) => {
+              value={column.column} // Display only the first 10 characters
+              
+              onChange={async(e) => {
                 const newValue = e.target.value.slice(0, 30); // Limit to 10 characters
-                updateColumn(column.id, newValue);
+                updateColumn(column.id,newValue )
               }}
+              
               autoFocus
               onBlur={() => {
+                update_project_column_text(ccurrentProject._id,column.id,column.column)
                 setEditMode(false);
+                
               }}
               onKeyDown={(e) => {
                 if (e.key !== "Enter") return;
                 setEditMode(false);
+                update_project_column_text(ccurrentProject._id,column.id,column.column)
               }}
             />
           )}
         </div>
         {modal && (
-  <BasicModal
-    onClose={() => setModal(false)}
-    onSave={(taskDetails) => {
-      createTask(column.id, taskDetails);
-      setModal(false);
-    }}
-  />
-)}
+          <BasicModal
+            onClose={() => setModal(false)}
+            onSave={(taskDetails) => {
+              createTask(column.id,taskDetails);
+              setModal(false);
+            }}
+          />
+        )}
 
 
 
@@ -127,7 +139,7 @@ function ColumnContainer({
         <SortableContext items={tasksIds}>
           {tasks.map((task) => (
             <TaskCard
-              key={task.id}
+              key={task._id}
               task={task}
               editById={editById}
               setEditById={setEditById}
