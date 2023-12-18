@@ -6,7 +6,7 @@ import { styled, css } from '@mui/system';
 import { Modal as BaseModal } from '@mui/base/Modal';
 import  DateRange  from './DateRange';
 import SprintDropDown from './SprintDropDown';
-import DropdownSelect from './DropdownSelect';
+import DropdownSelect from './DropDownSelect';
 
 export default function SprintFeatrue() {
   const [open, setOpen] = React.useState(false);
@@ -14,10 +14,12 @@ export default function SprintFeatrue() {
   const handleClose = () => setOpen(false);
   const [data, setData] = useState()
   
-  let [sprintHeader, setSprintHeader] = useState("");
+  let [sprintTitle, setSprintTitle] = useState("");
+  let [sprintDescreption, setSprintDescreption] = useState("");
 
   const handleInputChange = (event) => {
-    setSprintHeader(event.target.value);
+    setSprintTitle(event.target.valuetitle);
+    setSprintDescreption(event.target.valuedescreption);
   };
 
   
@@ -35,11 +37,11 @@ export default function SprintFeatrue() {
         slots={{ backdrop: StyledBackdrop }}
       >
         <ModalContent sx={{ width: 400, backgroundColor: "rgb(234, 179, 8)" }}>
-          <h2 id="unstyled-modal-title" className="modal-title">
+          <h2>
             <p>Sprint title</p>
-            <input type='text' value={sprintHeader} onChange={handleInputChange} />
+            <input type='text' valuetitle={sprintTitle} onChange={handleInputChange} />
             <p>Sprint discreption</p>
-            <input type='text' value={sprintHeader} onChange={handleInputChange} />
+            <input type='text' valuedescreption={sprintDescreption} onChange={handleInputChange} />
             <DateRange />
           </h2>
           <SprintDropDown />

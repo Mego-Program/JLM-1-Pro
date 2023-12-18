@@ -12,7 +12,6 @@ const DropdownSelect = () => {
       try {
         const response = await fetch('http://localhost:8137/todos');
         const data = await response.json();
-        // Assuming your server response is an array of users for the current sprint
         setCurrentSprint(data.map((user) => user.username));
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -30,7 +29,7 @@ const DropdownSelect = () => {
     <FormControl>
       <Select multiple value={selectedTasks} onChange={handleChange} displayEmpty>
         <MenuItem disabled value="">
-          Select Users for Current Sprint
+          Select tasks for Current Sprint
         </MenuItem>
         {currentSprint.map((username) => (
           <MenuItem key={username} value={username}>
