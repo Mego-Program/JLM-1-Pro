@@ -13,9 +13,10 @@ const ProjectDropdown = ({ onSelectProject }) => {
   }, []);
 
   return (
-    <div>
+    <div className="w-full ">
       <select
         id="projectDropdown"
+        className="bg-blue-950 w-full m-4 text-white rounded p-2"
         onChange={(e) => onSelectProject(e.target.value)}
       >
         <option value="">Select a Project</option>

@@ -111,10 +111,9 @@ function KanbanBoard() {
         items-center
         overflow-x-auto
         overflow-y-hidden
-        px-[40px]
     "
     >
-       <div className="mt-0 flex flex-col items-center w-full h-full overflow-x-auto overflow-y-hidden px-[40px]">
+       <div className="mt-0 flex flex-col items-center w-full h-full overflow-x-auto overflow-y-hidden">
       {/* ProjectDropdown component */}
       < ProjectDropdown onSelectProject={setCcurrentProject}
         selectedProject={ccurrentProject}
