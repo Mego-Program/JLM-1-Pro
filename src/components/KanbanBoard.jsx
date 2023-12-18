@@ -13,7 +13,7 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import { update_tasks_status } from "./FunctionToServer";
-
+import ProjectDropdown from "./ProjectDropdown";
 
 
   
@@ -48,15 +48,18 @@ async function getTasksByProjectId(projectId){
 const defaultCols = [
   {
     id: "todo",
-    title: "",
+    title: "todo",
+    isShadow: true,
   },
   {
     id: "doing",
-    title: "",
+    title: "doing",
+    isShadow: true,
   },
   {
     id: "done",
-    title: "",
+    title: "done",
+    isShadow: true,
   },
 ];
 
@@ -72,14 +75,13 @@ function KanbanBoard() {
   const [activeTask, setActiveTask] = useState(null);
   const [ccurrentProject,setCcurrentProject] = useState(null)
 
-  const fetchData = async () => {
+  const fetchData = async (ccurrentProject) => {
     try {
-      const project = await getProjectById("65672ab778c514a0489d386f");
-      const task = await getTasksByProjectId("65672ab778c514a0489d386f")
+      const project = await getProjectById(ccurrentProject);
+      const task = await getTasksByProjectId(ccurrentProject)
       
       setTasks(task)
       setColumns(project.columns);
-      setCcurrentProject(project)
     } catch (error) {
       console.error('Error fetching tasks:', error.message);
     }
@@ -87,8 +89,8 @@ function KanbanBoard() {
 
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(ccurrentProject);
+  }, [ccurrentProject]);
   console.log(tasks);
 
   const sensors = useSensors(
@@ -112,6 +114,11 @@ function KanbanBoard() {
         px-[40px]
     "
     >
+       <div className="mt-0 flex flex-col items-center w-full h-full overflow-x-auto overflow-y-hidden px-[40px]">
+      {/* ProjectDropdown component */}
+      < ProjectDropdown onSelectProject={setCcurrentProject}
+        selectedProject={ccurrentProject}
+      />
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -189,6 +196,7 @@ function KanbanBoard() {
           document.body
         )}
       </DndContext>
+    </div>
     </div>
   );
 
