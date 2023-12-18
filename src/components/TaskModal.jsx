@@ -28,7 +28,7 @@ export default function BasicModal(props) {
   const [selectedDate, setSelectedDate] = useState(props.selectedDate || null);
   const [asignee, setAsignee] = useState(props.asignee || "");
   const [issue, setIssue] = useState(props.issue || "");
-  const [errors, setErrors] = useState({}); // Add this line
+  const [errors, setErrors] = useState({}); 
 
   const createUser = async (event) => {
     event.preventDefault();
@@ -155,9 +155,9 @@ export default function BasicModal(props) {
                     sx={{
                       input: { color: "#ffc300" },
                       label: {
-                        color: "#ffc300", // Set the text color of the label to white
+                        color: "#ffc300", 
                         "&.Mui-focused": {
-                          color: "#ffc300", // Set the text color of the label when focused to yellow
+                          color: "#ffc300", 
                         },
                       },
                       svg: { color: "#ffc300" },
