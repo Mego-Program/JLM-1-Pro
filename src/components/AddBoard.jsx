@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import AllUsers from "remotAllUsers/AllUsers";
 import axios from 'axios';
 
 const BoardForm = () => {
@@ -17,6 +18,19 @@ const BoardForm = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedManager, setSelectedManager] = useState(null);
 
+
+  const fetchUsers = async () => {
+    try {
+      const users = await AllUsers();
+      console.log(users);
+      return users
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -26,16 +40,14 @@ const BoardForm = () => {
   };
 
   const handleUsersModalOpen = async () => {
-    // Simulate fetching users from the database
-    const response = await axios.get('https://example.com/api/getUsers');
-    setUsers(response.data);
+    const users = await fetchUsers();
+    setUsers(users);
     setUsersModalOpen(true);
   };
 
   const handleManagerModalOpen = async () => {
-    // Simulate fetching users from the database
-    const response = await axios.get('https://example.com/api/getUsers');
-    setUsers(response.data);
+    const users = await fetchUsers();
+    setUsers(users);
     setManagerModalOpen(true);
   };
 
@@ -68,10 +80,11 @@ const BoardForm = () => {
   const handleSave = async () => {
     try {
       // Simulate sending data to the database using Axios POST request
-      await axios.post('https://example.com/api/saveBoard', {
-        boardName,
-        selectedUsers,
-        selectedManager,
+        await axios.post('https://jlm-projects-server-1.vercel.app/projects/add_project',{
+        name:boardName,
+        manager:selectedManager,
+        users:selectedUsers,
+      
       });
 
       // After a successful save, close the main modal
@@ -154,21 +167,22 @@ const BoardForm = () => {
             p: 2,
             maxHeight: '80vh',
             overflowY: 'auto',
+            color:'#000'
           }}
         >
           <Typography variant="h6" component="div">
             Select Users
           </Typography>
           {users.map((user) => (
-            <Box key={user.id} mt={2} p={2} border={1} borderRadius={4}>
+            <Box key={user._id} mt={2} p={2} border={1} borderRadius={4}>
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={selectedUsers.includes(user.id)}
-                    onChange={() => handleCheckboxChange(user.id)}
+                    checked={selectedUsers.includes(user._id)}
+                    onChange={() => handleCheckboxChange(user._id)}
                   />
                 }
-                label={user.name}
+                label={user.username}
               />
             </Box>
           ))}
@@ -193,21 +207,22 @@ const BoardForm = () => {
             p: 2,
             maxHeight: '80vh',
             overflowY: 'auto',
+            color:'#000'
           }}
         >
           <Typography variant="h6" component="div">
             Select Manager
           </Typography>
           {users.map((user) => (
-            <Box key={user.id} mt={2} p={2} border={1} borderRadius={4}>
+            <Box key={user._id} mt={2} p={2} border={1} borderRadius={4}>
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={selectedManager === user.id}
-                    onChange={() => handleManagerCheckboxChange(user.id)}
+                    checked={selectedManager === user._id}
+                    onChange={() => handleManagerCheckboxChange(user._id)}
                   />
                 }
-                label={user.name}
+                label={user.username}
               />
             </Box>
           ))}
