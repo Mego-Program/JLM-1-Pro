@@ -26,7 +26,7 @@ async function getProjectById(projectid){
     return response.data
     
   } catch (error) {
-    console.error('Error fetching tasks:', error.message);
+    console.error('Error fetching project:', error.message);
     return null
   }
 };
@@ -46,21 +46,21 @@ async function getTasksByProjectId(projectId){
 };
 
 const defaultCols = [
-  {
-    id: "todo",
-    title: "todo",
-    isShadow: true,
-  },
-  {
-    id: "doing",
-    title: "doing",
-    isShadow: true,
-  },
-  {
-    id: "done",
-    title: "done",
-    isShadow: true,
-  },
+  // {
+  //   id: "todo",
+  //   title: "todo",
+  //   isShadow: true,
+  // },
+  // {
+  //   id: "doing",
+  //   title: "doing",
+  //   isShadow: true,
+  // },
+  // {
+  //   id: "done",
+  //   title: "done",
+  //   isShadow: true,
+  // },
 ];
 
 const defaultTasks = [];
@@ -74,24 +74,30 @@ function KanbanBoard() {
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [ccurrentProject,setCcurrentProject] = useState(null)
+  
+  const [Projectid,setProjectid] = useState(null)
 
-  const fetchData = async (ccurrentProject) => {
+
+  const fetchData = async (projectid) => {
     try {
-      const project = await getProjectById(ccurrentProject);
-      const task = await getTasksByProjectId(ccurrentProject)
-      
+      const project = await getProjectById(projectid);
+      const task = await getTasksByProjectId(projectid);
+
       setTasks(task)
       setColumns(project.columns);
+      setCcurrentProject(project)
+
     } catch (error) {
-      console.error('Error fetching tasks:', error.message);
+      console.error('Error fetching project:', error.message);
     }
   };
+ 
 
 
   useEffect(() => {
-    fetchData(ccurrentProject);
-  }, [ccurrentProject]);
-  console.log(tasks);
+    fetchData(Projectid);
+  }, [Projectid]);
+  
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -115,9 +121,10 @@ function KanbanBoard() {
     >
        <div className="mt-0 flex flex-col items-center w-full h-full overflow-x-auto overflow-y-hidden">
       {/* ProjectDropdown component */}
-      < ProjectDropdown onSelectProject={setCcurrentProject}
-        selectedProject={ccurrentProject}
+      < ProjectDropdown onSelectProject={setProjectid}
+        selectedProject={Projectid}
       />
+      
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
