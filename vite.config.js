@@ -17,7 +17,7 @@ export default defineConfig({
     federation({
       name:"dbUsers",
       remotes:{
-        remotAllUsers: "https://infra-jerusalem-1-client.vercel.app/assets/remoteEntry.js"
+        remotAllUsers: "https://infra-jerusalem-1-client-seven.vercel.app/assets/remoteEntry.js"
       }
     })
   ],
