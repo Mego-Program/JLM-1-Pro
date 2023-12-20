@@ -56,7 +56,7 @@ async function getTasksByProjectId(projectId) {
     console.error("Error fetching tasks:", error.message);
     return null;
   }
-}
+}}
 
 const defaultCols = [
   // {
@@ -85,7 +85,6 @@ function KanbanBoard() {
   const [editById, setEditById] = useState(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-  const [tasks, setTasks] = useState(defaultTasks);
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [ccurrentProject, setCcurrentProject] = useState(null);
@@ -97,10 +96,6 @@ function KanbanBoard() {
     try {
       const project = await getProjectById(projectid);
       const task = await getTasksByProjectId(projectid);
-
-      setTasks(task)
-      const project = await getProjectById("65672ab778c514a0489d386f");
-      const task = await getTasksByProjectId("65672ab778c514a0489d386f");
 
       setTasks(task);
       setColumns(project.columns);
@@ -215,7 +210,6 @@ function KanbanBoard() {
           document.body
         )}
       </DndContext>
-    </div>
     </div>
   );
 
