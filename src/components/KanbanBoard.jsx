@@ -12,23 +12,12 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
-import { data } from "browserslist";
 import { update_tasks_status } from "./FunctionToServer";
-
+import ProjectDropdown from "./ProjectDropdown";
 
 
   
 async function getProjectById(projectid){
-  // try {
-  //   const response = await axios.post('http://localhost:8137/projects/get_all_data')
-  //   console.log(response.data);
-  //   // setTasks(response.data)
-  //   return response.data
-    
-  // } catch (error) {
-  //   console.error('Error fetching tasks:', error.message);
-  //   return null
-  // }
   try {
     const response = await axios.post('http://localhost:8137/projects/get_project_by_id',{
       projectId: projectid
@@ -37,13 +26,12 @@ async function getProjectById(projectid){
     return response.data
     
   } catch (error) {
-    console.error('Error fetching tasks:', error.message);
+    console.error('Error fetching project:', error.message);
     return null
   }
 };
 
 async function getTasksByProjectId(projectId){
-  
   try {
     const response = await axios.post('http://localhost:8137/tasks/get_tasks_by_projectId',{
       projectId: projectId
@@ -58,122 +46,58 @@ async function getTasksByProjectId(projectId){
 };
 
 const defaultCols = [
-  {
-    id: "todo",
-    title: "",
-  },
-  {
-    id: "doing",
-    title: "",
-  },
-  {
-    id: "done",
-    title: "",
-  },
+  // {
+  //   id: "todo",
+  //   title: "todo",
+  //   isShadow: true,
+  // },
+  // {
+  //   id: "doing",
+  //   title: "doing",
+  //   isShadow: true,
+  // },
+  // {
+  //   id: "done",
+  //   title: "done",
+  //   isShadow: true,
+  // },
 ];
 
-const defaultTasks = [
-  // {
-  //   id: "1",
-  //   columnId: "todo",
-  //   content: "List admin APIs for dashboard",
-  // },
-  // {
-  //   id: "2",
-  //   columnId: "todo",
-  //   content:
-  //     "Develop user registration functionality with OTP delivered on SMS after email confirmation and phone number confirmation",
-  // },
-  // {
-  //   id: "3",
-  //   columnId: "doing",
-  //   content: "Conduct security testing",
-  // },
-  // {
-  //   id: "4",
-  //   columnId: "doing",
-  //   content: "Analyze competitors",
-  // },
-  // {
-  //   id: "5",
-  //   columnId: "done",
-  //   content: "Create UI kit documentation",
-  // },
-  // {
-  //   id: "6",
-  //   columnId: "done",
-  //   content: "Dev meeting",
-  // },
-  // {
-  //   id: "7",
-  //   columnId: "done",
-  //   content: "Deliver dashboard prototype",
-  // },
-  // {
-  //   id: "8",
-  //   columnId: "todo",
-  //   content: "Optimize application performance",
-  // },
-  // {
-  //   id: "9",
-  //   columnId: "todo",
-  //   content: "Implement data validation",
-  // },
-  // {
-  //   id: "10",
-  //   columnId: "todo",
-  //   content: "Design database schema",
-  // },
-  // {
-  //   id: "11",
-  //   columnId: "todo",
-  //   content: "Integrate SSL web certificates into workflow",
-  // },
-  // {
-  //   id: "12",
-  //   columnId: "doing",
-  //   content: "Implement error logging and monitoring",
-  // },
-  // {
-  //   id: "13",
-  //   columnId: "doing",
-  //   content: "Design and implement responsive UI",
-  // },
-];
+const defaultTasks = [];
 
 function KanbanBoard() {
-  const [editById, setEditById] = useState(null);
   const [columns, setColumns] = useState(defaultCols);
-  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
-  
   const [tasks, setTasks] = useState(defaultTasks);
+
+  const [editById, setEditById] = useState(null);
+  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [ccurrentProject,setCcurrentProject] = useState(null)
+  
+  const [Projectid,setProjectid] = useState(null)
 
-  const fetchData = async () => {
+
+  const fetchData = async (projectid) => {
     try {
-    
-      const project = await getProjectById("65672ab778c514a0489d386f");
-      const task = await getTasksByProjectId("65672ab778c514a0489d386f")
-      
+      const project = await getProjectById(projectid);
+      const task = await getTasksByProjectId(projectid);
+
       setTasks(task)
       setColumns(project.columns);
       setCcurrentProject(project)
-      
-      
 
     } catch (error) {
       console.error('Error fetching project:', error.message);
     }
   };
+ 
 
 
   useEffect(() => {
-    
-    fetchData();
-  }, []);
-  console.log(tasks);
+    fetchData(Projectid);
+  }, [Projectid]);
+  
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -193,9 +117,14 @@ function KanbanBoard() {
         items-center
         overflow-x-auto
         overflow-y-hidden
-        px-[40px]
     "
     >
+       <div className="mt-0 flex flex-col items-center w-full h-full overflow-x-auto overflow-y-hidden">
+      {/* ProjectDropdown component */}
+      < ProjectDropdown onSelectProject={setProjectid}
+        selectedProject={Projectid}
+      />
+      
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -273,6 +202,7 @@ function KanbanBoard() {
           document.body
         )}
       </DndContext>
+    </div>
     </div>
   );
 
