@@ -6,8 +6,9 @@ import SpecButton from "./components/ButtonSpecs";
 import AllUsers from "remotAllUsers/AllUsers"
 export const RouterPro = (
   <>
-    <SpecButton />
+  
     <KanbanBoard />
+
   </>
 );
 
