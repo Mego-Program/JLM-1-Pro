@@ -46,21 +46,21 @@ async function getTasksByProjectId(projectId){
 };
 
 const defaultCols = [
-  // {
-  //   id: "todo",
-  //   title: "todo",
-  //   isShadow: true,
-  // },
-  // {
-  //   id: "doing",
-  //   title: "doing",
-  //   isShadow: true,
-  // },
-  // {
-  //   id: "done",
-  //   title: "done",
-  //   isShadow: true,
-  // },
+  {
+    id: "todo",
+    title: "todo",
+    isShadow: true,
+  },
+  {
+    id: "doing",
+    title: "doing",
+    isShadow: true,
+  },
+  {
+    id: "done",
+    title: "done",
+    isShadow: true,
+  },
 ];
 
 const defaultTasks = [];
