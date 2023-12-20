@@ -3,27 +3,32 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const DropdownSelect = () => {
-  const [selectedTasks, setSelectedTasks] = useState([]);
+const DropdownSelect = (tasks) => {
+  const [selectedTasks, setSelectedTasks] = useState(tasks.tasks.tasks);
   const [currentSprint, setCurrentSprint] = useState([]);
 
-  useEffect(() => {
-    const fetchCurrentSprint = async () => {
-      try {
-        const response = await fetch('http://localhost:8137/todos');
-        const data = await response.json();
-        setCurrentSprint(data.map((user) => user.username));
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
+  const fetchCurrentSprint = () => {
+    const headers = selectedTasks.map((t) => t.header);
+    setCurrentSprint([...new Set(headers)]);
+    console.log('abd',currentSprint);
+  };
 
+  useEffect(() => {
     fetchCurrentSprint();
-  }, []);
+  }, [tasks]);
 
   const handleChange = (event) => {
+    const selectedHeaders = event.target.value.map((selectedTask) => {
+      if (typeof selectedTask === 'object') {
+        return selectedTask.header;
+      }
+      return selectedTask;
+    });
+  
     setSelectedTasks(event.target.value);
+    setCurrentSprint([...new Set(selectedHeaders)]);
   };
+  
 
   return (
     <FormControl>
@@ -31,59 +36,50 @@ const DropdownSelect = () => {
         <MenuItem disabled value="">
           Select tasks for Current Sprint
         </MenuItem>
-        {currentSprint.map((username) => (
-          <MenuItem key={username} value={username}>
-            {username}
+        {selectedTasks.map((t) => (
+          <MenuItem key={t.header} value={t.header}>
+            {t.header}
           </MenuItem>
         ))}
       </Select>
+      {/* {console.log({ currentSprint })} */}
     </FormControl>
   );
 };
 
 export default DropdownSelect;
 
-
-
-
 // import React, { useState, useEffect } from 'react';
 // import MenuItem from '@mui/material/MenuItem';
 // import FormControl from '@mui/material/FormControl';
 // import Select from '@mui/material/Select';
 
-// const DropdownSelect = () => {
-//   const [selectedTasks, setSelectedTasks] = useState([]);
-//   const [taskOptions, setTaskOptions] = useState([]);
+// const DropdownSelect = ({ tasks }) => {
+//   const [selectedTasks, setSelectedTasks] = useState(tasks.tasks.tasks);
+//   const [taskHeaders, setTaskHeaders] = useState([]);
 
 //   useEffect(() => {
-//     // Fetch tasks from the server
-//     const fetchTasks = async () => {
-//       try {
-//         const response = await fetch('http://localhost:8137/todos');
-//         const data = await response.json();
-//         // Assuming your server response is an array of tasks
-//         setTaskOptions(data.map((task) => task.taskName));
-//       } catch (error) {
-//         console.error('Error fetching tasks:', error);
-//       }
-//     };
-
-//     fetchTasks();
-//   }, []); // Run the effect only once when the component mounts
+//     // Ensure that tasks is an array and not empty before extracting task headers
+//     if (Array.isArray(tasks) && tasks.length > 0) {
+//       const headers = tasks.map((task) => task.header);
+//       setTaskHeaders([...new Set(headers)]);
+//     }
+//   }, [tasks]);
 
 //   const handleChange = (event) => {
-//     setSelectedTasks(event.target.value);
+//     const selectedHeaders = event.target.value;
+//     setSelectedTasks(selectedHeaders);
 //   };
 
 //   return (
 //     <FormControl>
 //       <Select multiple value={selectedTasks} onChange={handleChange} displayEmpty>
-//         <MenuItem disabled value="" key="placeholder">
-//           Select Tasks
+//         <MenuItem disabled value="">
+//           Select tasks for Current Sprint
 //         </MenuItem>
-//         {taskOptions.map((task) => (
-//           <MenuItem key={task} value={task}>
-//             {task}
+//         {taskHeaders.map((header) => (
+//           <MenuItem key={header} value={header}>
+//             {header}
 //           </MenuItem>
 //         ))}
 //       </Select>

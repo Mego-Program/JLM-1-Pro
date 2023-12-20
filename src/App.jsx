@@ -6,7 +6,7 @@ import SpecButton from "./components/ButtonSpecs";
 
 export const RouterPro = (
   <>
-    <SprintFeatrue />
+    {/* <SprintFeatrue /> */}
     <SpecButton />
     <KanbanBoard />
   </>

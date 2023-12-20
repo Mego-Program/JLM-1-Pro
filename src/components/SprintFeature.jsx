@@ -1,28 +1,85 @@
+// import * as React from 'react';
+// import { useState } from 'react';
+// import PropTypes from 'prop-types';
+// import clsx from 'clsx';
+// import { styled, css } from '@mui/system';
+// import { Modal as BaseModal } from '@mui/base/Modal';
+// import  DateRange  from './DateRange';
+// import SprintDropDown from './SprintDropDown';
+// import DropdownSelect from './DropDownSelect';
+
+// export default function SprintFeatrue(tasks) {
+//   const [open, setOpen] = React.useState(false);
+//   const handleOpen = () => setOpen(true);
+//   const handleClose = () => setOpen(false);
+//   // const [data, setData] = useState()
+  
+//   let [sprintTitle, setSprintTitle] = useState("");
+//   let [sprintDescreption, setSprintDescreption] = useState("");
+
+//   const handleInputChange = (event) => {
+//     setSprintTitle(event.target.valuetitle);
+//     setSprintDescreption(event.target.valuedescreption);
+//   };
+
+  
+//   return (
+//     <div>
+//       <SprintDropDown />
+//       <TriggerButton type="button" onClick={handleOpen}>
+//         Create New Sprint
+//       </TriggerButton>
+//       <Modal
+//         // aria-labelledby="unstyled-modal-title"
+//         // aria-describedby="unstyled-modal-description"
+//         open={open}
+//         onClose={handleClose}
+//         slots={{ backdrop: StyledBackdrop }}
+//       >
+//         <ModalContent sx={{ width: 400, backgroundColor: "rgb(234, 179, 8)" }}>
+//           <h2>
+//             <p>Sprint title</p>
+//             <input type='text' valuetitle={sprintTitle} onChange={handleInputChange} />
+//             <p>Sprint discreption</p>
+//             <input type='text' valuedescreption={sprintDescreption} onChange={handleInputChange} />
+//             <DateRange />
+//           </h2>
+//           {/* <SprintDropDown /> */}
+//           <DropdownSelect 
+//           tasks={tasks} />
+//         </ModalContent>
+//       </Modal>
+//     </div>
+//   );
+// }
+
 import * as React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { styled, css } from '@mui/system';
 import { Modal as BaseModal } from '@mui/base/Modal';
-import  DateRange  from './DateRange';
+import DateRange from './DateRange';
 import SprintDropDown from './SprintDropDown';
 import DropdownSelect from './DropDownSelect';
 
-export default function SprintFeatrue() {
+export default function SprintFeature(tasks) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [data, setData] = useState()
-  
+
   let [sprintTitle, setSprintTitle] = useState("");
   let [sprintDescreption, setSprintDescreption] = useState("");
 
   const handleInputChange = (event) => {
-    setSprintTitle(event.target.valuetitle);
-    setSprintDescreption(event.target.valuedescreption);
+    const { name, value } = event.target;
+    if (name === 'valueTitle') {
+      setSprintTitle(value);
+    } else if (name === 'valueDescreption') {
+      setSprintDescreption(value);
+    }
   };
 
-  
   return (
     <div>
       <SprintDropDown />
@@ -30,8 +87,6 @@ export default function SprintFeatrue() {
         Create New Sprint
       </TriggerButton>
       <Modal
-        // aria-labelledby="unstyled-modal-title"
-        // aria-describedby="unstyled-modal-description"
         open={open}
         onClose={handleClose}
         slots={{ backdrop: StyledBackdrop }}
@@ -39,18 +94,20 @@ export default function SprintFeatrue() {
         <ModalContent sx={{ width: 400, backgroundColor: "rgb(234, 179, 8)" }}>
           <h2>
             <p>Sprint title</p>
-            <input type='text' valuetitle={sprintTitle} onChange={handleInputChange} />
-            <p>Sprint discreption</p>
-            <input type='text' valuedescreption={sprintDescreption} onChange={handleInputChange} />
+            <input type='text' name='valueTitle' value={sprintTitle} onChange={handleInputChange} />
+            <p>Sprint description</p>
+            <input type='text' name='valueDescreption' value={sprintDescreption} onChange={handleInputChange} />
             <DateRange />
           </h2>
-          <SprintDropDown />
-          <DropdownSelect />
+          <DropdownSelect tasks={tasks} />
         </ModalContent>
       </Modal>
     </div>
   );
 }
+
+// ... (rest of the code remains unchanged)
+
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { open, className, ...other } = props;

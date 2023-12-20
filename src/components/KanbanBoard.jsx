@@ -13,37 +13,50 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import { update_tasks_status } from "./FunctionToServer";
-import ProjectDropdown from "./ProjectDropdown";
+import SprintFeatrue from "./SprintFeature";
 
+async function getProjectById(projectid) {
+  // try {
+  //   const response = await axios.post('http://localhost:8137/projects/get_all_data')
+  //   console.log(response.data);
+  //   // setTasks(response.data)
+  //   return response.data
 
-  
-async function getProjectById(projectid){
+  // } catch (error) {
+  //   console.error('Error fetching tasks:', error.message);
+  //   return null
+  // }
   try {
-    const response = await axios.post('http://localhost:8137/projects/get_project_by_id',{
-      projectId: projectid
-    });
-    
-    return response.data
-    
+    const response = await axios.post(
+      "http://localhost:8137/projects/get_project_by_id",
+      {
+        projectId: projectid,
+      }
+    );
+
+    return response.data;
   } catch (error) {
-    console.error('Error fetching project:', error.message);
-    return null
+    console.error("Error fetching tasks:", error.message);
+    return null;
   }
-};
+}
 
 async function getTasksByProjectId(projectId){
+async function getTasksByProjectId(projectId) {
   try {
-    const response = await axios.post('http://localhost:8137/tasks/get_tasks_by_projectId',{
-      projectId: projectId
-    });
-    
-    return response.data
-    
+    const response = await axios.post(
+      "http://localhost:8137/tasks/get_tasks_by_projectId",
+      {
+        projectId: projectId,
+      }
+    );
+
+    return response.data;
   } catch (error) {
-    console.error('Error fetching tasks:', error.message);
-    return null
+    console.error("Error fetching tasks:", error.message);
+    return null;
   }
-};
+}
 
 const defaultCols = [
   // {
@@ -71,9 +84,11 @@ function KanbanBoard() {
 
   const [editById, setEditById] = useState(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+
+  const [tasks, setTasks] = useState(defaultTasks);
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
-  const [ccurrentProject,setCcurrentProject] = useState(null)
+  const [ccurrentProject, setCcurrentProject] = useState(null);
   
   const [Projectid,setProjectid] = useState(null)
 
@@ -84,20 +99,21 @@ function KanbanBoard() {
       const task = await getTasksByProjectId(projectid);
 
       setTasks(task)
-      setColumns(project.columns);
-      setCcurrentProject(project)
+      const project = await getProjectById("65672ab778c514a0489d386f");
+      const task = await getTasksByProjectId("65672ab778c514a0489d386f");
 
+      setTasks(task);
+      setColumns(project.columns);
+      setCcurrentProject(project);
     } catch (error) {
-      console.error('Error fetching project:', error.message);
+      console.error("Error fetching project:", error.message);
     }
   };
- 
-
 
   useEffect(() => {
-    fetchData(Projectid);
-  }, [Projectid]);
-  
+    fetchData();
+  }, []);
+  console.log(tasks);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -108,23 +124,20 @@ function KanbanBoard() {
   );
 
   return (
-    <div
-      className="
-        mt-0
-        flex
-        w-full
-        h-full
-        items-center
-        overflow-x-auto
-        overflow-y-hidden
-    "
-    >
-       <div className="mt-0 flex flex-col items-center w-full h-full overflow-x-auto overflow-y-hidden">
-      {/* ProjectDropdown component */}
-      < ProjectDropdown onSelectProject={setProjectid}
-        selectedProject={Projectid}
-      />
+    <div 
+    className="flex 
+    flex-col 
+    items-center 
+    w-full 
+    h-full 
+    overflow-x-auto 
+    overflow-y-hidden 
+    px-[40px]">
       
+      <SprintFeatrue 
+      ccurrentProject={ccurrentProject} 
+      tasks={tasks} />
+
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -136,7 +149,7 @@ function KanbanBoard() {
             <SortableContext items={columnsId}>
               {columns.map((col) => (
                 <ColumnContainer
-                  ccurrentProject = {ccurrentProject} 
+                  ccurrentProject={ccurrentProject}
                   editById={editById}
                   setEditById={setEditById}
                   key={col.id}
@@ -207,53 +220,61 @@ function KanbanBoard() {
   );
 
   async function createTask(columnId, taskDetails) {
-   
-    try{
-      const response = await axios.post('http://localhost:8137/tasks/add_tasks',{
-        // id: generateId(),
-        projectID:ccurrentProject._id,
-        columnId,
-        header: taskDetails.header,
-        content: taskDetails.content,
-        issue: taskDetails.issue,
-        asignee: taskDetails.asignee,
-        date: taskDetails.date
-    })
-    
+    try {
+      const response = await axios.post(
+        "http://localhost:8137/tasks/add_tasks",
+        {
+          // id: generateId(),
+          projectID: ccurrentProject._id,
+          columnId,
+          header: taskDetails.header,
+          content: taskDetails.content,
+          issue: taskDetails.issue,
+          asignee: taskDetails.asignee,
+          date: taskDetails.date,
+        }
+      );
+
       setTasks([response.data, ...tasks]);
-     console.log(tasks);
+      console.log(tasks);
       // setEditById(response.data.task_id);
       // setEditById(newTask.id);
-    }catch(error){
+    } catch (error) {
       console.log(error);
-    };}
-  
+    }
+  }
 
   async function deleteTask(taskeId) {
-    try{
-    const response = await axios.post('http://localhost:8137/tasks/delete_tasks',{      
-      taskeId:taskeId
-      });
-      fetchData()
+    try {
+      const response = await axios.post(
+        "http://localhost:8137/tasks/delete_tasks",
+        {
+          taskeId: taskeId,
+        }
+      );
+      fetchData();
 
       //  const newTasks = tasks.filter((task) => task.id !== taskeId);
       // setTasks(newTasks);
-    }catch{
-      console.error('Error fetching tasks:', error.message);
-        return null
+    } catch {
+      console.error("Error fetching tasks:", error.message);
+      return null;
     }
   }
 
   async function updateTask(taskId, taskDetails) {
-    try{
-      const response = await axios.post('http://localhost:8137/tasks/update_task_content',{
-        taskId:taskId,
-        header: taskDetails.header,
-        content: taskDetails.content,
-        issue: taskDetails.issue,
-        asignee: taskDetails.asignee,
-        date: taskDetails.date
-    })
+    try {
+      const response = await axios.post(
+        "http://localhost:8137/tasks/update_task_content",
+        {
+          taskId: taskId,
+          header: taskDetails.header,
+          content: taskDetails.content,
+          issue: taskDetails.issue,
+          asignee: taskDetails.asignee,
+          date: taskDetails.date,
+        }
+      );
       console.log("fun");
       setTasks((tasks) => {
         return tasks.map((task) => {
@@ -261,67 +282,79 @@ function KanbanBoard() {
             // Update the task with the new details
             return {
               ...task,
-              header: taskDetails.header !== undefined ? taskDetails.header : task.header,
-              content: taskDetails.content !== undefined ? taskDetails.content : task.content,
-              asignee: taskDetails.asignee !== undefined ? taskDetails.asignee : task.asignee,
-              issue: taskDetails.issue !== undefined ? taskDetails.issue : task.issue,
-              date: taskDetails.date !== undefined ? taskDetails.date : task.date,
+              header:
+                taskDetails.header !== undefined
+                  ? taskDetails.header
+                  : task.header,
+              content:
+                taskDetails.content !== undefined
+                  ? taskDetails.content
+                  : task.content,
+              asignee:
+                taskDetails.asignee !== undefined
+                  ? taskDetails.asignee
+                  : task.asignee,
+              issue:
+                taskDetails.issue !== undefined
+                  ? taskDetails.issue
+                  : task.issue,
+              date:
+                taskDetails.date !== undefined ? taskDetails.date : task.date,
               // Add other properties as needed
             };
           }
           return task;
         });
-
       });
-  }catch(error){
-    console.error(error);
-  }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  
-
-  
   async function createNewColumn(projectID) {
     try {
-      const response = await axios.post('http://localhost:8137/projects/add_new_column',{
-        projectId: projectID,
-        columnID: `${generateId()}`,
-        nameColumn:"newColumn"
-      });
-      
+      const response = await axios.post(
+        "http://localhost:8137/projects/add_new_column",
+        {
+          projectId: projectID,
+          columnID: `${generateId()}`,
+          nameColumn: "newColumn",
+        }
+      );
+
       setColumns(response.data);
     } catch (error) {
-      console.error('Error fetching tasks:', error.message);
-      return null
+      console.error("Error fetching tasks:", error.message);
+      return null;
     }
   }
 
   async function deleteColumn(columnId) {
     try {
-      const response = await axios.post('http://localhost:8137/projects/delete_column',{
-            projectId:ccurrentProject._id,
-            columnId:columnId
-      })
-      
+      const response = await axios.post(
+        "http://localhost:8137/projects/delete_column",
+        {
+          projectId: ccurrentProject._id,
+          columnId: columnId,
+        }
+      );
+
       setColumns(response.data);
-    
+
       const filteredColumns = columns.filter((col) => col.id !== columnId);
       setColumns(filteredColumns);
-      
+
       const newTasks = tasks.filter((t) => t.columnId !== columnId);
       setTasks(newTasks);
-
-    }catch (error) {
-      console.error('Error fetching tasks:', error.message);
-        return null
+    } catch (error) {
+      console.error("Error fetching tasks:", error.message);
+      return null;
     }
-}
-
-  
+  }
 
   function updateColumn(id, column) {
     const newColumns = columns.map((col) => {
-      if (col.id !== id) return col;      
+      if (col.id !== id) return col;
       return { ...col, column };
     });
     setColumns(newColumns);
@@ -381,13 +414,11 @@ function KanbanBoard() {
 
     // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
+      const activeIndex = tasks.findIndex((t) => t._id === activeId);
+      const overIndex = tasks.findIndex((t) => t._id === overId);
 
-        const activeIndex = tasks.findIndex((t) => t._id === activeId);
-        const overIndex = tasks.findIndex((t) => t._id === overId)
-        
-      update_tasks_status(activeId,tasks[overIndex].columnId)
+      update_tasks_status(activeId, tasks[overIndex].columnId);
       setTasks((tasks) => {
-
         if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
           // Fix introduced after video recording
           tasks[activeIndex].columnId = tasks[overIndex].columnId;
@@ -402,11 +433,10 @@ function KanbanBoard() {
 
     // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
-      const activeIndex = tasks.findIndex((t) =>  t._id === activeId)
+      const activeIndex = tasks.findIndex((t) => t._id === activeId);
       tasks[activeIndex].columnId = overId;
-      update_tasks_status(activeId,overId)
+      update_tasks_status(activeId, overId);
       setTasks((tasks) => {
-        ;
         console.log("DROPPING TASK OVER COLUMN", { activeIndex });
         return arrayMove(tasks, activeIndex, activeIndex);
       });
