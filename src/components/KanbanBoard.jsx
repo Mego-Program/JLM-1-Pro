@@ -12,20 +12,11 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
-import { update_tasks_status } from "./FunctionToServer";
-import SprintFeatrue from "./SprintFeature";
+import { getAllData, update_tasks_status } from "./FunctionToServer";
+import ProjectDropdown from "./ProjectDropdown";
+import { fetchAllBoards } from "../fetch-request/board-requests";
 
 async function getProjectById(projectid) {
-  // try {
-  //   const response = await axios.post('http://localhost:8137/projects/get_all_data')
-  //   console.log(response.data);
-  //   // setTasks(response.data)
-  //   return response.data
-
-  // } catch (error) {
-  //   console.error('Error fetching tasks:', error.message);
-  //   return null
-  // }
   try {
     const response = await axios.post(
       "http://localhost:8137/projects/get_project_by_id",
@@ -36,12 +27,11 @@ async function getProjectById(projectid) {
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching tasks:", error.message);
+    console.error("Error fetching project:", error.message);
     return null;
   }
 }
 
-async function getTasksByProjectId(projectId){
 async function getTasksByProjectId(projectId) {
   try {
     const response = await axios.post(
@@ -56,24 +46,24 @@ async function getTasksByProjectId(projectId) {
     console.error("Error fetching tasks:", error.message);
     return null;
   }
-}}
+}
 
 const defaultCols = [
-  // {
-  //   id: "todo",
-  //   title: "todo",
-  //   isShadow: true,
-  // },
-  // {
-  //   id: "doing",
-  //   title: "doing",
-  //   isShadow: true,
-  // },
-  // {
-  //   id: "done",
-  //   title: "done",
-  //   isShadow: true,
-  // },
+  {
+    id: "todo",
+    title: "todo",
+    isShadow: true,
+  },
+  {
+    id: "doing",
+    title: "doing",
+    isShadow: true,
+  },
+  {
+    id: "done",
+    title: "done",
+    isShadow: true,
+  },
 ];
 
 const defaultTasks = [];
@@ -87,28 +77,31 @@ function KanbanBoard() {
 
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
-  const [ccurrentProject, setCcurrentProject] = useState(null);
-  
-  const [Projectid,setProjectid] = useState(null)
+  const [selectedBoard, setSelectedBoard] = useState(null);
 
+  const [boards, setBoards] = useState([]);
 
-  const fetchData = async (projectid) => {
-    try {
-      const project = await getProjectById(projectid);
-      const task = await getTasksByProjectId(projectid);
+  const onFetchAllBoards = async () => {
+    const newBoards = await fetchAllBoards();
+    setBoards(newBoards);
+    setSelectedBoard(newBoards[0]);
 
-      setTasks(task);
-      setColumns(project.columns);
-      setCcurrentProject(project);
-    } catch (error) {
-      console.error("Error fetching project:", error.message);
-    }
+    const tasks = await getTasksByProjectId(newBoards[0]?._id);
+    setColumns(newBoards[0]?.columns);
+    setTasks(tasks);
+  };
+
+  const onSetSelectedBoards = async (boardId) => {
+    const selectedBoard = boards.find((board) => board._id === boardId);
+    setSelectedBoard(selectedBoard);
+
+    const tasks = await getTasksByProjectId(selectedBoard?._id);
+    setTasks(tasks);
   };
 
   useEffect(() => {
-    fetchData();
+    onFetchAllBoards();
   }, []);
-  console.log(tasks);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -119,52 +112,48 @@ function KanbanBoard() {
   );
 
   return (
-    <div 
-    className="flex 
-    flex-col 
-    items-center 
-    w-full 
-    h-full 
-    overflow-x-auto 
-    overflow-y-hidden 
-    px-[40px]">
-      
-      <SprintFeatrue 
-      ccurrentProject={ccurrentProject} 
-      tasks={tasks} />
+    <div className="flex justify-center">
+      <div className="flex items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
+        <div className="flex flex-col items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden">
+          {/* ProjectDropdown component */}
+          <ProjectDropdown
+            boards={boards}
+            onSetSelectedBoards={onSetSelectedBoards}
+            selectedBoard={selectedBoard}
+          />
 
-      <DndContext
-        sensors={sensors}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragOver={onDragOver}
-      >
-        <div className="flex gap-4">
-          <div className="flex gap-4">
-            <SortableContext items={columnsId}>
-              {columns.map((col) => (
-                <ColumnContainer
-                  ccurrentProject={ccurrentProject}
-                  editById={editById}
-                  setEditById={setEditById}
-                  key={col.id}
-                  column={col}
-                  deleteColumn={deleteColumn}
-                  updateColumn={updateColumn}
-                  createTask={createTask}
-                  deleteTask={deleteTask}
-                  updateTask={updateTask}
-                  tasks={tasks.filter((task) => task.columnId === col.id)}
-                />
-              ))}
-            </SortableContext>
-          </div>
+          <DndContext
+            sensors={sensors}
+            onDragStart={onDragStart}
+            onDragEnd={onDragEnd}
+            onDragOver={onDragOver}
+          >
+            <div className="flex gap-4">
+              <div className="flex gap-4">
+                <SortableContext items={columnsId}>
+                  {columns.map((col) => (
+                    <ColumnContainer
+                      ccurrentProject={selectedBoard}
+                      editById={editById}
+                      setEditById={setEditById}
+                      key={col.id}
+                      column={col}
+                      deleteColumn={deleteColumn}
+                      updateColumn={updateColumn}
+                      createTask={createTask}
+                      deleteTask={deleteTask}
+                      updateTask={updateTask}
+                      tasks={tasks.filter((task) => task.columnId === col.id)}
+                    />
+                  ))}
+                </SortableContext>
+              </div>
 
-          <button
-            onClick={() => {
-              createNewColumn(ccurrentProject._id);
-            }}
-            className="
+              <button
+                onClick={() => {
+                  createNewColumn(selectedBoard._id);
+                }}
+                className="
       h-[60px]
       w-[350px]
       min-w-[350px]
@@ -179,47 +168,52 @@ function KanbanBoard() {
       flex
       gap-2
       "
-          >
-            <PlusIcon />
-            Add Column
-          </button>
-        </div>
-        {createPortal(
-          <DragOverlay>
-            {activeColumn && (
-              <ColumnContainer
-                column={activeColumn}
-                deleteColumn={deleteColumn}
-                updateColumn={updateColumn}
-                createTask={createTask}
-                deleteTask={deleteTask}
-                updateTask={updateTask}
-                tasks={tasks.filter(
-                  (task) => task.columnId === activeColumn.id
+              >
+                <PlusIcon />
+                Add Column
+              </button>
+            </div>
+            {createPortal(
+              <DragOverlay>
+                {activeColumn && (
+                  <ColumnContainer
+                    column={activeColumn}
+                    deleteColumn={deleteColumn}
+                    updateColumn={updateColumn}
+                    createTask={createTask}
+                    deleteTask={deleteTask}
+                    updateTask={updateTask}
+                    tasks={tasks.filter(
+                      (task) => task.columnId === activeColumn.id
+                    )}
+                  />
                 )}
-              />
+                {activeTask && (
+                  <TaskCard
+                    task={activeTask}
+                    deleteTask={deleteTask}
+                    updateTask={updateTask}
+                  />
+                )}
+              </DragOverlay>,
+              document.body
             )}
-            {activeTask && (
-              <TaskCard
-                task={activeTask}
-                deleteTask={deleteTask}
-                updateTask={updateTask}
-              />
-            )}
-          </DragOverlay>,
-          document.body
-        )}
-      </DndContext>
+          </DndContext>
+        </div>
+      </div>
     </div>
   );
 
   async function createTask(columnId, taskDetails) {
+    console.log("tasksDetails::", taskDetails);
+    console.log("columnId::", columnId);
+    console.log("selectedBoard::", selectedBoard);
     try {
       const response = await axios.post(
         "http://localhost:8137/tasks/add_tasks",
         {
           // id: generateId(),
-          projectID: ccurrentProject._id,
+          projectID: selectedBoard,
           columnId,
           header: taskDetails.header,
           content: taskDetails.content,
@@ -246,7 +240,8 @@ function KanbanBoard() {
           taskeId: taskeId,
         }
       );
-      fetchData();
+      // TODO: fetch only tasks of current board
+      // fetchProjects();
 
       //  const newTasks = tasks.filter((task) => task.id !== taskeId);
       // setTasks(newTasks);
@@ -328,7 +323,7 @@ function KanbanBoard() {
       const response = await axios.post(
         "http://localhost:8137/projects/delete_column",
         {
-          projectId: ccurrentProject._id,
+          projectId: selectedBoard._id,
           columnId: columnId,
         }
       );
