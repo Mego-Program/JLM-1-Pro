@@ -6,11 +6,13 @@ import Select from '@mui/material/Select';
 const DropdownSelect = (tasks) => {
   const [selectedTasks, setSelectedTasks] = useState(tasks.tasks.tasks);
   const [currentSprint, setCurrentSprint] = useState([]);
+  const [sprints, setSprints] = useState([]);
 
   const fetchCurrentSprint = () => {
     const headers = selectedTasks.map((t) => t.header);
     setCurrentSprint([...new Set(headers)]);
-    console.log('abd',currentSprint);
+    console.log('current p\sprint::',currentSprint);
+    console.log('tasks::',tasks);
   };
 
   useEffect(() => {

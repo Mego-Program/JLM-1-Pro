@@ -15,7 +15,7 @@ export default function AppProjects() {
   const fetchUsers = async () => {
     try {
       const users = await AllUsers();
-      console.log(users);
+      console.log('users:',users);
     } catch (error) {
       console.error(error);
     }

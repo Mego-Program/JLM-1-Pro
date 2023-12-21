@@ -15,7 +15,8 @@ import TaskCard from "./TaskCard";
 import { getAllData, update_tasks_status } from "./FunctionToServer";
 import ProjectDropdown from "./ProjectDropdown";
 import { fetchAllBoards } from "../fetch-request/board-requests";
-
+import SprintFeature from "./SprintFeature";
+import ShlomosSprintFilter from "./ShlomosSprintFilter";
 async function getProjectById(projectid) {
   try {
     const response = await axios.post(
@@ -121,6 +122,20 @@ function KanbanBoard() {
             onSetSelectedBoards={onSetSelectedBoards}
             selectedBoard={selectedBoard}
           />
+            <div 
+    className="flex 
+    flex-col 
+    items-center 
+    w-full 
+    h-full 
+    overflow-x-auto 
+    overflow-y-hidden 
+    px-[40px]">
+      
+      <SprintFeature 
+      tasks={tasks}/>
+      </div>
+      {/* <ShlomosSprintFilter><SprintFeature/></ShlomosSprintFilter>  */}
 
           <DndContext
             sensors={sensors}
