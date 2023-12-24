@@ -18,6 +18,7 @@ const BoardForm = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedManager, setSelectedManager] = useState(null);
 
+  console.log("selectedUsers:",selectedUsers);
 
   const fetchUsers = async () => {
     try {
@@ -63,18 +64,18 @@ const BoardForm = () => {
     setBoardName(event.target.value);
   };
 
-  const handleCheckboxChange = (userId) => {
+  const handleCheckboxChange = (user) => {
     setSelectedUsers((prevSelectedUsers) => {
-      if (prevSelectedUsers.includes(userId)) {
-        return prevSelectedUsers.filter((id) => id !== userId);
+      if (prevSelectedUsers.includes(user)) {
+        return prevSelectedUsers.filter((id) => id !== user);
       } else {
-        return [...prevSelectedUsers, userId];
+        return [...prevSelectedUsers, user];
       }
     });
   };
 
-  const handleManagerCheckboxChange = (userId) => {
-    setSelectedManager(userId);
+  const handleManagerCheckboxChange = (user) => {
+    setSelectedManager(user);
   };
 
   const handleSave = async () => {
@@ -84,7 +85,7 @@ const BoardForm = () => {
         name:boardName,
         manager:selectedManager,
         users:selectedUsers,
-      
+
       });
 
       // After a successful save, close the main modal
@@ -178,8 +179,8 @@ const BoardForm = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={selectedUsers.includes(user._id)}
-                    onChange={() => handleCheckboxChange(user._id)}
+                    checked={selectedUsers.includes(user)}
+                    onChange={() => handleCheckboxChange(user)}
                   />
                 }
                 label={user.username}
@@ -218,8 +219,8 @@ const BoardForm = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={selectedManager === user._id}
-                    onChange={() => handleManagerCheckboxChange(user._id)}
+                    checked={selectedManager === user}
+                    onChange={() => handleManagerCheckboxChange(user)}
                   />
                 }
                 label={user.username}
