@@ -1,26 +1,24 @@
 // ProjectDropdown.js
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchAllBoards } from "../fetch-request/board-requests";
 
-const ProjectDropdown = ({ onSelectProject }) => {
-  const [projects, setProjects] = useState([]);
+const ProjectDropdown = ({ boards, onSetSelectedBoards, selectedBoard }) => {
+  // const [projects, setProjects] = useState([]);
 
-  useEffect(() => {
-    axios
-      .post("http://localhost:8137/projects/get_all_data")
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.error("Error fetching projects:", error));
-  }, []);
+  const onChange = (value) => {
+    console.log(value);
+    onSetSelectedBoards(value);
+  };
 
   return (
     <div className="w-full ">
       <select
         id="projectDropdown"
-        className="bg-blue-950 w-full m-4 text-white rounded p-2"
-        onChange={(e) => onSelectProject(e.target.value)}
+        className="w-full p-2 m-4 text-white rounded bg-blue-950"
+        onChange={(e) => onChange(e.target.value)}
+        defaultValue={boards[0]?._id}
       >
-        <option value="">Select a Project</option>
-        {projects.map((project) => (
+        {boards?.map((project) => (
           <option key={project._id} value={project._id}>
             {project.projectName}
           </option>
