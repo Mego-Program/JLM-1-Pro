@@ -5,6 +5,26 @@ import { Option as BaseOption, optionClasses } from '@mui/base/Option';
 import { Popper as BasePopper } from '@mui/base/Popper';
 import { styled } from '@mui/system';
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
+import axios from 'axios';
+
+// async function createNewSprint(projectID) {
+//   try {
+//     const response = await axios.post(
+//       "http://localhost:8137/projects/add_sprint",
+//       {
+//         projectId: projectID,
+//         columnID: `${generateId()}`,
+//         nameColumn: "newColumn",
+//       }
+//     );
+
+//     setColumns(response.data);
+//   } catch (error) {
+//     console.error("Error fetching tasks:", error.message);
+//     return null;
+//     console.log(respons.data);
+//   }
+// }
 
 const Select = React.forwardRef(function Select(props, ref) {
   const slots = {
@@ -19,10 +39,8 @@ const Select = React.forwardRef(function Select(props, ref) {
 
 export default function ShlomosSprintFilter() {
   return (
-    <Select defaultValue={10}>
-      <Option value={10}>Ten</Option>
-      <Option value={20}>Twenty</Option>
-      <Option value={30}>Thirty</Option>
+    <Select >
+     
     </Select>
   );
 }

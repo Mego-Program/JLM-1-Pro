@@ -116,21 +116,22 @@ function KanbanBoard() {
     <div className="flex justify-center">
       <div className="flex items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
         <div className="flex flex-col items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden">
-          {/* ProjectDropdown component */}
+
           <ProjectDropdown
             boards={boards}
             onSetSelectedBoards={onSetSelectedBoards}
             selectedBoard={selectedBoard}
           />
             <div 
-    className="flex 
-    flex-col 
-    items-center 
-    w-full 
-    h-full 
-    overflow-x-auto 
-    overflow-y-hidden 
-    px-[40px]">
+    // className="flex 
+    // flex-col 
+    // items-center 
+    // w-full 
+    // h-full 
+    // overflow-x-auto 
+    // overflow-y-hidden 
+    // px-[40px]"
+    >
       
       <SprintFeature 
       tasks={tasks}/>
@@ -453,4 +454,22 @@ function generateId() {
   return Math.floor(Math.random() * 10001);
 }
 
+
+
+// async function createNewSprint(projectID) {
+//   try {
+//     const response = await axios.post(
+//       "http://localhost:8137/projects/add_new_sprint",
+//       {
+//         sprintName: sprintName,
+//         startDate: startDate,
+//         endDate: endDate,
+//         listOfTasks: listOfTasks,
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error fetching sprint:", error.message);
+//     return null;
+//   }
+// }
 export default KanbanBoard;

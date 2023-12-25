@@ -1,55 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+// import React, { useState, useEffect } from 'react';
+// import MenuItem from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+// import Select from '@mui/material/Select';
 
-const DropdownSelect = (tasks) => {
-  const [selectedTasks, setSelectedTasks] = useState(tasks.tasks.tasks);
-  const [currentSprint, setCurrentSprint] = useState([]);
-  const [sprints, setSprints] = useState([]);
+// const DropdownSelect = (tasks) => {
+//   const [selectedTasks, setSelectedTasks] = useState(tasks.tasks.tasks);
+//   const [currentSprint, setCurrentSprint] = useState([]);
+//   const [sprints, setSprints] = useState([]);
 
-  const fetchCurrentSprint = () => {
-    const headers = selectedTasks.map((t) => t.header);
-    setCurrentSprint([...new Set(headers)]);
-    console.log('current p\sprint::',currentSprint);
-    console.log('tasks::',tasks);
-  };
+//   const fetchCurrentSprint = () => {
+//     const headers = selectedTasks.map((t) => t.header);
+//     setCurrentSprint([...new Set(headers)]);
+//     console.log('current p\sprint::',currentSprint);
+//     console.log('tasks::',tasks);
+//   };
 
-  useEffect(() => {
-    fetchCurrentSprint();
-  }, [tasks]);
+//   useEffect(() => {
+//     fetchCurrentSprint();
+//   }, [tasks]);
 
-  const handleChange = (event) => {
-    const selectedHeaders = event.target.value.map((selectedTask) => {
-      if (typeof selectedTask === 'object') {
-        return selectedTask.header;
-      }
-      return selectedTask;
-    });
+//   const handleChange = (event) => {
+//     const selectedHeaders = event.target.value.map((selectedTask) => {
+//       if (typeof selectedTask === 'object') {
+//         return selectedTask.header;
+//       }
+//       return selectedTask;
+//     });
   
-    setSelectedTasks(event.target.value);
-    setCurrentSprint([...new Set(selectedHeaders)]);
-  };
+//     setSelectedTasks(event.target.value);
+//     setCurrentSprint([...new Set(selectedHeaders)]);
+//   };
   
 
-  return (
-    <FormControl>
-      <Select multiple value={selectedTasks} onChange={handleChange} displayEmpty>
-        <MenuItem disabled value="">
-          Select tasks for Current Sprint
-        </MenuItem>
-        {selectedTasks.map((t) => (
-          <MenuItem key={t.header} value={t.header}>
-            {t.header}
-          </MenuItem>
-        ))}
-      </Select>
-      {/* {console.log({ currentSprint })} */}
-    </FormControl>
-  );
-};
+//   return (
+//     <FormControl>
+//       <Select multiple value={selectedTasks} onChange={handleChange} displayEmpty>
+//         <MenuItem disabled value="">
+//           Select tasks for Current Sprint
+//         </MenuItem>
+//         {selectedTasks.map((t) => (
+//           <MenuItem key={t.header} value={t.header}>
+//             {t.header}
+//           </MenuItem>
+//         ))}
+//       </Select>
+//       {/* {console.log({ currentSprint })} */}
+//     </FormControl>
+//   );
+// };
 
-export default DropdownSelect;
+// export default DropdownSelect;
 
 // import React, { useState, useEffect } from 'react';
 // import MenuItem from '@mui/material/MenuItem';
@@ -90,3 +90,32 @@ export default DropdownSelect;
 // };
 
 // export default DropdownSelect;
+
+
+import React from 'react';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+const DropdownSelect = ({ tasks, selectedTasks, setSelectedTasks }) => {
+  const handleChange = (event) => {
+    setSelectedTasks(event.target.value);
+  };
+
+  return (
+    <FormControl>
+      <Select multiple value={selectedTasks} onChange={handleChange} displayEmpty>
+        <MenuItem disabled value="">
+          Select tasks for Current Sprint
+        </MenuItem>
+        {tasks.map((task) => (
+          <MenuItem key={task.header} value={task}>
+            {task.header}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
+
+export default DropdownSelect;
