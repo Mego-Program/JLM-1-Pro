@@ -59,6 +59,7 @@ export default function BasicModal(props) {
       console.log("Validation errors:", newErrors);
     }
   };
+  console.log(selectedDate);
 
   return (
     <div>

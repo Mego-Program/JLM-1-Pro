@@ -9,6 +9,7 @@ const StyledDatePicker = styled(DatePicker)({
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderColor: "#ffffff",
+      
     },
     "&:hover fieldset": {
       borderColor: "#ffffff",
