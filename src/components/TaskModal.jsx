@@ -9,6 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
 import UserValidation from "./validation";
+import dayjs from "dayjs";
 
 const style = {
   position: "absolute",
@@ -25,7 +26,7 @@ const style = {
 export default function BasicModal(props) {
   const [header, setHeader] = useState(props.header || "");
   const [content, setContent] = useState(props.content || "");
-  const [selectedDate, setSelectedDate] = useState(props.selectedDate || null);
+  const [selectedDate, setSelectedDate] = useState(dayjs(props.selectedDate) || null);
   const [asignee, setAsignee] = useState(props.asignee || "");
   const [issue, setIssue] = useState(props.issue || "");
   const [errors, setErrors] = useState({}); 
