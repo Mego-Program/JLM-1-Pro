@@ -12,28 +12,25 @@ export default function SprintFeature({ tasks }) {
   const [open, setOpen] = useState(false);
   const [sprintName, setSprintName] = useState("");
   const [selectedTasks, setSelectedTasks] = useState([]);//list of tasks
-  const [dateRange, setDateRange] = useState([]);// holdes the dates as a arrey
+  const [dateRange, setDateRange] = useState([]);// holdes both dates as an arrey
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleCreateSprint = async() => {
+  const handleCreateSprint = async () => {
     // TODO: Implement logic to send data to the server
     const sprintData = {
       sprintName: sprintName,
       startDate: dateRange[0],
       endDate: dateRange[1],
-      selectedTasks: selectedTasks,
+      taskArray: selectedTasks, //check!!!!!!!
     }
-    // try {
-    //   const response = await axios.post(//קישור לserver
-    //   ,sprintData)
-    // } catch (error) {
-      
-    // };
-
-    // TODO: Send sprintData to the server
+    
+    try {
+      const response = await axios.post("http://localhost:8137/projects/add_sprint",
+      sprintData)} 
+    catch (error) {  
+    };
     console.log("sprint data:", sprintData);
-
     // Close the modal after creating the sprint
     handleClose();
   };
@@ -46,13 +43,14 @@ export default function SprintFeature({ tasks }) {
       </TriggerButton>
       <Modal open={open} onClose={handleClose} slots={{ backdrop: StyledBackdrop }}>
         <ModalContent sx={{ width: 400, backgroundColor: "rgb(234, 179, 8)" }}>
-            <input
-              type="text"
-              name="title"
-              // value={sprintName}
-              onChange={(e) => setSprintName(e.target.value)}
-              placeholder="Sprint name"
-            />
+     <input
+      type="text"
+      name="title"
+      onChange={(e) => setSprintName(e.target.value)}
+      placeholder="Sprint name"
+      style={{
+        backgroundColor: "rgb(234, 179, 8)"}} />
+
             <DateRange
             updateDate = {setDateRange} />
           
