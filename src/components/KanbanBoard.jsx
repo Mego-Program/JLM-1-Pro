@@ -15,6 +15,7 @@ import TaskCard from "./TaskCard";
 import { getAllData, update_tasks_status } from "./FunctionToServer";
 import ProjectDropdown from "./ProjectDropdown";
 import { fetchAllBoards } from "../fetch-request/board-requests";
+import YourComponent from "./Settings";
 
 async function getProjectById(projectid) {
   try {
@@ -48,6 +49,9 @@ async function getTasksByProjectId(projectId) {
   }
 }
 
+
+
+
 const defaultCols = [
   {
     id: "todo",
@@ -77,6 +81,7 @@ function KanbanBoard() {
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
+  console.log(selectedBoard);
 
   const [boards, setBoards] = useState([]);
 
@@ -100,6 +105,7 @@ function KanbanBoard() {
 
   useEffect(() => {
     onFetchAllBoards();
+    
   }, []);
 
   const sensors = useSensors(
@@ -120,7 +126,9 @@ function KanbanBoard() {
             onSetSelectedBoards={onSetSelectedBoards}
             selectedBoard={selectedBoard}
           />
-
+          <YourComponent
+            selectedBoard={selectedBoard}
+            boards={boards}/>
           <DndContext
             sensors={sensors}
             onDragStart={onDragStart}
@@ -146,6 +154,8 @@ function KanbanBoard() {
                     />
                   ))}
                 </SortableContext>
+                
+
               </div>
 
               <button
