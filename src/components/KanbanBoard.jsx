@@ -12,7 +12,7 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
-import { getAllData, update_tasks_status } from "./FunctionToServer";
+import { update_tasks_status } from "./FunctionToServer";
 import ProjectDropdown from "./ProjectDropdown";
 import { fetchAllBoards } from "../fetch-request/board-requests";
 

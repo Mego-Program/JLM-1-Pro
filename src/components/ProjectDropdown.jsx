@@ -1,9 +1,4 @@
-// ProjectDropdown.js
-import React, { useState, useEffect } from "react";
-import { fetchAllBoards } from "../fetch-request/board-requests";
-
-const ProjectDropdown = ({ boards, onSetSelectedBoards, selectedBoard }) => {
-  // const [projects, setProjects] = useState([]);
+const ProjectDropdown = ({ boards, onSetSelectedBoards }) => {
 
   const onChange = (value) => {
     console.log(value);
