@@ -108,7 +108,7 @@ import React, { useState, useEffect } from 'react';
 import { Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 
-export default function ShlomosSprintFilter() {
+export default function ShlomosSprintFilter(sprintData) {
   const [selectedSprint, setSelectedSprint] = useState('');
   const [sprints, setSprints] = useState([]);
 
@@ -116,8 +116,8 @@ export default function ShlomosSprintFilter() {
     const fetchData = async () => {
       try {
         const response = await axios.post('http://localhost:8137/projects/GetAllSprints');
-        const sprintData = response.data.map(project => project.Sprint).flat();
-        setSprints(sprintData);
+        const sprintData = response.data.map((project) => project.Sprint.map((sprint) => sprint.sprintName)).flat();
+        // setSprints(sprintData);
         console.log('response.data:', response.data);
         console.log('sprintdata:',sprintData);
       } catch (error) {

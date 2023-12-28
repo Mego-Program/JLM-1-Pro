@@ -13,6 +13,8 @@ export default function SprintFeature({ tasks }) {
   const [sprintName, setSprintName] = useState("");
   const [selectedTasks, setSelectedTasks] = useState([]);//list of tasks
   const [dateRange, setDateRange] = useState([]);// holdes both dates as an arrey
+  const [sprintData, setSprintData] = useState(null);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -22,7 +24,7 @@ export default function SprintFeature({ tasks }) {
       sprintName: sprintName,
       startDate: dateRange[0],
       endDate: dateRange[1],
-      taskArray: selectedTasks, //check!!!!!!!
+      taskArray: selectedTasks,
     }
     
     try {
@@ -37,7 +39,9 @@ export default function SprintFeature({ tasks }) {
 
   return (
     <div>
-      <ShlomosSprintFilter />
+      <ShlomosSprintFilter 
+      // sprintData= {sprintData}
+      />
       <TriggerButton type="button" onClick={handleOpen}>
         Create New Sprint
       </TriggerButton>
