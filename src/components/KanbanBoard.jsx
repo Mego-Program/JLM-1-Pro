@@ -15,7 +15,8 @@ import TaskCard from "./TaskCard";
 import { getAllData, update_tasks_status } from "./FunctionToServer";
 import ProjectDropdown from "./ProjectDropdown";
 import { fetchAllBoards } from "../fetch-request/board-requests";
-
+import SprintFeature from "./SprintFeature";
+import ShlomosSprintFilter from "./ShlomosSprintFilter";
 async function getProjectById(projectid) {
   try {
     const response = await axios.post(
@@ -74,6 +75,7 @@ function KanbanBoard() {
 
   const [editById, setEditById] = useState(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
@@ -113,13 +115,33 @@ function KanbanBoard() {
   return (
     <div className="flex justify-center ml-20" >
       <div className="flex items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
+<<<<<<< HEAD
         <div className="flex flex-col items-right w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
           {/* ProjectDropdown component */}
+=======
+        <div className="flex flex-col items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden">
+
+>>>>>>> f3d21025daa6fd26b63749a36f9d07a692684034
           <ProjectDropdown
             boards={boards}
             onSetSelectedBoards={onSetSelectedBoards}
             selectedBoard={selectedBoard}
           />
+            <div 
+    // className="flex 
+    // flex-col 
+    // items-center 
+    // w-full 
+    // h-full 
+    // overflow-x-auto 
+    // overflow-y-hidden 
+    // px-[40px]"
+    >
+      
+      <SprintFeature 
+      tasks={tasks}/>
+      </div>
+      {/* <ShlomosSprintFilter><SprintFeature/></ShlomosSprintFilter>  */}
 
           <DndContext
             sensors={sensors}
@@ -436,4 +458,22 @@ function generateId() {
   return Math.floor(Math.random() * 10001);
 }
 
+
+
+// async function createNewSprint(projectID) {
+//   try {
+//     const response = await axios.post(
+//       "http://localhost:8137/projects/add_new_sprint",
+//       {
+//         sprintName: sprintName,
+//         startDate: startDate,
+//         endDate: endDate,
+//         listOfTasks: listOfTasks,
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error fetching sprint:", error.message);
+//     return null;
+//   }
+// }
 export default KanbanBoard;
