@@ -11,15 +11,16 @@ const ProjectDropdown = ({ boards, onSetSelectedBoards, selectedBoard }) => {
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full " >
       <select
         id="projectDropdown"
-        className="w-full p-2 m-4 text-white rounded bg-blue-950"
+        className="w-full p-2 m-4 text-white rounded bg-blue-950 text-yellow-500 border border-yellow-500  hover:border-yellow-500 hover:text-yellow-500" 
+        style={{ height: "60px" ,fontSize: "30px"}}
         onChange={(e) => onChange(e.target.value)}
         defaultValue={boards[0]?._id}
       >
         {boards?.map((project) => (
-          <option key={project._id} value={project._id}>
+          <option key={project._id} value={project._id} >
             {project.projectName}
           </option>
         ))}
