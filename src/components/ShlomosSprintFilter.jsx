@@ -1,45 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { Select, MenuItem } from '@mui/material';
-// import axios from 'axios';
-
-// export default function ShlomosSprintFilter(sprintData) {
-//   const [selectedSprint, setSelectedSprint] = useState('');
-//   const [sprints, setSprints] = useState([]);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.post('http://localhost:8137/projects/GetAllSprints');
-//         const sprintData = response.data.map((project) => project.Sprint.map((sprint) => sprint.sprintName)).flat();
-//         setSprints(sprintData);
-//         console.log('response.data:', response.data);
-//         console.log('sprintdata:',sprintData);
-//       } catch (error) {
-//         console.error('Error fetching sprints:', error.message);
-//       }
-//     };
-
-//     fetchData();
-//   }, []); // Empty dependency array ensures it runs only once on mount
-
-//   const handleChange = (event) => {
-//     setSelectedSprint(event.target.value);
-//   };
-
-//   return (
-//     <Select value={selectedSprint} onChange={handleChange}>
-//       <MenuItem value="" disabled>Select a sprint</MenuItem>
-//       {sprints.map((sprintData) => (
-//         <MenuItem key={sprintData} value={sprintData}>
-//           {sprintData}
-//           {console.log('iv opened')};
-//         </MenuItem>
-//       ))}
-//     </Select>
-//   );
-// }
-
-
 import React, { useState, useEffect } from 'react';
 import { Select, MenuItem, Button } from '@mui/material';
 import axios from 'axios';
@@ -124,3 +82,4 @@ export default function ShlomosSprintFilter({selectedBoard, dateRange, selectedT
     </div>
   );
 }
+
