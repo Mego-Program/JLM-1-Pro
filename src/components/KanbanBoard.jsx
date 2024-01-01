@@ -133,10 +133,11 @@ function KanbanBoard() {
     // px-[40px]"
     >
       
+      
       <SprintFeature 
-      tasks={tasks}/>
+      tasks={tasks}
+      selectedBoard={selectedBoard}/>
       </div>
-      {/* <ShlomosSprintFilter><SprintFeature/></ShlomosSprintFilter>  */}
 
           <DndContext
             sensors={sensors}

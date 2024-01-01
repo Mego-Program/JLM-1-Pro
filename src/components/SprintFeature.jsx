@@ -8,7 +8,7 @@ import DropdownSelect from "./DropDownSelect";
 import ShlomosSprintFilter from "./ShlomosSprintFilter";
 import axios from "axios";
 
-export default function SprintFeature({ tasks }) {
+export default function SprintFeature({ tasks ,selectedBoard}) {
   const [open, setOpen] = useState(false);
   const [sprintName, setSprintName] = useState("");
   const [selectedTasks, setSelectedTasks] = useState([]);//list of tasks
@@ -40,7 +40,9 @@ export default function SprintFeature({ tasks }) {
   return (
     <div>
       <ShlomosSprintFilter 
-      // sprintData= {sprintData}
+      selectedBoard = {selectedBoard}
+      dateRange = {dateRange}
+      selectedTasks = {selectedTasks}
       />
       <TriggerButton type="button" onClick={handleOpen}>
         Create New Sprint
