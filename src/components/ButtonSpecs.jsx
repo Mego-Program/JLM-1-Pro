@@ -67,14 +67,15 @@ const SpecButton = () => {
       </Button>
 
       <Modal open={open} onClose={handleModalClose}>
-        <Box
+      <Box
           sx={{
             position: 'absolute',
+            color: '#F6C927',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: 400,
-            bgcolor: 'background.paper',
+            bgcolor: '#21213E', // Change the background color to red
             border: '2px solid #000',
             boxShadow: 24,
             p: 2,

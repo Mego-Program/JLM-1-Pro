@@ -115,13 +115,8 @@ function KanbanBoard() {
   return (
     <div className="flex justify-center ml-20" >
       <div className="flex items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
-<<<<<<< HEAD
-        <div className="flex flex-col items-right w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
-          {/* ProjectDropdown component */}
-=======
         <div className="flex flex-col items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden">
 
->>>>>>> f3d21025daa6fd26b63749a36f9d07a692684034
           <ProjectDropdown
             boards={boards}
             onSetSelectedBoards={onSetSelectedBoards}
