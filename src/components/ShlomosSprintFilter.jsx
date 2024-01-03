@@ -7,8 +7,6 @@
 // import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 // import axios from 'axios';
 
-
-
 // const Select = React.forwardRef(function Select(props, ref) {
 //   const slots = {
 //     root: CustomButton,
@@ -19,7 +17,6 @@
 
 //   return <BaseSelect {...props} ref={ref} slots={slots} />;
 // });
-
 
 // export async function getAllSprints(){
 //     try {
@@ -39,15 +36,13 @@
 // //   // TODO: Implement logic to send data to the server
 // //   try {
 // //     const response = await axios.post("/add_sprint",sprintData)
-// //   } 
-// //   catch (error) {  
+// //   }
+// //   catch (error) {
 // //   };
 // //   console.log("sprint data:", sprintData);
 // //   // Close the modal after creating the sprint
 // //   handleClose();
 // // };
-
-
 
 // export default function ShlomosSprintFilter() {
 //   const [sprints, setSprints] = useState([]);
@@ -57,10 +52,6 @@
 //     </Select>
 //   );
 // }
-
-
-
-
 
 // import React, { useState, useEffect } from 'react';
 // import {Select, menuItem} from '@mui/material';
@@ -102,26 +93,30 @@
 //   );
 // }
 
-
-
-import React, { useState, useEffect } from 'react';
-import { Select, MenuItem } from '@mui/material';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { Select, MenuItem } from "@mui/material";
+import axios from "axios";
 
 export default function ShlomosSprintFilter(sprintData) {
-  const [selectedSprint, setSelectedSprint] = useState('');
+  const [selectedSprint, setSelectedSprint] = useState("");
   const [sprints, setSprints] = useState([]);
+
+  const url = import.meta.env.DEV
+    ? "http://localhost:8137/projects"
+    : "https://jlm-projects-server-1.vercel.app";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://localhost:8137/projects/GetAllSprints');
-        const sprintData = response.data.map((project) => project.Sprint.map((sprint) => sprint.sprintName)).flat();
+        const response = await axios.post(url + "/projects/GetAllSprints");
+        const sprintData = response.data
+          .map((project) => project.Sprint.map((sprint) => sprint.sprintName))
+          .flat();
         // setSprints(sprintData);
-        console.log('response.data:', response.data);
-        console.log('sprintdata:',sprintData);
+        console.log("response.data:", response.data);
+        console.log("sprintdata:", sprintData);
       } catch (error) {
-        console.error('Error fetching sprints:', error.message);
+        console.error("Error fetching sprints:", error.message);
       }
     };
 
@@ -134,11 +129,13 @@ export default function ShlomosSprintFilter(sprintData) {
 
   return (
     <Select value={selectedSprint} onChange={handleChange}>
-      <MenuItem value="" disabled>Select a sprint</MenuItem>
+      <MenuItem value="" disabled>
+        Select a sprint
+      </MenuItem>
       {sprints.map((sprintData) => (
         <MenuItem key={sprintData} value={sprintData}>
           {sprintData}
-          {console.log('iv opened')};
+          {console.log("iv opened")};
         </MenuItem>
       ))}
     </Select>
