@@ -19,16 +19,19 @@ import EditBoard from "./Settings";
 import BoardDelete from "./DeleteBoard";
 import AddBoardForm from "./AddBoard";
 import Box from '@mui/material/Box';
+import SprintFeature from "./SprintFeature";
+import ShlomosSprintFilter from "./ShlomosSprintFilter";
+
+const url = import.meta.env.DEV
+  ? "http://localhost:8137/projects"
+  : "https://jlm-projects-server-1.vercel.app";
 
 
 async function getProjectById(projectid) {
   try {
-    const response = await axios.post(
-      "http://localhost:8137/projects/get_project_by_id",
-      {
-        projectId: projectid,
-      }
-    );
+    const response = await axios.post(url + "/projects/get_project_by_id", {
+      projectId: projectid,
+    });
 
     return response.data;
   } catch (error) {
@@ -39,12 +42,9 @@ async function getProjectById(projectid) {
 
 async function getTasksByProjectId(projectId) {
   try {
-    const response = await axios.post(
-      "http://localhost:8137/tasks/get_tasks_by_projectId",
-      {
-        projectId: projectId,
-      }
-    );
+    const response = await axios.post(url + "/tasks/get_tasks_by_projectId", {
+      projectId: projectId,
+    });
 
     return response.data;
   } catch (error) {
@@ -82,6 +82,7 @@ function KanbanBoard() {
 
   const [editById, setEditById] = useState(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
@@ -127,7 +128,6 @@ ava
     <div className="flex justify-center">
       <div className="flex items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
         <div className="flex flex-col items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden">
-          {/* ProjectDropdown component */}
           <ProjectDropdown
             boards={boards}
             onSetSelectedBoards={onSetSelectedBoards}
@@ -151,11 +151,23 @@ ava
         <EditBoard selectedBoard={selectedBoard} boards={boards} />
       </Box>
     </Box>
-           {/* <div>
-          <AddBoardForm />
-          <BoardDelete boardId={selectedBoard} />
-          <EditBoard selectedBoard={selectedBoard} boards={boards} />
-    </div> */}
+           
+           
+
+          <div
+          // className="flex
+          // flex-col
+          // items-center
+          // w-full
+          // h-full
+          // overflow-x-auto
+          // overflow-y-hidden
+          // px-[40px]"
+          >
+            <SprintFeature tasks={tasks} />
+          </div>
+          {/* <ShlomosSprintFilter><SprintFeature/></ShlomosSprintFilter>  */}
+
           <DndContext
             sensors={sensors}
             onDragStart={onDragStart}
@@ -245,19 +257,16 @@ ava
     console.log("columnId::", columnId);
     console.log("selectedBoard::", selectedBoard);
     try {
-      const response = await axios.post(
-        "http://localhost:8137/tasks/add_tasks",
-        {
-          // id: generateId(),
-          projectID: selectedBoard,
-          columnId,
-          header: taskDetails.header,
-          content: taskDetails.content,
-          issue: taskDetails.issue,
-          asignee: taskDetails.asignee,
-          date: taskDetails.date,
-        }
-      );
+      const response = await axios.post(url + "/tasks/add_tasks", {
+        // id: generateId(),
+        projectID: selectedBoard,
+        columnId,
+        header: taskDetails.header,
+        content: taskDetails.content,
+        issue: taskDetails.issue,
+        asignee: taskDetails.asignee,
+        date: taskDetails.date,
+      });
 
       setTasks([response.data, ...tasks]);
       console.log(tasks);
@@ -270,12 +279,9 @@ ava
 
   async function deleteTask(taskeId) {
     try {
-      const response = await axios.post(
-        "http://localhost:8137/tasks/delete_tasks",
-        {
-          taskeId: taskeId,
-        }
-      );
+      const response = await axios.post(url + "/tasks/delete_tasks", {
+        taskeId: taskeId,
+      });
       // TODO: fetch only tasks of current board
       // fetchProjects();
 
@@ -289,17 +295,14 @@ ava
 
   async function updateTask(taskId, taskDetails) {
     try {
-      const response = await axios.post(
-        "http://localhost:8137/tasks/update_task_content",
-        {
-          taskId: taskId,
-          header: taskDetails.header,
-          content: taskDetails.content,
-          issue: taskDetails.issue,
-          asignee: taskDetails.asignee,
-          date: taskDetails.date,
-        }
-      );
+      const response = await axios.post(url + "/tasks/update_task_content", {
+        taskId: taskId,
+        header: taskDetails.header,
+        content: taskDetails.content,
+        issue: taskDetails.issue,
+        asignee: taskDetails.asignee,
+        date: taskDetails.date,
+      });
       console.log("fun");
       setTasks((tasks) => {
         return tasks.map((task) => {
@@ -338,14 +341,11 @@ ava
 
   async function createNewColumn(projectID) {
     try {
-      const response = await axios.post(
-        "http://localhost:8137/projects/add_new_column",
-        {
-          projectId: projectID,
-          columnID: `${generateId()}`,
-          nameColumn: "newColumn",
-        }
-      );
+      const response = await axios.post(url + "/projects/add_new_column", {
+        projectId: projectID,
+        columnID: `${generateId()}`,
+        nameColumn: "newColumn",
+      });
 
       setColumns(response.data);
     } catch (error) {
@@ -356,13 +356,10 @@ ava
 
   async function deleteColumn(columnId) {
     try {
-      const response = await axios.post(
-        "http://localhost:8137/projects/delete_column",
-        {
-          projectId: selectedBoard._id,
-          columnId: columnId,
-        }
-      );
+      const response = await axios.post(url + "/projects/delete_column", {
+        projectId: selectedBoard._id,
+        columnId: columnId,
+      });
 
       setColumns(response.data);
 
@@ -474,4 +471,20 @@ function generateId() {
   return Math.floor(Math.random() * 10001);
 }
 
+// async function createNewSprint(projectID) {
+//   try {
+//     const response = await axios.post(
+//       url +"/projects/add_new_sprint",
+//       {
+//         sprintName: sprintName,
+//         startDate: startDate,
+//         endDate: endDate,
+//         listOfTasks: listOfTasks,
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error fetching sprint:", error.message);
+//     return null;
+//   }
+// }
 export default KanbanBoard;
