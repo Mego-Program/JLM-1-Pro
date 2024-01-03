@@ -7,30 +7,37 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import { getUser } from './FunctionToServer';
 import ProjectDropdown from './ProjectDropdown';
 
 
 // const BOARD_API_ENDPOINT = 'https://your-server-api-endpoint.com/board';
 // const BOARD_USERS_API_ENDPOINT = 'https://your-server-api-endpoint.com/board-users';
 
-const YourComponent = ({ selectedBoard, boards }) => {
+const EditBoard = ({ selectedBoard, boards }) => {
   if (!selectedBoard) {
     return
   }
-  console.log(selectedBoard.projectMembers);
   const [boardName, setBoardName] = useState(null);
   const [editBoardModalOpen, setEditBoardModalOpen] = useState(false);
-  const [newBoardName, setNewBoardName] = useState();
+  const [newBoardName, setNewBoardName] = useState(selectedBoard.projectName);
   const [boardUsers, setBoardUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [updateUsersModalOpen, setUpdateUsersModalOpen] = useState(false);
   const [updateManagerModalOpen, setUpdateManagerModalOpen] = useState(false);
   const [selectedManager, setSelectedManager] = useState(null);
 
+  useEffect(()=>{
+    async function getUsers(){
+    const user = await getUser();
+    setBoardUsers(user);}
+    getUsers()
+  },[])
 
   const handleEditBoardClick = () => {
     setEditBoardModalOpen(true);
     setNewBoardName(selectedBoard.projectName)
+    
 
   };
 
@@ -49,8 +56,8 @@ const YourComponent = ({ selectedBoard, boards }) => {
 
         projectId: selectedBoard._id,
         projectName: newBoardName,
-        // selectedUsers: selectedUsers.map(user => user.id),
-        // selectedManager: selectedManager ? selectedManager.id : null,
+        projectMembers: selectedUsers,
+        projectManager: selectedManager ? selectedManager : null,
       });
 
       // setBoardName(newBoardName)
@@ -66,35 +73,35 @@ const YourComponent = ({ selectedBoard, boards }) => {
 
   };
 
-  const handleUpdateUsersClick = () => {
+  const handleUpdateUsersClick = async() => {
+    setSelectedUsers(selectedBoard.projectMembers)
     setUpdateUsersModalOpen(true);
   };
 
   const handleUpdateUsersModalClose = () => {
     setUpdateUsersModalOpen(false);
     // Reset the selectedUsers state on modal close
-    setSelectedUsers([]);
   };
 
-  const handleUpdateManagerClick = () => {
+  const handleUpdateManagerClick =async () => {
+    setSelectedManager(selectedBoard.projectManager)
     setUpdateManagerModalOpen(true);
   };
 
   const handleUpdateManagerModalClose = () => {
     setUpdateManagerModalOpen(false);
     // Reset the selectedManager state on modal close
-    setSelectedManager(null);
   };
 
   const handleCheckboxChange = (userId) => {
     setSelectedUsers((prevSelectedUsers) => {
-      const isSelected = prevSelectedUsers.some((user) => user.id === userId);
+      const isSelected = prevSelectedUsers.some((user) => user._id === userId);
 
       if (isSelected) {
-        return prevSelectedUsers.filter((user) => user.id !== userId);
+        return prevSelectedUsers.filter((user) => user._id !== userId);
       } else {
         // Add the user to the selected list
-        const userToAdd = boardUsers.find((user) => user.id === userId);
+        const userToAdd = boardUsers.find((user) => user._id === userId);
         return [...prevSelectedUsers, userToAdd];
       }
     });
@@ -103,7 +110,7 @@ const YourComponent = ({ selectedBoard, boards }) => {
   return (
     <div>
       {/* Edit Board Button */}
-      <Button variant="contained" onClick={handleEditBoardClick}>
+      <Button variant="outlined"  color="primary" onClick={handleEditBoardClick}>
         Edit Board
       </Button>
       {/* <ProjectDropdown newBoardName={newBoardName}/> */}
@@ -120,7 +127,10 @@ const YourComponent = ({ selectedBoard, boards }) => {
             bgcolor: 'background.paper',
             border: '2px solid #000',
             boxShadow: 24,
-            p: 2,
+            p: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
           }}
         >
           <Typography variant="h6" component="div">
@@ -141,22 +151,38 @@ const YourComponent = ({ selectedBoard, boards }) => {
           </Typography>
           {selectedBoard.projectMembers.map((user, index) => (
             <Typography key={index} component="div">
-              {user}
+              {user.username}
             </Typography>
           ))}
+          
+          <Typography variant="h6" component="div">
+            Board Manager:
+          </Typography>
+            <Typography  component="div">
+              {typeof selectedBoard.projectManager ==='object'&&selectedBoard.projectManager!==null?selectedBoard.projectManager.username:null}
+            </Typography>
+          
+
 
           {/* Update Users Button */}
-          <Button variant="contained" onClick={handleUpdateUsersClick}>
+          <Button variant="outlined"
+          color='primary'
+          onClick={handleUpdateUsersClick}
+          sx={{ width: '100%', justifyContent: 'flex-start' }}
+          >
             Update Users
           </Button>
-
           {/* Update Manager Button */}
-          <Button variant="contained" onClick={handleUpdateManagerClick}>
+          <Button variant="outlined" 
+          color = "primary"
+          onClick={handleUpdateManagerClick}
+          sx={{ width: '100%', justifyContent: 'flex-start' }}
+          >
             Update Manager
           </Button>
 
           {/* Update Button */}
-          <Button variant="contained" onClick={handleUpdate}>
+          <Button  variant="outlined" color="primary"  sx={{ width: '100%', justifyContent: 'flex-start' }} onClick={handleUpdate}>
             Update
           </Button>
 
@@ -187,15 +213,15 @@ const YourComponent = ({ selectedBoard, boards }) => {
           {boardUsers && (
             <div>
               {boardUsers.map((user) => (
-                <Box key={user.id} mt={2} p={2} border={1} borderRadius={4}>
+                <Box key={user._id} mt={2} p={2} border={1} borderRadius={4}>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={selectedUsers.some((selectedUser) => selectedUser.id === user.id)}
-                        onChange={() => handleCheckboxChange(user.id)}
+                        checked={selectedUsers.some((selectedUser) => selectedUser._id === user._id)}
+                        onChange={() => handleCheckboxChange(user._id)}
                       />
                     }
-                    label={user.name}
+                    label={user.username}
                   />
                 </Box>
               ))}
@@ -218,6 +244,8 @@ const YourComponent = ({ selectedBoard, boards }) => {
             border: '2px solid #000',
             boxShadow: 24,
             p: 2,
+            maxHeight: '80vh',
+            overflowY: 'auto',
           }}
         >
           <Typography variant="h6" component="div">
@@ -226,25 +254,27 @@ const YourComponent = ({ selectedBoard, boards }) => {
           {boardUsers && (
             <div>
               {boardUsers.map((user) => (
-                <Box key={user.id} mt={2} p={2} border={1} borderRadius={4}>
+                <Box key={user._id} mt={2} p={2} border={1} borderRadius={4}>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={selectedManager && selectedManager.id === user.id}
+                        checked={selectedManager && selectedManager._id === user._id}
                         onChange={() => setSelectedManager(user)}
                       />
                     }
-                    label={user.name}
+                    label={user.username}
                   />
                 </Box>
               ))}
             </div>
           )}
-          <Button onClick={handleUpdateManagerModalClose}>Close</Button>
+          <Button variant="outlined" color="primary"  sx={{ width: '100%', justifyContent: 'flex-start' }} onClick={handleUpdateManagerModalClose}>
+            Close
+            </Button>
         </Box>
       </Modal>
     </div>
   );
 };
 
-export default YourComponent;
+export default EditBoard;
