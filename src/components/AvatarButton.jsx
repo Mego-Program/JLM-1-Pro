@@ -1,28 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { IconButton, Menu, MenuItem, Avatar, Tooltip } from '@mui/material';
 
-const AvatarButton = ({ onAvatarClick }) => {
+const AvatarButton = ({ onAvatarClick,selectedBoard }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [avatars, setAvatars] = useState([]);
+  const [avatars, setAvatars] = useState(selectedBoard.projectMembers);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const handleContainerClick = (e) => {
     e.stopPropagation();
   };
 
-  useEffect(() => {
-    // Fetch avatars from the server
-    fetchAvatars();
-  }, []);
 
-  const fetchAvatars = async () => {
-    try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/todos');
-      const data = await response.json();
-      setAvatars(data);
-    } catch (error) {
-      console.error('Error fetching avatars', error);
-    }
-  };
+  
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -43,8 +31,8 @@ const AvatarButton = ({ onAvatarClick }) => {
     <div onClick={handleContainerClick}> 
       <IconButton onClick={handleMenuOpen}>
         {selectedAvatar ? (
-          <Tooltip title={`ID: ${selectedAvatar.id} - Name: ${selectedAvatar.name}`} arrow>
-            <Avatar src={selectedAvatar.url} style={{ border: '2px solid white' }} />
+          <Tooltip title={`ID: ${selectedAvatar._id} - Name: ${selectedAvatar.username}`} arrow>
+            <Avatar src={selectedAvatar.image} style={{ border: '2px solid white' }} />
           </Tooltip>
         ) : (
           // Default icon when no avatar is selected
@@ -53,11 +41,11 @@ const AvatarButton = ({ onAvatarClick }) => {
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
         {avatars.map((avatar) => (
-          <MenuItem key={avatar.id} onClick={() => handleAvatarSelect(avatar)}>
-            <Tooltip title={`ID: ${avatar.id} - Name: ${avatar.name}`} arrow>
-              <Avatar src={avatar.url} style={{ border: '2px solid white' }} />
+          <MenuItem key={avatar._id} onClick={() => handleAvatarSelect(avatar)}>
+            <Tooltip title={`ID: ${avatar._id} - Name: ${avatar.username}`} arrow>
+              <Avatar src={avatar.image} style={{ border: '2px solid white' }} />
             </Tooltip>
-            {avatar.id}
+            {avatar.username}
           </MenuItem>
         ))}
       </Menu>

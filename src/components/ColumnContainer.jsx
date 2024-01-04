@@ -145,6 +145,7 @@ function ColumnContainer({
               setEditById={setEditById}
               deleteTask={deleteTask}
               updateTask={updateTask}
+              selectedBoard={ccurrentProject}
             />
           ))}
         </SortableContext>
