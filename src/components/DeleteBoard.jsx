@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import axios from 'axios';
+import { data } from 'autoprefixer';
 
-const BoardComponentWithDelete = ({ boardId }) => {
+const BoardDelete = ({ boardId }) => {
   const [openDialog, setOpenDialog] = useState(false);
-
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -12,26 +12,22 @@ const BoardComponentWithDelete = ({ boardId }) => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-
-  const handleDelete = async (projectId) => {
+  const handleDelete = async () => {
     try {
       // Make a POST request to your server to delete the board and tasks
-      const response = await axios.delete('https://jlm-projects-server-1.vercel.app/projects/', { 
-        projectId
-      });
-      
-      // Handle the response as needed
-      console.log(response.data);
-
-      setOpenDialog(false);
-    } catch (error) {
-      console.error('Error deleting board:', error);
+      const response = await axios.delete('http://localhost:8137/projects/', {data:{ 
+        boardId}
+      })}
+       catch (error) {
+      console.error('Error deleting project:', error);
     }
+    setOpenDialog(false);
   };
-
+  
+  
   return (
     <div>
-      <Button variant="contained" color="secondary" onClick={handleOpenDialog}>
+      <Button variant="outlined"  color="primary" onClick={handleOpenDialog}>
         Delete Board
       </Button>
 
@@ -55,4 +51,4 @@ const BoardComponentWithDelete = ({ boardId }) => {
   );
 };
 
-export default BoardComponentWithDelete
+export default BoardDelete

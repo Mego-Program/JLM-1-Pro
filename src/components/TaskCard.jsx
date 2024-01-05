@@ -7,7 +7,7 @@ import Delete from "./Deletion";
 import BasicModal from "./TaskModal";
 // import DeleteConfirmationModal from "./Deletion";
 
-function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
+function TaskCard({ task, deleteTask, updateTask, editById, setEditById,selectedBoard }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [del, setDel] = useState(false);
@@ -77,7 +77,7 @@ function TaskCard({ task, deleteTask, updateTask, editById, setEditById }) {
         />
       )}
       <>
-        <AvatarButton />
+        <AvatarButton selectedBoard={selectedBoard} />
         <div
           style={{
             display: "flex",

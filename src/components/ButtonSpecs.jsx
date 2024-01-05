@@ -39,15 +39,23 @@ const SpecButton = () => {
     });
   };
 
-  const handleDoneButtonClick = () => {
+  const handleDoneButtonClick = async () => {
     // Create links based on the selected titles
 
     const selectedLinks = data
       .filter((item,index) => selectedItems[index])
       .map((item) => ({
         title: item.title,
-        link: `https://jsonplaceholder.typicode.com/todos/${item.id}` 
-      }))
+        link: `https://jsonplaceholder.typicode.com/todos/${item.id}`
+         }))
+         try {
+          await axios.post(SERVER_ENDPOINT, {
+            selectedObjects: selectedLinks,
+          });
+          console.log('Selected objects sent to the server:', selectedLinks);
+        } catch (error) {
+          console.error('Error sending selected objects to the server', error);
+        }
 
     // Set the links to the state
     setSelectedLinks(selectedLinks);

@@ -1,10 +1,13 @@
 // ProjectDropdown.js
 import React, { useState, useEffect } from "react";
-import { fetchAllBoards } from "../fetch-request/board-requests";
+import YourComponent from "./Settings";
+
 
 const ProjectDropdown = ({ boards, onSetSelectedBoards, selectedBoard }) => {
+  
+  
   // const [projects, setProjects] = useState([]);
-
+  
   const onChange = (value) => {
     console.log(value);
     onSetSelectedBoards(value);
@@ -19,6 +22,7 @@ const ProjectDropdown = ({ boards, onSetSelectedBoards, selectedBoard }) => {
         defaultValue={boards[0]?._id}
       >
         {boards?.map((project) => (
+          
           <option key={project._id} value={project._id}>
             {project.projectName}
           </option>

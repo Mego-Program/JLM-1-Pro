@@ -15,12 +15,17 @@ import TaskCard from "./TaskCard";
 import { getAllData, update_tasks_status } from "./FunctionToServer";
 import ProjectDropdown from "./ProjectDropdown";
 import { fetchAllBoards } from "../fetch-request/board-requests";
+import EditBoard from "./Settings";
+import BoardDelete from "./DeleteBoard";
+import AddBoardForm from "./AddBoard";
+import Box from '@mui/material/Box';
 import SprintFeature from "./SprintFeature";
 import ShlomosSprintFilter from "./ShlomosSprintFilter";
 
 const url = import.meta.env.DEV
   ? "http://localhost:8137/projects"
   : "https://jlm-projects-server-1.vercel.app";
+
 
 async function getProjectById(projectid) {
   try {
@@ -47,6 +52,9 @@ async function getTasksByProjectId(projectId) {
     return null;
   }
 }
+
+
+
 
 const defaultCols = [
   {
@@ -78,14 +86,17 @@ function KanbanBoard() {
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
+  console.log(selectedBoard);
 
   const [boards, setBoards] = useState([]);
+
+
 
   const onFetchAllBoards = async () => {
     const newBoards = await fetchAllBoards();
     setBoards(newBoards);
     setSelectedBoard(newBoards[0]);
-
+ava
     const tasks = await getTasksByProjectId(newBoards[0]?._id);
     setColumns(newBoards[0]?.columns);
     setTasks(tasks);
@@ -94,6 +105,7 @@ function KanbanBoard() {
   const onSetSelectedBoards = async (boardId) => {
     const selectedBoard = boards.find((board) => board._id === boardId);
     setSelectedBoard(selectedBoard);
+    console.log(boardId);
 
     const tasks = await getTasksByProjectId(selectedBoard?._id);
     setTasks(tasks);
@@ -101,6 +113,7 @@ function KanbanBoard() {
 
   useEffect(() => {
     onFetchAllBoards();
+    
   }, []);
 
   const sensors = useSensors(
@@ -120,22 +133,40 @@ function KanbanBoard() {
             onSetSelectedBoards={onSetSelectedBoards}
             selectedBoard={selectedBoard}
           />
-            <div 
-    // className="flex 
-    // flex-col 
-    // items-center 
-    // w-full 
-    // h-full 
-    // overflow-x-auto 
-    // overflow-y-hidden 
-    // px-[40px]"
+          <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row', // Set the direction to row
+        justifyContent: 'space-between',
+         // You can use the numeric values directly for margin
+      }}
     >
-      
-      
-      <SprintFeature 
-      tasks={tasks}
-      selectedBoard={selectedBoard}/>
-      </div>
+      <Box sx={{ padding: 2,  }}>
+        <AddBoardForm />
+      </Box>
+      <Box sx={{ padding: 2 }}>
+        <BoardDelete  boardId={selectedBoard}  />
+      </Box>
+      <Box sx={{ padding: 2 }}>
+        <EditBoard selectedBoard={selectedBoard} boards={boards} />
+      </Box>
+    </Box>
+           
+           
+
+          <div
+          // className="flex
+          // flex-col
+          // items-center
+          // w-full
+          // h-full
+          // overflow-x-auto
+          // overflow-y-hidden
+          // px-[40px]"
+          >
+            <SprintFeature tasks={tasks} />
+          </div>
+          {/* <ShlomosSprintFilter><SprintFeature/></ShlomosSprintFilter>  */}
 
           <DndContext
             sensors={sensors}
@@ -162,6 +193,8 @@ function KanbanBoard() {
                     />
                   ))}
                 </SortableContext>
+                
+
               </div>
 
               <button
