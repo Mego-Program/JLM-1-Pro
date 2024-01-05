@@ -164,9 +164,10 @@ ava
           // overflow-y-hidden
           // px-[40px]"
           >
-            <SprintFeature tasks={tasks} />
+            <SprintFeature 
+            tasks={tasks}
+            selectedBoard={selectedBoard} />
           </div>
-          {/* <ShlomosSprintFilter><SprintFeature/></ShlomosSprintFilter>  */}
 
           <DndContext
             sensors={sensors}
