@@ -44,4 +44,23 @@ export const update_tasks_status = async (taskId, newColumn) => {
   } catch (error) {
     console.log(error);
   }
-};
+
+
+}
+
+export async function getUser() {
+  try {
+    const response = await axios.post(
+      "http://localhost:8137/projects/get_users",
+    );
+      // console.log('users:',response.data);
+      console.log(response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error("Error fetching tasks:", error.message);
+    return null;
+  }
+}
+
+;
