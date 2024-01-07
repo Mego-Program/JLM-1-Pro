@@ -13,13 +13,17 @@ export default function ShlomosSprintFilter({selectedBoard, dateRange, selectedT
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://localhost:8137/projects/GetAllSprints');
+        const response = await axios.post('http://localhost:8137/projects/getAllSprints');
         const sprintData = response.data.map((project) => project.Sprint.map((sprint) => sprint)).flat();
         setSprints(sprintData);
         console.log('sprintdata:',sprintData);
+        console.log('sprints:',response);
+
       } 
       catch (error) {
         console.error('Error fetching sprints:', error.message);
+        console.log('sprints:',response);
+
       }};
     fetchData();
   }, []); 

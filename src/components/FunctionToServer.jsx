@@ -61,6 +61,4 @@ export async function getUser() {
     console.error("Error fetching tasks:", error.message);
     return null;
   }
-}
-
-;
+};

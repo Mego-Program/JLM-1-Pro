@@ -19,7 +19,6 @@ export default function SprintFeature({ tasks ,selectedBoard}) {
   const handleClose = () => setOpen(false);
 
   const handleCreateSprint = async () => {
-    // TODO: Implement logic to send data to the server
     const sprintData = {
       sprintName: sprintName,
       startDate: dateRange[0],

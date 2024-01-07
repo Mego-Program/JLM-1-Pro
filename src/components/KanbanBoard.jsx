@@ -20,7 +20,6 @@ import BoardDelete from "./DeleteBoard";
 import AddBoardForm from "./AddBoard";
 import Box from '@mui/material/Box';
 import SprintFeature from "./SprintFeature";
-import ShlomosSprintFilter from "./ShlomosSprintFilter";
 
 const url = import.meta.env.DEV
   ? "http://localhost:8137/projects"
@@ -86,8 +85,6 @@ function KanbanBoard() {
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
-  console.log(selectedBoard);
-
   const [boards, setBoards] = useState([]);
 
 
@@ -112,8 +109,7 @@ ava
   };
 
   useEffect(() => {
-    onFetchAllBoards();
-    
+    onFetchAllBoards();    
   }, []);
 
   const sensors = useSensors(
