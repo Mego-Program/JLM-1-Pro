@@ -18,14 +18,13 @@ import { fetchAllBoards } from "../fetch-request/board-requests";
 import EditBoard from "./Settings";
 import BoardDelete from "./DeleteBoard";
 import AddBoardForm from "./AddBoard";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 import SprintFeature from "./SprintFeature";
 import ShlomosSprintFilter from "./ShlomosSprintFilter";
 
 const url = import.meta.env.DEV
   ? "http://localhost:8137/projects"
   : "https://jlm-projects-server-1.vercel.app";
-
 
 async function getProjectById(projectid) {
   try {
@@ -53,26 +52,7 @@ async function getTasksByProjectId(projectId) {
   }
 }
 
-
-
-
-const defaultCols = [
-  {
-    id: "todo",
-    title: "todo",
-    isShadow: true,
-  },
-  {
-    id: "doing",
-    title: "doing",
-    isShadow: true,
-  },
-  {
-    id: "done",
-    title: "done",
-    isShadow: true,
-  },
-];
+const defaultCols = [];
 
 const defaultTasks = [];
 
@@ -90,15 +70,31 @@ function KanbanBoard() {
 
   const [boards, setBoards] = useState([]);
 
-
-
   const onFetchAllBoards = async () => {
     const newBoards = await fetchAllBoards();
     setBoards(newBoards);
     setSelectedBoard(newBoards[0]);
 
     const tasks = await getTasksByProjectId(newBoards[0]?._id);
-    setColumns(newBoards[0]?.columns);
+    const columns = newBoards[0]?.columnIDs;
+    setColumns([
+      {
+        id: columns[0],
+        title: "Open",
+      },
+      {
+        id: columns[1],
+        title: "Open",
+      },
+      {
+        id: columns[2],
+        title: "Open",
+      },
+      {
+        id: columns[3],
+        title: "Open",
+      },
+    ]);
     setTasks(tasks);
   };
 
@@ -113,7 +109,6 @@ function KanbanBoard() {
 
   useEffect(() => {
     onFetchAllBoards();
-    
   }, []);
 
   const sensors = useSensors(
@@ -134,25 +129,23 @@ function KanbanBoard() {
             selectedBoard={selectedBoard}
           />
           <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row', // Set the direction to row
-        justifyContent: 'space-between',
-         // You can use the numeric values directly for margin
-      }}
-    >
-      <Box sx={{ padding: 2,  }}>
-        <AddBoardForm />
-      </Box>
-      <Box sx={{ padding: 2 }}>
-        <BoardDelete  boardId={selectedBoard}  />
-      </Box>
-      <Box sx={{ padding: 2 }}>
-        <EditBoard selectedBoard={selectedBoard} boards={boards} />
-      </Box>
-    </Box>
-           
-           
+            sx={{
+              display: "flex",
+              flexDirection: "row", // Set the direction to row
+              justifyContent: "space-between",
+              // You can use the numeric values directly for margin
+            }}
+          >
+            <Box sx={{ padding: 2 }}>
+              <AddBoardForm />
+            </Box>
+            <Box sx={{ padding: 2 }}>
+              <BoardDelete boardId={selectedBoard} />
+            </Box>
+            <Box sx={{ padding: 2 }}>
+              <EditBoard selectedBoard={selectedBoard} boards={boards} />
+            </Box>
+          </Box>
 
           <div
           // className="flex
@@ -193,8 +186,6 @@ function KanbanBoard() {
                     />
                   ))}
                 </SortableContext>
-                
-
               </div>
 
               <button
