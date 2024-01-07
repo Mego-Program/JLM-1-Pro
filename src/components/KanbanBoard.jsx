@@ -23,7 +23,7 @@ import SprintFeature from "./SprintFeature";
 import ShlomosSprintFilter from "./ShlomosSprintFilter";
 
 const url = import.meta.env.DEV
-  ? "http://localhost:8137/projects"
+  ? "http://localhost:8137"
   : "https://jlm-projects-server-1.vercel.app";
 
 async function getProjectById(projectid) {
@@ -188,29 +188,7 @@ function KanbanBoard() {
                 </SortableContext>
               </div>
 
-              <button
-                onClick={() => {
-                  createNewColumn(selectedBoard._id);
-                }}
-                className="
-      h-[60px]
-      w-[350px]
-      min-w-[350px]
-      cursor-pointer
-      rounded-lg
-      bg-yellow-500
-      border-2
-      border-yellow-200
-      p-4
-      ring-yellow-500
-      hover:ring-4
-      flex
-      gap-2
-      "
-              >
-                <PlusIcon />
-                Add Column
-              </button>
+
             </div>
             {createPortal(
               <DragOverlay>
