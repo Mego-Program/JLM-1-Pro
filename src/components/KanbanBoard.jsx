@@ -96,7 +96,7 @@ function KanbanBoard() {
     const newBoards = await fetchAllBoards();
     setBoards(newBoards);
     setSelectedBoard(newBoards[0]);
-ava
+
     const tasks = await getTasksByProjectId(newBoards[0]?._id);
     setColumns(newBoards[0]?.columns);
     setTasks(tasks);
