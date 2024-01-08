@@ -10,3 +10,18 @@ export const fetchAllBoards = async () => {
   const boardData = await boards.data;
   return boardData;
 };
+
+export const fetchSprints = async () => {
+  try {
+    const response = await axios.post(url + "/projects/GetAllSprints");
+    const sprintData = response.data
+      .map((project) => project.Sprint.map((sprint) => sprint.sprintName))
+      .flat();
+    // setSprints(sprintData);
+    console.log("response.data:", response.data);
+    console.log("sprintdata:", sprintData);
+  } catch (error) {
+    console.error("Error fetching sprints:", error.message);
+  }
+};
+

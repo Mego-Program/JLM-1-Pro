@@ -8,7 +8,6 @@ import Delete from "./Deletion";
 import BarDropdown from "./UrgencyDropdown";
 import BasicModal from "./TaskModal";
 import { update_project_column_text } from "./FunctionToServer";
-import axios from "axios";
 
 
 function ColumnContainer({
@@ -58,7 +57,7 @@ function ColumnContainer({
       <div
         ref={setNodeRef}
         style={style}
-        className="bg-[url('https://cdn.naturettl.com/wp-content/uploads/2022/02/08203221/water-landscape-photos-11-534x800.jpg')] opacity-40 border-2 border-yellow-500 w-[50px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+        className="bg-blue-950 opacity-40 border-2 border-yellow-500 w-[50px] h-[500px] max-h-[500px] rounded-md flex flex-col"
       ></div>
     );
   }

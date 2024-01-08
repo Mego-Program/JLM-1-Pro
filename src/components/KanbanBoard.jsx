@@ -21,6 +21,7 @@ import AddBoardForm from "./AddBoard";
 import Box from "@mui/material/Box";
 import SprintFeature from "./SprintFeature";
 import ShlomosSprintFilter from "./ShlomosSprintFilter";
+import Grid from "@mui/material/Grid";
 
 const url = import.meta.env.DEV
   ? "http://localhost:8137"
@@ -120,105 +121,88 @@ function KanbanBoard() {
   );
 
   return (
-    <div className="flex justify-center">
-      <div className="flex items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
-        <div className="flex flex-col items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden">
-          <ProjectDropdown
-            boards={boards}
-            onSetSelectedBoards={onSetSelectedBoards}
-            selectedBoard={selectedBoard}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row", // Set the direction to row
-              justifyContent: "space-between",
-              // You can use the numeric values directly for margin
-            }}
-          >
-            <Box sx={{ padding: 2 }}>
-              <AddBoardForm />
-            </Box>
-            <Box sx={{ padding: 2 }}>
-              <BoardDelete boardId={selectedBoard} />
-            </Box>
-            <Box sx={{ padding: 2 }}>
-              <EditBoard selectedBoard={selectedBoard} boards={boards} />
-            </Box>
-          </Box>
+    <Grid
+      container
+      alignItems="center"
+      justifyContent="center"
+      spacing={0}
+      sx={{ width: "95%", minHeight: "100vh" }}
+    >
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="center"
+        spacing={0}
+        sx={{ width: "100%", minHeight: "100vh" }}
+      >
+        <ProjectDropdown
+          boards={boards}
+          onSetSelectedBoards={onSetSelectedBoards}
+          selectedBoard={selectedBoard}
+        />
+        <Grid
+          container
+          alignItems="center"
+          justifyContent="center"
+          spacing={0}
+          sx={{ width: "100%", minHeight: "10vh" }}
+        >
+          <AddBoardForm />
 
-          <div
-          // className="flex
-          // flex-col
-          // items-center
-          // w-full
-          // h-full
-          // overflow-x-auto
-          // overflow-y-hidden
-          // px-[40px]"
-          >
-            <SprintFeature tasks={tasks} />
-          </div>
-          {/* <ShlomosSprintFilter><SprintFeature/></ShlomosSprintFilter>  */}
+          <BoardDelete boardId={selectedBoard} />
 
-          <DndContext
-            sensors={sensors}
-            onDragStart={onDragStart}
-            onDragEnd={onDragEnd}
-            onDragOver={onDragOver}
-          >
-            <div className="flex gap-4">
-              <div className="flex gap-4">
-                <SortableContext items={columnsId}>
-                  {columns.map((col) => (
-                    <ColumnContainer
-                      ccurrentProject={selectedBoard}
-                      editById={editById}
-                      setEditById={setEditById}
-                      key={col.id}
-                      column={col}
-                      deleteColumn={deleteColumn}
-                      updateColumn={updateColumn}
-                      createTask={createTask}
-                      deleteTask={deleteTask}
-                      updateTask={updateTask}
-                      tasks={tasks.filter((task) => task.columnId === col.id)}
-                    />
-                  ))}
-                </SortableContext>
-              </div>
+          <EditBoard selectedBoard={selectedBoard} boards={boards} />
 
+          <SprintFeature tasks={tasks} />
+        </Grid>
 
-            </div>
-            {createPortal(
-              <DragOverlay>
-                {activeColumn && (
-                  <ColumnContainer
-                    column={activeColumn}
-                    deleteColumn={deleteColumn}
-                    updateColumn={updateColumn}
-                    createTask={createTask}
-                    deleteTask={deleteTask}
-                    updateTask={updateTask}
-                    tasks={tasks.filter(
-                      (task) => task.columnId === activeColumn.id
-                    )}
-                  />
+        <Grid container alignItems="center" justifyContent="center">
+          <SortableContext items={columnsId}>
+            {columns.map((col) => (
+              <ColumnContainer
+                ccurrentProject={selectedBoard}
+                editById={editById}
+                setEditById={setEditById}
+                key={col.id}
+                column={col}
+                deleteColumn={deleteColumn}
+                updateColumn={updateColumn}
+                createTask={createTask}
+                deleteTask={deleteTask}
+                updateTask={updateTask}
+                tasks={tasks.filter((task) => task.columnId === col.id)}
+              />
+            ))}
+          </SortableContext>
+        </Grid>
+        {createPortal(
+          <DragOverlay>
+            {activeColumn && (
+              <ColumnContainer
+                column={activeColumn}
+                deleteColumn={deleteColumn}
+                updateColumn={updateColumn}
+                createTask={createTask}
+                deleteTask={deleteTask}
+                updateTask={updateTask}
+                tasks={tasks.filter(
+                  (task) => task.columnId === activeColumn.id
                 )}
-                {activeTask && (
-                  <TaskCard
-                    task={activeTask}
-                    deleteTask={deleteTask}
-                    updateTask={updateTask}
-                  />
-                )}
-              </DragOverlay>,
-              document.body
+              />
             )}
-          </DndContext>
-        </div>
-      </div>
-    </div>
+            {activeTask && (
+              <TaskCard
+                task={activeTask}
+                deleteTask={deleteTask}
+                updateTask={updateTask}
+              />
+            )}
+          </DragOverlay>,
+          document.body
+        )}
+        {/* </DndContext> */}
+      </Grid>
+    </Grid>
   );
 
   async function createTask(columnId, taskDetails) {
@@ -227,7 +211,6 @@ function KanbanBoard() {
     console.log("selectedBoard::", selectedBoard);
     try {
       const response = await axios.post(url + "/tasks/add_tasks", {
-        // id: generateId(),
         projectID: selectedBoard,
         columnId,
         header: taskDetails.header,
@@ -239,8 +222,6 @@ function KanbanBoard() {
 
       setTasks([response.data, ...tasks]);
       console.log(tasks);
-      // setEditById(response.data.task_id);
-      // setEditById(newTask.id);
     } catch (error) {
       console.log(error);
     }

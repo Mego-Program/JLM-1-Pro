@@ -1,11 +1,11 @@
-import { createTheme } from "@mui/material/styles";
+// import { createTheme } from "@mui/material/styles";
 
-const theme = createTheme({
-    palette:{
-        yelllow:{
-            main:"#ffc300"
-        }
-    }
-})
+// const theme = createTheme({
+//     palette:{
+//         yelllow:{
+//             main:"#ffc300"
+//         }
+//     }
+// })
 
-export default theme
+// export default theme
