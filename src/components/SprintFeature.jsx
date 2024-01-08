@@ -39,7 +39,7 @@ export default function SprintFeature({ tasks ,selectedBoard}) {
   };
 
   return (
-    <div >
+    <div style={{ display: 'flex', alignItems: 'center' }}>
        <Button variant="outlined"  color="primary" onClick={handleOpen}>
        Create New Sprint
       </Button>
@@ -74,7 +74,7 @@ export default function SprintFeature({ tasks ,selectedBoard}) {
       dateRange = {dateRange}
       selectedTasks = {selectedTasks}
       />
-      
+
     </div>
   );
 }
