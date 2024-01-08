@@ -20,10 +20,9 @@ import BoardDelete from "./DeleteBoard";
 import AddBoardForm from "./AddBoard";
 import Box from '@mui/material/Box';
 import SprintFeature from "./SprintFeature";
-import ShlomosSprintFilter from "./ShlomosSprintFilter";
 
 const url = import.meta.env.DEV
-  ? "http://localhost:8137/projects"
+  ? "http://localhost:8137"
   : "https://jlm-projects-server-1.vercel.app";
 
 
@@ -34,6 +33,7 @@ async function getProjectById(projectid) {
     });
 
     return response.data;
+    console.log("data:",response.data);
   } catch (error) {
     console.error("Error fetching project:", error.message);
     return null;
@@ -86,8 +86,6 @@ function KanbanBoard() {
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
-  console.log(selectedBoard);
-
   const [boards, setBoards] = useState([]);
 
 
@@ -111,8 +109,7 @@ function KanbanBoard() {
   };
 
   useEffect(() => {
-    onFetchAllBoards();
-    
+    onFetchAllBoards();    
   }, []);
 
   const sensors = useSensors(
@@ -150,23 +147,11 @@ function KanbanBoard() {
         <EditBoard selectedBoard={selectedBoard} boards={boards} />
       </Box>
     </Box>
-           
-           
-
-          <div
-          // className="flex
-          // flex-col
-          // items-center
-          // w-full
-          // h-full
-          // overflow-x-auto
-          // overflow-y-hidden
-          // px-[40px]"
-          >
-            <SprintFeature tasks={tasks} />
-          </div>
-          {/* <ShlomosSprintFilter><SprintFeature/></ShlomosSprintFilter>  */}
-
+       
+          <SprintFeature 
+            tasks={tasks}
+            selectedBoard={selectedBoard} />
+          
           <DndContext
             sensors={sensors}
             onDragStart={onDragStart}

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url = import.meta.env.DEV
-  ? "http://localhost:8137/projects"
+  ? "http://localhost:8137"
   : "https://jlm-projects-server-1.vercel.app";
 
 export const fetchAllBoards = async () => {

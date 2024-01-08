@@ -4,11 +4,12 @@ import clsx from "clsx";
 import { styled, css } from "@mui/system";
 import { Modal as BaseModal } from "@mui/base/Modal";
 import DateRange from "./DateRange";
+import Button from '@mui/material/Button';
 import DropdownSelect from "./DropDownSelect";
 import ShlomosSprintFilter from "./ShlomosSprintFilter";
 import axios from "axios";
 
-export default function SprintFeature({ tasks }) {
+export default function SprintFeature({ tasks ,selectedBoard}) {
   const [open, setOpen] = useState(false);
   const [sprintName, setSprintName] = useState("");
   const [selectedTasks, setSelectedTasks] = useState([]);//list of tasks
@@ -19,7 +20,6 @@ export default function SprintFeature({ tasks }) {
   const handleClose = () => setOpen(false);
 
   const handleCreateSprint = async () => {
-    // TODO: Implement logic to send data to the server
     const sprintData = {
       sprintName: sprintName,
       startDate: dateRange[0],
@@ -28,8 +28,9 @@ export default function SprintFeature({ tasks }) {
     }
     
     try {
-      const response = await axios.post("http://localhost:8137/projects/add_sprint",
-      sprintData)} 
+      const response = await axios.post("http://localhost:8137/projects/addSprint",
+      sprintData)
+    console.log('added sprint');} 
     catch (error) {  
     };
     console.log("sprint data:", sprintData);
@@ -38,13 +39,13 @@ export default function SprintFeature({ tasks }) {
   };
 
   return (
-    <div>
-      <ShlomosSprintFilter 
-      // sprintData= {sprintData}
-      />
-      <TriggerButton type="button" onClick={handleOpen}>
+    <div >
+       <Button variant="outlined"  color="primary" onClick={handleOpen}>
+       Create New Sprint
+      </Button>
+      {/* <TriggerButton type="button" onClick={handleOpen}>
         Create New Sprint
-      </TriggerButton>
+      </TriggerButton> */}
       <Modal open={open} onClose={handleClose} slots={{ backdrop: StyledBackdrop }}>
         <ModalContent sx={{ width: 400, backgroundColor: "rgb(234, 179, 8)" }}>
      <input
@@ -67,6 +68,13 @@ export default function SprintFeature({ tasks }) {
           </button>
         </ModalContent>
       </Modal>
+
+      <ShlomosSprintFilter 
+      selectedBoard = {selectedBoard}
+      dateRange = {dateRange}
+      selectedTasks = {selectedTasks}
+      />
+      
     </div>
   );
 }
