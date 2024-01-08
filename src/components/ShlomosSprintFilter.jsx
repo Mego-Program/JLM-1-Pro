@@ -43,7 +43,7 @@ export default function ShlomosSprintFilter({selectedBoard, dateRange, selectedT
       }
       
       try {
-        const response = await axios.post("http://localhost:8137/projects/edit_sprint",
+        const response = await axios.post("http://localhost:8137/projects/editSprint",
         sprintData)} 
       catch (error) {  
       };
@@ -55,7 +55,7 @@ export default function ShlomosSprintFilter({selectedBoard, dateRange, selectedT
   };
 
   const handleDelete = async (sprintName, ) => {
-    const response = await axios.post("http://localhost:8137/projects/delete_sprint",{
+    const response = await axios.post("http://localhost:8137/projects/deleteSprint",{
       sprintName:sprintName,
       projectID: selectedBoard._id,
     })

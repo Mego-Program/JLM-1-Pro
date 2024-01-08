@@ -22,7 +22,7 @@ import Box from '@mui/material/Box';
 import SprintFeature from "./SprintFeature";
 
 const url = import.meta.env.DEV
-  ? "http://localhost:8137/projects"
+  ? "http://localhost:8137"
   : "https://jlm-projects-server-1.vercel.app";
 
 
@@ -33,6 +33,7 @@ async function getProjectById(projectid) {
     });
 
     return response.data;
+    console.log("data:",response.data);
   } catch (error) {
     console.error("Error fetching project:", error.message);
     return null;
@@ -93,7 +94,7 @@ function KanbanBoard() {
     const newBoards = await fetchAllBoards();
     setBoards(newBoards);
     setSelectedBoard(newBoards[0]);
-ava
+
     const tasks = await getTasksByProjectId(newBoards[0]?._id);
     setColumns(newBoards[0]?.columns);
     setTasks(tasks);
@@ -147,24 +148,11 @@ ava
         <EditBoard selectedBoard={selectedBoard} boards={boards} />
       </Box>
     </Box>
-           
-           
-
-          <div
-          // className="flex
-          // flex-col
-          // items-center
-          // w-full
-          // h-full
-          // overflow-x-auto
-          // overflow-y-hidden
-          // px-[40px]"
-          >
-            <SprintFeature 
+       
+          <SprintFeature 
             tasks={tasks}
             selectedBoard={selectedBoard} />
-          </div>
-
+          
           <DndContext
             sensors={sensors}
             onDragStart={onDragStart}
