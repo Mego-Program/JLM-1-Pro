@@ -146,11 +146,14 @@ function KanbanBoard() {
       <Box sx={{ padding: 2 }}>
         <EditBoard selectedBoard={selectedBoard} boards={boards} />
       </Box>
-    </Box>
-       
-          <SprintFeature 
+      <Box sx={{ padding: 2 }}>
+      <SprintFeature 
             tasks={tasks}
             selectedBoard={selectedBoard} />
+      </Box>
+    </Box>
+       
+       
           
           <DndContext
             sensors={sensors}
