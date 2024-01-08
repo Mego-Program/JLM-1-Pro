@@ -43,9 +43,6 @@ export default function SprintFeature({ tasks ,selectedBoard}) {
        <Button variant="outlined"  color="primary" onClick={handleOpen}>
        Create New Sprint
       </Button>
-      {/* <TriggerButton type="button" onClick={handleOpen}>
-        Create New Sprint
-      </TriggerButton> */}
       <Modal open={open} onClose={handleClose} slots={{ backdrop: StyledBackdrop }}>
         <ModalContent sx={{ width: 400, backgroundColor: "rgb(234, 179, 8)" }}>
      <input
