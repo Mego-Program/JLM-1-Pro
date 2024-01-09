@@ -1,6 +1,5 @@
 // ProjectDropdown.js
 import React, { useState, useEffect } from "react";
-import YourComponent from "./Settings";
 
 
 const ProjectDropdown = ({ boards, onSetSelectedBoards, selectedBoard }) => {

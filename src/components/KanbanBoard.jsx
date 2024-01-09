@@ -1,9 +1,7 @@
-import PlusIcon from "../icons/PlusIcon";
 import { useMemo, useState, useEffect } from "react";
 import ColumnContainer from "./ColumnContainer";
 import axios from "axios";
 import {
-  DndContext,
   DragOverlay,
   PointerSensor,
   useSensor,
@@ -12,46 +10,17 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
-import { getAllData, update_tasks_status } from "./FunctionToServer";
+import { update_tasks_status } from "./FunctionToServer";
 import ProjectDropdown from "./ProjectDropdown";
-import { fetchAllBoards } from "../fetch-request/board-requests";
+import {
+  fetchAllBoards,
+  getTasksByProjectId,
+} from "../fetch-request/board-requests";
 import EditBoard from "./Settings";
 import BoardDelete from "./DeleteBoard";
 import AddBoardForm from "./AddBoard";
-import Box from "@mui/material/Box";
 import SprintFeature from "./SprintFeature";
-import ShlomosSprintFilter from "./ShlomosSprintFilter";
 import Grid from "@mui/material/Grid";
-
-const url = import.meta.env.DEV
-  ? "http://localhost:8137"
-  : "https://jlm-projects-server-1.vercel.app";
-
-async function getProjectById(projectid) {
-  try {
-    const response = await axios.post(url + "/projects/get_project_by_id", {
-      projectId: projectid,
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching project:", error.message);
-    return null;
-  }
-}
-
-async function getTasksByProjectId(projectId) {
-  try {
-    const response = await axios.post(url + "/tasks/get_tasks_by_projectId", {
-      projectId: projectId,
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching tasks:", error.message);
-    return null;
-  }
-}
 
 const defaultCols = [];
 
@@ -126,8 +95,13 @@ function KanbanBoard() {
       alignItems="center"
       justifyContent="center"
       spacing={0}
-      sx={{ width: "95%", minHeight: "100vh" }}
+      sx={{ width: "100%", minHeight: "100vh" }}
     >
+      <ProjectDropdown
+        boards={boards}
+        onSetSelectedBoards={onSetSelectedBoards}
+        selectedBoard={selectedBoard}
+      />
       <Grid
         container
         alignItems="center"
@@ -135,18 +109,6 @@ function KanbanBoard() {
         spacing={0}
         sx={{ width: "100%", minHeight: "100vh" }}
       >
-        <ProjectDropdown
-          boards={boards}
-          onSetSelectedBoards={onSetSelectedBoards}
-          selectedBoard={selectedBoard}
-        />
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="center"
-          spacing={0}
-          sx={{ width: "100%", minHeight: "10vh" }}
-        >
           <AddBoardForm />
 
           <BoardDelete boardId={selectedBoard} />
@@ -155,6 +117,14 @@ function KanbanBoard() {
 
           <SprintFeature tasks={tasks} />
         </Grid>
+        
+        <Grid
+          container
+          alignItems="center"
+          justifyContent="center"
+          spacing={0}
+          sx={{ width: "100%", minHeight: "10vh" }}
+        >
 
         <Grid container alignItems="center" justifyContent="center">
           <SortableContext items={columnsId}>

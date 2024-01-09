@@ -11,6 +11,19 @@ export const fetchAllBoards = async () => {
   return boardData;
 };
 
+export async function getTasksByProjectId(projectId) {
+  try {
+    const response = await axios.post(url + "/tasks/get_tasks_by_projectId", {
+      projectId: projectId,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching tasks:", error.message);
+    return null;
+  }
+}
+
 export const fetchSprints = async () => {
   try {
     const response = await axios.post(url + "/projects/GetAllSprints");
