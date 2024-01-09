@@ -1,0 +1,50 @@
+{
+  "name": "dnd-tutorial",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 4177 --strictPort",
+    "build": "vite build",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview --port 4180"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.16",
+    "@mui/lab": "^5.0.0-alpha.152",
+
+    "@mui/material": "^5.14.19",
+    "@mui/x-date-pickers": "^6.18.3",
+    "@mui/x-date-pickers-pro": "^6.18.3",
+    "@originjs/vite-plugin-federation": "^1.3.3",
+    "@vitejs/plugin-react": "^4.2.0",
+    "axios": "^1.6.2",
+    "dayjs": "^1.11.10",
+    "preview": "^0.1.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "serve": "^14.2.1",
+    "tailwind-merge": "^1.14.0",
+    "validation": "^0.0.1",
+    "yup": "^1.3.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "autoprefix": "^1.0.1",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.44.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.1",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.0"
+  }
+}
