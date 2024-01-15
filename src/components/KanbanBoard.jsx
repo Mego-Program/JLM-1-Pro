@@ -15,17 +15,25 @@ import TaskCard from "./TaskCard";
 import { getAllData, update_tasks_status } from "./FunctionToServer";
 import ProjectDropdown from "./ProjectDropdown";
 import { fetchAllBoards } from "../fetch-request/board-requests";
+import EditBoard from "./Settings";
+import BoardDelete from "./DeleteBoard";
+import AddBoardForm from "./AddBoard";
+import Box from '@mui/material/Box';
+import SprintFeature from "./SprintFeature";
+
+const url = import.meta.env.DEV
+  ? "http://localhost:8137"
+  : "https://jlm-projects-server-1.vercel.app";
+
 
 async function getProjectById(projectid) {
   try {
-    const response = await axios.post(
-      "http://localhost:8137/projects/get_project_by_id",
-      {
-        projectId: projectid,
-      }
-    );
+    const response = await axios.post(url + "/projects/get_project_by_id", {
+      projectId: projectid,
+    });
 
     return response.data;
+    console.log("data:",response.data);
   } catch (error) {
     console.error("Error fetching project:", error.message);
     return null;
@@ -34,12 +42,9 @@ async function getProjectById(projectid) {
 
 async function getTasksByProjectId(projectId) {
   try {
-    const response = await axios.post(
-      "http://localhost:8137/tasks/get_tasks_by_projectId",
-      {
-        projectId: projectId,
-      }
-    );
+    const response = await axios.post(url + "/tasks/get_tasks_by_projectId", {
+      projectId: projectId,
+    });
 
     return response.data;
   } catch (error) {
@@ -47,6 +52,9 @@ async function getTasksByProjectId(projectId) {
     return null;
   }
 }
+
+
+
 
 const defaultCols = [
   {
@@ -74,17 +82,18 @@ function KanbanBoard() {
 
   const [editById, setEditById] = useState(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
-
   const [boards, setBoards] = useState([]);
+
+
 
   const onFetchAllBoards = async () => {
     const newBoards = await fetchAllBoards();
     setBoards(newBoards);
     setSelectedBoard(newBoards[0]);
-
     const tasks = await getTasksByProjectId(newBoards[0]?._id);
     setColumns(newBoards[0]?.columns);
     setTasks(tasks);
@@ -93,13 +102,14 @@ function KanbanBoard() {
   const onSetSelectedBoards = async (boardId) => {
     const selectedBoard = boards.find((board) => board._id === boardId);
     setSelectedBoard(selectedBoard);
+    console.log(boardId);
 
     const tasks = await getTasksByProjectId(selectedBoard?._id);
     setTasks(tasks);
   };
 
   useEffect(() => {
-    onFetchAllBoards();
+    onFetchAllBoards();    
   }, []);
 
   const sensors = useSensors(
@@ -114,13 +124,34 @@ function KanbanBoard() {
     <div className="flex justify-center">
       <div className="flex items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden ">
         <div className="flex flex-col items-center w-full h-full mt-0 overflow-x-auto overflow-y-hidden">
-          {/* ProjectDropdown component */}
           <ProjectDropdown
             boards={boards}
             onSetSelectedBoards={onSetSelectedBoards}
             selectedBoard={selectedBoard}
           />
-
+          <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row', // Set the direction to row
+        justifyContent: 'space-between',
+         // You can use the numeric values directly for margin
+      }}
+    >
+      <Box sx={{ padding: 2,  }}>
+        <AddBoardForm />
+      </Box>
+      <Box sx={{ padding: 2 }}>
+        <BoardDelete  boardId={selectedBoard}  />
+      </Box>
+      <Box sx={{ padding: 2 }}>
+        <EditBoard selectedBoard={selectedBoard} boards={boards} />
+      </Box>
+    </Box>
+       
+          <SprintFeature 
+            tasks={tasks}
+            selectedBoard={selectedBoard} />
+          
           <DndContext
             sensors={sensors}
             onDragStart={onDragStart}
@@ -146,6 +177,8 @@ function KanbanBoard() {
                     />
                   ))}
                 </SortableContext>
+                
+
               </div>
 
               <button
@@ -208,19 +241,16 @@ function KanbanBoard() {
     console.log("columnId::", columnId);
     console.log("selectedBoard::", selectedBoard);
     try {
-      const response = await axios.post(
-        "http://localhost:8137/tasks/add_tasks",
-        {
-          // id: generateId(),
-          projectID: selectedBoard,
-          columnId,
-          header: taskDetails.header,
-          content: taskDetails.content,
-          issue: taskDetails.issue,
-          asignee: taskDetails.asignee,
-          date: taskDetails.date,
-        }
-      );
+      const response = await axios.post(url + "/tasks/add_tasks", {
+        // id: generateId(),
+        projectID: selectedBoard,
+        columnId,
+        header: taskDetails.header,
+        content: taskDetails.content,
+        issue: taskDetails.issue,
+        asignee: taskDetails.asignee,
+        date: taskDetails.date,
+      });
 
       setTasks([response.data, ...tasks]);
       console.log(tasks);
@@ -233,12 +263,9 @@ function KanbanBoard() {
 
   async function deleteTask(taskeId) {
     try {
-      const response = await axios.post(
-        "http://localhost:8137/tasks/delete_tasks",
-        {
-          taskeId: taskeId,
-        }
-      );
+      const response = await axios.post(url + "/tasks/delete_tasks", {
+        taskeId: taskeId,
+      });
       // TODO: fetch only tasks of current board
       // fetchProjects();
 
@@ -252,17 +279,14 @@ function KanbanBoard() {
 
   async function updateTask(taskId, taskDetails) {
     try {
-      const response = await axios.post(
-        "http://localhost:8137/tasks/update_task_content",
-        {
-          taskId: taskId,
-          header: taskDetails.header,
-          content: taskDetails.content,
-          issue: taskDetails.issue,
-          asignee: taskDetails.asignee,
-          date: taskDetails.date,
-        }
-      );
+      const response = await axios.post(url + "/tasks/update_task_content", {
+        taskId: taskId,
+        header: taskDetails.header,
+        content: taskDetails.content,
+        issue: taskDetails.issue,
+        asignee: taskDetails.asignee,
+        date: taskDetails.date,
+      });
       console.log("fun");
       setTasks((tasks) => {
         return tasks.map((task) => {
@@ -301,14 +325,11 @@ function KanbanBoard() {
 
   async function createNewColumn(projectID) {
     try {
-      const response = await axios.post(
-        "http://localhost:8137/projects/add_new_column",
-        {
-          projectId: projectID,
-          columnID: `${generateId()}`,
-          nameColumn: "newColumn",
-        }
-      );
+      const response = await axios.post(url + "/projects/add_new_column", {
+        projectId: projectID,
+        columnID: `${generateId()}`,
+        nameColumn: "newColumn",
+      });
 
       setColumns(response.data);
     } catch (error) {
@@ -319,13 +340,10 @@ function KanbanBoard() {
 
   async function deleteColumn(columnId) {
     try {
-      const response = await axios.post(
-        "http://localhost:8137/projects/delete_column",
-        {
-          projectId: selectedBoard._id,
-          columnId: columnId,
-        }
-      );
+      const response = await axios.post(url + "/projects/delete_column", {
+        projectId: selectedBoard._id,
+        columnId: columnId,
+      });
 
       setColumns(response.data);
 
@@ -437,4 +455,20 @@ function generateId() {
   return Math.floor(Math.random() * 10001);
 }
 
+// async function createNewSprint(projectID) {
+//   try {
+//     const response = await axios.post(
+//       url +"/projects/add_new_sprint",
+//       {
+//         sprintName: sprintName,
+//         startDate: startDate,
+//         endDate: endDate,
+//         listOfTasks: listOfTasks,
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error fetching sprint:", error.message);
+//     return null;
+//   }
+// }
 export default KanbanBoard;
