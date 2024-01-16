@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { IconButton, Menu, MenuItem, Avatar, Tooltip } from '@mui/material';
 
 const AvatarButton = ({ onAvatarClick,selectedBoard }) => {
+  if (!selectedBoard){
+    return
+  }
   const [anchorEl, setAnchorEl] = useState(null);
   const [avatars, setAvatars] = useState(selectedBoard.projectMembers);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const handleContainerClick = (e) => {
     e.stopPropagation();
   };
-
 
   
 

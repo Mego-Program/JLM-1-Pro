@@ -422,7 +422,8 @@ function KanbanBoard() {
     if (isActiveATask && isOverATask) {
       const activeIndex = tasks.findIndex((t) => t._id === activeId);
       const overIndex = tasks.findIndex((t) => t._id === overId);
-
+        console.log(activeId);
+        console.log(tasks[overIndex].columnId);
       update_tasks_status(activeId, tasks[overIndex].columnId);
       setTasks((tasks) => {
         if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
@@ -441,6 +442,8 @@ function KanbanBoard() {
     if (isActiveATask && isOverAColumn) {
       const activeIndex = tasks.findIndex((t) => t._id === activeId);
       tasks[activeIndex].columnId = overId;
+      console.log(activeId);
+      console.log(overId);
       update_tasks_status(activeId, overId);
       setTasks((tasks) => {
         console.log("DROPPING TASK OVER COLUMN", { activeIndex });

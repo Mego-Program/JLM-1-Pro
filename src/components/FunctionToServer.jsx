@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url = import.meta.env.DEV
-  ? "http://localhost:8137/projects"
+  ? "http://localhost:8137"
   : "https://jlm-projects-server-1.vercel.app";
 
 export async function getAllData() {
@@ -22,7 +22,7 @@ export const update_project_column_text = async (
   columnText
 ) => {
   try {
-    const response = await axios.post(`${url}/update_project_column_text`, {
+    const response = await axios.post(`${url}/projects/update_project_column_text`, {
       projectId: projectID,
       columnID: columnID,
       columnText: columnText,
@@ -34,13 +34,15 @@ export const update_project_column_text = async (
 };
 
 export const update_tasks_status = async (taskId, newColumn) => {
+  console.log(taskId);
+    console.log(newColumn);
   try {
     const response = await axios.post(`${url}/tasks/update_tasks_status`, {
       taskId: taskId,
       newColumn: newColumn,
     });
-    console.log(taskId);
-    console.log(newColumn);
+    
+    return response
   } catch (error) {
     console.log(error);
   }
