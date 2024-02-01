@@ -450,6 +450,12 @@ function KanbanBoard() {
   }
 }
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 74d6c464a2f42d09d527771f94eb45edad78d97f
 function generateId() {
   /* Generate a random number between 0 and 10000 */
   return Math.floor(Math.random() * 10001);
